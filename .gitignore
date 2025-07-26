@@ -46,7 +46,7 @@ app.*.map.json
 
 # Other platforms
 /ios/
-#/web/
+/web/
 /macos/
 /windows/
 /linux/
