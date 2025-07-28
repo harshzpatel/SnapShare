@@ -67,77 +67,81 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(flex: 2, child: Container()),
-              SvgPicture.asset(
-                'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
-                height: 64,
-              ),
-              SizedBox(height: 64),
-              TextFieldInput(
-                textEditingController: _emailController,
-                hintText: 'Enter your email',
-                textInputType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: 24),
-              TextFieldInput(
-                textEditingController: _passwordController,
-                hintText: 'Enter your password',
-                textInputType: TextInputType.text,
-                isPass: true,
-              ),
-              SizedBox(height: 24),
-              InkWell(
-                onTap: loginUser,
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                    color: blueColor,
-                  ),
-                  child: _isLoading
-                      ? Center(
-                          child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        )
-                      : Text('Log in'),
-                ),
-              ),
-              SizedBox(height: 12),
-              Flexible(flex: 2, child: Container()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text("Don't have an account?"),
+                  // Flexible(flex: 2, child: Container()),
+                  SvgPicture.asset(
+                    'assets/ic_instagram.svg',
+                    colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                    height: 64,
                   ),
-                  GestureDetector(
-                    onTap: navigateToSignup,
+                  SizedBox(height: 64),
+                  TextFieldInput(
+                    textEditingController: _emailController,
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(height: 24),
+                  TextFieldInput(
+                    textEditingController: _passwordController,
+                    hintText: 'Enter your password',
+                    textInputType: TextInputType.text,
+                    isPass: true,
+                  ),
+                  SizedBox(height: 24),
+                  InkWell(
+                    onTap: loginUser,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        " Sign up.",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        color: blueColor,
                       ),
+                      child: _isLoading
+                          ? Center(
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: primaryColor,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            )
+                          : Text('Log in'),
                     ),
+                  ),
+                  SizedBox(height: 12),
+                  // Flexible(flex: 2, child: Container()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text("Don't have an account?"),
+                      ),
+                      GestureDetector(
+                        onTap: navigateToSignup,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            " Sign up.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),

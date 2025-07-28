@@ -94,111 +94,116 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(flex: 2, child: Container()),
-              SvgPicture.asset(
-                'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
-                height: 64,
-              ),
-              SizedBox(height: 64),
-              Stack(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircleAvatar(
-                    radius: 64,
-                    // backgroundColor: Colors.blue,
-                    backgroundImage: _image != null
-                        ? MemoryImage(_image!)
-                        : NetworkImage(
-                            'https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-sulimansallehi-1704488.jpg&fm=jpg',
-                          ),
+                  // Flexible(flex: 2, child: Container()),
+                  SvgPicture.asset(
+                    'assets/ic_instagram.svg',
+                    colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                    height: 64,
                   ),
-                  Positioned(
-                    bottom: -5,
-                    right: -5,
-                    child: IconButton(
-                      onPressed: selectImage,
-                      icon: Icon(Icons.add_a_photo),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 24),
-              TextFieldInput(
-                textEditingController: _usernameController,
-                hintText: 'Enter your username',
-                textInputType: TextInputType.text,
-              ),
-              SizedBox(height: 24),
-              TextFieldInput(
-                textEditingController: _emailController,
-                hintText: 'Enter your email',
-                textInputType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: 24),
-              TextFieldInput(
-                textEditingController: _passwordController,
-                hintText: 'Enter your password',
-                textInputType: TextInputType.text,
-                isPass: true,
-              ),
-              SizedBox(height: 24),
-              TextFieldInput(
-                textEditingController: _bioController,
-                hintText: 'Enter your bio',
-                textInputType: TextInputType.text,
-              ),
-              SizedBox(height: 24),
-              InkWell(
-                onTap: signUpUser,
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                    color: blueColor,
-                  ),
-                  child: _isLoading
-                      ? Center(
-                          child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        )
-                      : Text('Sign up'),
-                ),
-              ),
-              SizedBox(height: 12),
-              Flexible(flex: 2, child: Container()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text("Already have an account?"),
-                  ),
-                  GestureDetector(
-                    onTap: navigateToLogin,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        " Log in.",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                  SizedBox(height: 64),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 64,
+                        // backgroundColor: Colors.blue,
+                        backgroundImage: _image != null
+                            ? MemoryImage(_image!)
+                            : NetworkImage(
+                                'https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-sulimansallehi-1704488.jpg&fm=jpg',
+                              ),
                       ),
+                      Positioned(
+                        bottom: -5,
+                        right: -5,
+                        child: IconButton(
+                          onPressed: selectImage,
+                          icon: Icon(Icons.add_a_photo),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                  TextFieldInput(
+                    textEditingController: _usernameController,
+                    hintText: 'Enter your username',
+                    textInputType: TextInputType.text,
+                  ),
+                  SizedBox(height: 24),
+                  TextFieldInput(
+                    textEditingController: _emailController,
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(height: 24),
+                  TextFieldInput(
+                    textEditingController: _passwordController,
+                    hintText: 'Enter your password',
+                    textInputType: TextInputType.text,
+                    isPass: true,
+                  ),
+                  SizedBox(height: 24),
+                  TextFieldInput(
+                    textEditingController: _bioController,
+                    hintText: 'Enter your bio',
+                    textInputType: TextInputType.text,
+                  ),
+                  SizedBox(height: 24),
+                  InkWell(
+                    onTap: signUpUser,
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        color: blueColor,
+                      ),
+                      child: _isLoading
+                          ? Center(
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: primaryColor,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            )
+                          : Text('Sign up'),
                     ),
+                  ),
+                  SizedBox(height: 12),
+                  // Flexible(flex: 2, child: Container()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text("Already have an account?"),
+                      ),
+                      GestureDetector(
+                        onTap: navigateToLogin,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            " Log in.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
