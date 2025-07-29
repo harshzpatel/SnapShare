@@ -10,8 +10,6 @@ import 'package:instagram/widgets/text_field_input.dart';
 
 import 'home_screen.dart';
 
-// import 'home_screen.dart';
-
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -45,6 +43,8 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> signUpUser() async {
+    FocusScope.of(context).unfocus();
+
     setState(() {
       _isLoading = true;
     });
@@ -54,7 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
       password: _passwordController.text,
       username: _usernameController.text,
       bio: _bioController.text,
-      file: _image ?? Uint8List(0),
+      file: _image,
     );
 
     if (kDebugMode) {
@@ -68,12 +68,10 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!mounted) return;
 
     if (res == 'success') {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => MobileScreenLayout()),
-      );
-    }
-
-    if (res != 'success') {
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else {
       showSnackBar(res, context);
     }
   }
@@ -87,150 +85,141 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
+          child: Column(children: [_form(), _footer()]),
+        ),
+      ),
+    );
+  }
+
+  Expanded _form() {
+    return Expanded(
+      child: Center(
+        child: SingleChildScrollView(
           child: Column(
             children: [
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        // Flexible(flex: 2, child: Container()),
-                        SvgPicture.asset(
-                          'assets/ic_instagram.svg',
-                          colorFilter: ColorFilter.mode(
-                            primaryColor,
-                            BlendMode.srcIn,
-                          ),
-                          height: 64,
-                        ),
-                        SizedBox(height: 64),
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: 64,
-                              // backgroundColor: Colors.blue,
-                              backgroundImage: _image != null
-                                  ? MemoryImage(_image!)
-                                  : AssetImage('assets/profile_icon.jpg'),
-                            ),
-                            Positioned(
-                              bottom: -5,
-                              right: -5,
-                              child: IconButton(
-                                onPressed: selectImage,
-                                icon: CircleAvatar(
-                                  radius: 18,
-                                  backgroundColor: Colors.black,
-                                  child: Icon(
-                                    size: 36,
-                                    Icons.add_circle_rounded,
-                                    color: Color(0xfff4f5f7),
-                                    // color: Colors.green,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 24),
-                        TextFieldInput(
-                          textEditingController: _usernameController,
-                          hintText: 'Enter your username',
-                          textInputType: TextInputType.text,
-                        ),
-                        SizedBox(height: 12),
-                        TextFieldInput(
-                          textEditingController: _emailController,
-                          hintText: 'Enter your email',
-                          textInputType: TextInputType.emailAddress,
-                        ),
-                        SizedBox(height: 12),
-                        TextFieldInput(
-                          textEditingController: _passwordController,
-                          hintText: 'Enter your password',
-                          textInputType: TextInputType.text,
-                          isPass: true,
-                        ),
-                        SizedBox(height: 12),
-                        TextFieldInput(
-                          textEditingController: _bioController,
-                          hintText: 'Enter your bio',
-                          textInputType: TextInputType.text,
-                        ),
-                        SizedBox(height: 24),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 48,
-                          child: ElevatedButton(
-                            onPressed: _isLoading ? null : signUpUser,
-                            style: ElevatedButton.styleFrom(
-                              // overlayColor: Colors.white.withOpacity(0.3),
-                              padding: EdgeInsets.zero,
-                              backgroundColor: blueColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: _isLoading
-                                ? SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: primaryColor,
-                                    ),
-                                  )
-                                : Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                      color: primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        SizedBox(height: 12),
-
-                        // Flexible(flex: 2, child: Container()),
-                      ],
-                    ),
-                  ),
-                ),
+              SvgPicture.asset(
+                'assets/ic_instagram.svg',
+                colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                height: 64,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(height: 64),
+              Stack(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text("Already have an account?"),
+                  CircleAvatar(
+                    radius: 64,
+                    backgroundImage: _image != null
+                        ? MemoryImage(_image!)
+                        : AssetImage('assets/profile_icon.jpg'),
                   ),
-                  GestureDetector(
-                    onTap: navigateToLogin,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        " Log in",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueAccent,
+                  Positioned(
+                    bottom: -5,
+                    right: -5,
+                    child: IconButton(
+                      onPressed: selectImage,
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          size: 36,
+                          Icons.add_circle_rounded,
+                          color: Color(0xfff4f5f7),
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 54),
+              TextFieldInput(
+                textEditingController: _usernameController,
+                hintText: 'Username',
+                textInputType: TextInputType.text,
+              ),
+              SizedBox(height: 15),
+              TextFieldInput(
+                textEditingController: _emailController,
+                hintText: 'Email',
+                textInputType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 15),
+              TextFieldInput(
+                textEditingController: _passwordController,
+                hintText: 'Password',
+                textInputType: TextInputType.text,
+                isPass: true,
+              ),
+              SizedBox(height: 15),
+              TextFieldInput(
+                textEditingController: _bioController,
+                hintText: 'Bio',
+                textInputType: TextInputType.text,
+              ),
+              SizedBox(height: 30),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : signUpUser,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    backgroundColor: blueColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: _isLoading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: primaryColor,
+                          ),
+                        )
+                      : Text(
+                          'Sign up',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17,
+                          ),
+                        ),
+                ),
+              ),
+              SizedBox(height: 12),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Row _footer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text("Already have an account?"),
+        ),
+        GestureDetector(
+          onTap: navigateToLogin,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              " Log in",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

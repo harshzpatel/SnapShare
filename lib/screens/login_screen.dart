@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
@@ -27,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> loginUser() async {
+    FocusScope.of(context).unfocus();
+
     setState(() {
       _isLoading = true;
     });
@@ -36,18 +39,22 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordController.text,
     );
 
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    if (!mounted) return;
 
-    if (res == 'Success') {
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res == 'success') {
       if (kDebugMode) {
         print('Logged in');
       }
+
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
     } else {
-      if (mounted) showSnackBar(res, context);
+      showSnackBar(res, context);
     }
   }
 
@@ -64,104 +71,99 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Flexible(flex: 2, child: Container()),
-                        SvgPicture.asset(
-                          'assets/ic_instagram.svg',
-                          colorFilter: ColorFilter.mode(
-                            primaryColor,
-                            BlendMode.srcIn,
-                          ),
-                          height: 64,
-                        ),
-                        SizedBox(height: 150),
-                        TextFieldInput(
-                          textEditingController: _emailController,
-                          hintText: 'Enter your email',
-                          textInputType: TextInputType.emailAddress,
-                        ),
-                        SizedBox(height: 12),
-                        TextFieldInput(
-                          textEditingController: _passwordController,
-                          hintText: 'Enter your password',
-                          textInputType: TextInputType.text,
-                          isPass: true,
-                        ),
-                        SizedBox(height: 24),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 48,
-                          child: ElevatedButton(
-                            onPressed: _isLoading ? null : loginUser,
-                            style: ElevatedButton.styleFrom(
-                              // overlayColor: Colors.white.withOpacity(0.3),
-                              padding: EdgeInsets.zero,
-                              backgroundColor: blueColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: _isLoading
-                                ? SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: primaryColor,
-                                    ),
-                                  )
-                                : Text(
-                                    'Log in',
-                                    style: TextStyle(
-                                      color: primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        SizedBox(height: 12),
+          child: Column(children: [_form(), _footer()]),
+        ),
+      ),
+    );
+  }
 
-                        // Flexible(flex: 2, child: Container()),
-                      ],
+  Expanded _form() {
+    return Expanded(
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/ic_instagram.svg',
+                colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                height: 64,
+              ),
+              SizedBox(height: 150),
+              TextFieldInput(
+                textEditingController: _emailController,
+                hintText: 'Email',
+                textInputType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 15),
+              TextFieldInput(
+                textEditingController: _passwordController,
+                hintText: 'Password',
+                textInputType: TextInputType.text,
+                isPass: true,
+              ),
+              SizedBox(height: 30),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : loginUser,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    backgroundColor: blueColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                  child: _isLoading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: primaryColor,
+                          ),
+                        )
+                      : Text(
+                          'Log in',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17,
+                          ),
+                        ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text("Don't have an account?"),
-                  ),
-                  GestureDetector(
-                    onTap: navigateToSignup,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        " Sign up",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // SizedBox(height: 40,)
-                ],
-              ),
+              SizedBox(height: 12),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Row _footer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text("Don't have an account?"),
+        ),
+        GestureDetector(
+          onTap: navigateToSignup,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              " Sign up",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

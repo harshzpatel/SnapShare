@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -14,29 +13,30 @@ class AuthMethods {
     required String password,
     required String username,
     required String bio,
-    required Uint8List file,
+    required Uint8List? file,
   }) async {
-    String res = 'Some error occurred';
+    String res = 'Something went wrong.';
 
     try {
-      if (email.isNotEmpty &&
-          password.isNotEmpty &&
-          username.isNotEmpty &&
-          bio.isNotEmpty) {
+      if (email.isNotEmpty && password.isNotEmpty && username.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
         if (kDebugMode) {
-          print(cred.user!.uid);
+          print('User created : {$cred.user!.uid}');
         }
 
-        String photoUrl = await StorageMethods().uploadImageToStorage(
-          'profilePics',
-          file,
-          false,
-        );
+        String? photoUrl;
+
+        if (file != null) {
+          photoUrl = await StorageMethods().uploadImageToStorage(
+            'profilePics',
+            file,
+            false,
+          );
+        }
 
         model.User user = model.User(
           username: username,
@@ -54,6 +54,8 @@ class AuthMethods {
             .set(user.toJson());
 
         res = 'success';
+      } else {
+        res = 'Please fill all the fields';
       }
     } catch (e) {
       res = e.toString();
@@ -66,7 +68,7 @@ class AuthMethods {
     required String email,
     required String password,
   }) async {
-    String res = 'Some error occured';
+    String res = 'Something went wrong.';
 
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
@@ -75,9 +77,9 @@ class AuthMethods {
           password: password,
         );
 
-        res = 'Success';
+        res = 'success';
       } else {
-        res = 'Please enter all the fields';
+        res = 'Please fill all the fields';
       }
     }
     // on FirebaseAuthException catch (e) {

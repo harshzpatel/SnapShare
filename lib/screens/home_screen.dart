@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'login_screen.dart';
 
-class MobileScreenLayout extends StatefulWidget {
-  const MobileScreenLayout({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<MobileScreenLayout> createState() => _MobileScreenLayoutState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MobileScreenLayoutState extends State<MobileScreenLayout> {
+class _HomeScreenState extends State<HomeScreen> {
   void logOut() {
     FirebaseAuth.instance.signOut();
 
@@ -28,7 +28,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           children: [
             const Text('Mobile'),
             GestureDetector(
-              onTap: () => logOut(),
+              onTap: logOut,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: Text('Log out'),
