@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     String res = await AuthMethods().loginUser(
-      email: _emailController.text,
+      email: _emailController.text.trim(),
       password: _passwordController.text,
     );
 

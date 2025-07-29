@@ -57,8 +57,16 @@ class AuthMethods {
       } else {
         res = 'Please fill all the fields';
       }
-    } catch (e) {
-      res = e.toString();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        res = 'Invalid email or password.';
+      } else if (e.message != null) {
+        res = e.message!;
+      }
+
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
 
     return res;
@@ -81,13 +89,16 @@ class AuthMethods {
       } else {
         res = 'Please fill all the fields';
       }
-    }
-    // on FirebaseAuthException catch (e) {
-    //   if (e.code == 'user-not-found') {}
-    //
-    // }
-    catch (e) {
-      res = e.toString();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        res = 'Invalid email or password.';
+      } else if (e.message != null) {
+        res = e.message!;
+      }
+
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
 
     return res;
