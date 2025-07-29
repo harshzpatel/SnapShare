@@ -17,5 +17,10 @@ pickImage(ImageSource src) async {
 }
 
 void showSnackBar(String content, BuildContext context) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(content)));
+  final messenger = ScaffoldMessenger.of(context);
+
+  messenger.clearSnackBars();
+  // messenger.hideCurrentSnackBar();
+
+  messenger.showSnackBar(SnackBar(content: Text(content)));
 }
