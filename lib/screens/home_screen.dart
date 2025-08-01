@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/providers/user_provider.dart';
-import 'package:instagram/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:instagram/models/user.dart' as model;
 
@@ -55,12 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.background,
-        selectedItemColor: Colors.yellow,
-        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-
             icon: Icon(Icons.home),
             label: '',
             // backgroundColor: primaryColor,
@@ -71,7 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
             // backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.add_circle_rounded),
+            label: '',
+            // backgroundColor: primaryColor,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outlined),
             label: '',
             // backgroundColor: primaryColor,
           ),
@@ -81,12 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-            // backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.person),
             label: '',
             // backgroundColor: primaryColor,
           ),

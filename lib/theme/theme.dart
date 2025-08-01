@@ -8,12 +8,21 @@ class AppColors {
   static const blue = Color(0xff4a5df9);
   static const primary = Colors.white;
   static const secondary = Colors.grey;
+  static const link = Colors.blueAccent;
+  static const paleWhite = Color(0xfff4f5f7);
 }
 
 class AppTheme {
   AppTheme._();
 
   static final ThemeData dark = ThemeData.dark().copyWith(
+    brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      // backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[900],
+      selectedItemColor: Colors.red,
+      unselectedItemColor: Colors.white,
+    )
   );
 }

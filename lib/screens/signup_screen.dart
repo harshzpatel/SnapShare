@@ -122,11 +122,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       onPressed: selectImage,
                       icon: CircleAvatar(
                         radius: 18,
-                        backgroundColor: Colors.black,
+                        backgroundColor: AppColors.background,
                         child: Icon(
                           size: 36,
                           Icons.add_circle_rounded,
-                          color: Color(0xfff4f5f7),
+                          color: AppColors.paleWhite,
                         ),
                       ),
                     ),
@@ -214,7 +214,7 @@ class _SignupScreenState extends State<SignupScreen> {
               " Log in",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
+                color: AppColors.link,
               ),
             ),
           ),
