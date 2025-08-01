@@ -1,1 +1,23 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"instagram-6969","appId":"1:166349234009:android:45426a70b852ef665ef648","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"instagram-6969","configurations":{"android":"1:166349234009:android:45426a70b852ef665ef648","web":"1:166349234009:web:9f75aa19343c23145ef648","windows":"1:166349234009:web:7b95b672bf7eddd75ef648"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "instagram-6969",
+          "appId": "1:166349234009:android:45426a70b852ef665ef648",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "instagram-6969",
+          "configurations": {
+            "android": "1:166349234009:android:45426a70b852ef665ef648",
+            "web": "1:166349234009:web:9f75aa19343c23145ef648",
+            "windows": "1:166349234009:web:7b95b672bf7eddd75ef648"
+          }
+        }
+      }
+    }
+  }
+}
