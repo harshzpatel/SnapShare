@@ -51,7 +51,7 @@ class _MainAppState extends State<MainApp> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(color: AppColors.primaryColor),
+                child: CircularProgressIndicator(color: AppColors.primary),
               );
             }
 

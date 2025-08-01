@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                 height: 64,
               ),
               SizedBox(height: 150),
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _isLoading ? null : loginUser,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
-                    backgroundColor: AppColors.blueColor,
+                    backgroundColor: AppColors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -121,13 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppColors.primaryColor,
+                            color: AppColors.primary,
                           ),
                         )
                       : Text(
                           'Log in',
                           style: TextStyle(
-                            color: AppColors.primaryColor,
+                            color: AppColors.primary,
                             fontWeight: FontWeight.w600,
                             fontSize: 17,
                           ),

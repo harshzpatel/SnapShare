@@ -103,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
             children: [
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                 height: 64,
               ),
               SizedBox(height: 64),
@@ -166,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: _isLoading ? null : signUpUser,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
-                    backgroundColor: AppColors.blueColor,
+                    backgroundColor: AppColors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -177,13 +177,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppColors.primaryColor,
+                            color: AppColors.primary,
                           ),
                         )
                       : Text(
                           'Sign up',
                           style: TextStyle(
-                            color: AppColors.primaryColor,
+                            color: AppColors.primary,
                             fontWeight: FontWeight.w600,
                             fontSize: 17,
                           ),

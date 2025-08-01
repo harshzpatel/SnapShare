@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         selectedItemColor: Colors.yellow,
         unselectedItemColor: Colors.white,
         items: [
