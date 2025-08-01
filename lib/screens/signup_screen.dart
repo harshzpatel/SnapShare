@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/screens/login_screen.dart';
-import 'package:instagram/utils/colors.dart';
+import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
@@ -103,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
             children: [
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
                 height: 64,
               ),
               SizedBox(height: 64),
@@ -166,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: _isLoading ? null : signUpUser,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
-                    backgroundColor: blueColor,
+                    backgroundColor: AppColors.blueColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -177,13 +177,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: primaryColor,
+                            color: AppColors.primaryColor,
                           ),
                         )
                       : Text(
                           'Sign up',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 17,
                           ),

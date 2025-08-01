@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
-import 'package:instagram/utils/colors.dart';
+import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
                 height: 64,
               ),
               SizedBox(height: 150),
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _isLoading ? null : loginUser,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
-                    backgroundColor: blueColor,
+                    backgroundColor: AppColors.blueColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -121,13 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: primaryColor,
+                            color: AppColors.primaryColor,
                           ),
                         )
                       : Text(
                           'Log in',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 17,
                           ),

@@ -3,9 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagram/firebase_options.dart';
+import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/login_screen.dart';
-import 'package:instagram/utils/colors.dart';
+import 'package:instagram/theme/theme.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,27 +38,32 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Instagram',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: backgroundColor,
-      ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(color: primaryColor),
-            );
-          }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Instagram',
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: AppColors.backgroundColor,
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(color: AppColors.primaryColor),
+              );
+            }
 
-          if (snapshot.hasData) {
-            return HomeScreen();
-          }
+            if (snapshot.hasData) {
+              return HomeScreen();
+            }
 
-          return LoginScreen();
-        },
+            return LoginScreen();
+          },
+        ),
       ),
     );
   }
