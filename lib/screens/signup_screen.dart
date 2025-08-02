@@ -8,6 +8,7 @@ import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
+import '../widgets/footer.dart';
 import 'home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -89,7 +90,16 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
-          child: Column(children: [_form(), _footer()]),
+          child: Column(
+            children: [
+              _form(),
+              Footer(
+                text: "Already have an account?",
+                button: "Log in",
+                onTap: navigateToLogin,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -103,7 +113,10 @@ class _SignupScreenState extends State<SignupScreen> {
             children: [
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary,
+                  BlendMode.srcIn,
+                ),
                 height: 64,
               ),
               SizedBox(height: 64),
@@ -195,31 +208,6 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Row _footer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          child: Text("Already have an account?"),
-        ),
-        GestureDetector(
-          onTap: navigateToLogin,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              " Log in",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.link,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

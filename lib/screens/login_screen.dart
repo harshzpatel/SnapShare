@@ -6,6 +6,7 @@ import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
+import 'package:instagram/widgets/footer.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -71,7 +72,16 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
-          child: Column(children: [_form(), _footer()]),
+          child: Column(
+            children: [
+              _form(),
+              Footer(
+                text: "Don't have an account?",
+                button: "Sign up",
+                onTap: navigateToSignup,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -86,7 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(
+                  AppColors.primary,
+                  BlendMode.srcIn,
+                ),
                 height: 64,
               ),
               SizedBox(height: 150),
@@ -139,31 +152,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Row _footer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          child: Text("Don't have an account?"),
-        ),
-        GestureDetector(
-          onTap: navigateToSignup,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              " Sign up",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.link,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
