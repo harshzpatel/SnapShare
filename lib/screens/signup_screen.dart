@@ -9,6 +9,7 @@ import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
 import '../widgets/footer.dart';
+import '../widgets/form_button.dart';
 import 'home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -172,36 +173,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 textInputType: TextInputType.text,
               ),
               SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : signUpUser,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    backgroundColor: AppColors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: _isLoading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: AppColors.primary,
-                          ),
-                        )
-                      : Text(
-                          'Sign up',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17,
-                          ),
-                        ),
-                ),
+              FormButton(
+                text: 'Sign up',
+                onPressed: signUpUser,
+                isLoading: _isLoading,
               ),
               SizedBox(height: 12),
             ],
