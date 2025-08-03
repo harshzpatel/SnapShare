@@ -9,17 +9,40 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  // _selectImage(BuildContext context) async {
-  //   return showDialog(context: context, builder: (context) => SimpleDialog(
-  //     title: Text('Create a post'),,
-  //       children: [
-  //         SimpleDialogOption(
-  //       padding: EdgeInsets.all(20),
-  //     child: Text('Take a photo'),
-  //   )
-  //     ],
-  //   ));
-  // }
+  Uint8List? _file;
+
+  _selectImage(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text('Create a post'),
+        children: [
+          SimpleDialogOption(
+            padding: EdgeInsets.all(20),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              Uint8List file = await pickImage(ImageSource.camera);
+              setState(() {
+                _file = file;
+              });
+            },
+            child: Text('Take a photo'),
+          ),
+          SimpleDialogOption(
+            padding: EdgeInsets.all(20),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              Uint8List file = await pickImage(ImageSource.gallery);
+              setState(() {
+                _file = file;
+              });
+            },
+            child: Text('Choose from gallery'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
