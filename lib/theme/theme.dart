@@ -27,6 +27,8 @@ class AppTheme {
       backgroundColor: Colors.grey[900],
       selectedItemColor: Colors.red,
       unselectedItemColor: Colors.white,
-    )
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+    ),
   );
 }
