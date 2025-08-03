@@ -92,6 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Expanded(
       child: Center(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(
+            decelerationRate: ScrollDecelerationRate.fast,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

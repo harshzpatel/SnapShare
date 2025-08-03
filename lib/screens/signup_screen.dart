@@ -110,6 +110,9 @@ class _SignupScreenState extends State<SignupScreen> {
     return Expanded(
       child: Center(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(
+            decelerationRate: ScrollDecelerationRate.fast,
+          ),
           child: Column(
             children: [
               SvgPicture.asset(
