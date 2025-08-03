@@ -18,6 +18,10 @@ class AppTheme {
   static final ThemeData dark = ThemeData.dark().copyWith(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.background,
+    ),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       // backgroundColor: Colors.white,
       backgroundColor: Colors.grey[900],
