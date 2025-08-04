@@ -1,5 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/theme/theme.dart';
+import 'package:instagram/utils/utils.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
@@ -9,6 +16,7 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+  bool _didCache = false;
   Uint8List? _file;
 
   _selectImage(BuildContext context) async {
@@ -45,73 +53,92 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // return Center(
-    //   child: IconButton(onPressed: () {}, icon: Icon(Icons.upload)),
-    // );
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final User? user = context.read<UserProvider>().getUser;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Post to'),
-        actions: [
-          TextButton(
-            onPressed: null,
-            child: Text(
-              'Post',
-              style: TextStyle(
-                color: AppColors.link,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+    if (!_didCache && user != null && user.photoUrl != null) {
+      precacheImage(NetworkImage(user.photoUrl!), context);
+      _didCache = true;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final User? user = Provider.of<UserProvider>(context).getUser;
+
+    return _file == null
+        ? Center(
+            child: IconButton(
+              onPressed: () => _selectImage(context),
+              icon: Icon(Icons.upload),
             ),
-          ),
-        ],
-        leading: IconButton(onPressed: null, icon: Icon(Icons.arrow_back)),
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzHMDlwRCHOHZP_tX7jRYNxV8W8MpNEog45w&s',
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * .45,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Write a caption...',
-                    border: InputBorder.none,
-                  ),
-                  maxLines: 8,
-                ),
-              ),
-              SizedBox(
-                height: 45,
-                width: 45,
-                child: AspectRatio(
-                  aspectRatio: 487 / 451,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzHMDlwRCHOHZP_tX7jRYNxV8W8MpNEog45w&s',
-                        ),
-                        fit: BoxFit.fill,
-                        alignment: FractionalOffset.topCenter
-                      ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Post to'),
+              actions: [
+                TextButton(
+                  onPressed: null,
+                  child: Text(
+                    'Post',
+                    style: TextStyle(
+                      color: AppColors.link,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
                 ),
+              ],
+              leading: IconButton(
+                onPressed: null,
+                icon: Icon(Icons.arrow_back),
               ),
-              Divider(),
-            ],
-          ),
-        ],
-      ),
-    );
+            ),
+            body: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        user != null && user.photoUrl != null
+                            ? user.photoUrl!
+                            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzHMDlwRCHOHZP_tX7jRYNxV8W8MpNEog45w&s',
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * .45,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Write a caption...',
+                          border: InputBorder.none,
+                        ),
+                        maxLines: 8,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: AspectRatio(
+                        aspectRatio: 487 / 451,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: MemoryImage(_file!),
+                              fit: BoxFit.fill,
+                              alignment: FractionalOffset.topCenter,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                  ],
+                ),
+              ],
+            ),
+          );
   }
 }
