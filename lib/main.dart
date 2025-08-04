@@ -28,12 +28,16 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  bool _didCache = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    precacheImage(const AssetImage('assets/profile_icon.jpg'), context);
+    if (!_didCache) {
+      precacheImage(const AssetImage('assets/profile_icon.jpg'), context);
+      _didCache = true;
+    }
   }
 
   @override
