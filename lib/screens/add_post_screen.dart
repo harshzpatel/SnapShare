@@ -47,6 +47,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
             },
             child: Text('Choose from gallery'),
           ),
+          SimpleDialogOption(
+            padding: EdgeInsets.all(20),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancel'),
+          ),
         ],
       ),
     );
