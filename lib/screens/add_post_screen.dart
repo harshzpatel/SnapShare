@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/providers/user_provider.dart';
+import 'package:instagram/resources/firestore_methods.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   bool _didCache = false;
   Uint8List? _file;
+  final TextEditingController _descriptionController = TextEditingController();
 
   _selectImage(BuildContext context) async {
     return showDialog(
@@ -59,6 +61,40 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
+  void _postImage({
+    required String uid,
+    required String username,
+    required String? profImage,
+  }) async {
+    // try {
+    String res = await FirestoreMethods().uploadPost(
+      description: _descriptionController.text,
+      file: _file!,
+      uid: uid,
+      username: username,
+      profImage: profImage,
+    );
+    // }
+
+    if (!mounted) return;
+
+    if (res == 'success') {
+      showSnackBar('Posted!', context);
+
+      setState(() {
+        _file = null;
+      });
+    } else {
+      showSnackBar(res, context);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -86,7 +122,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
               title: Text('Post to'),
               actions: [
                 TextButton(
-                  onPressed: null,
+                  onPressed: () => _postImage(
+                    uid: user!.uid,
+                    username: user.username,
+                    profImage: user.photoUrl,
+                  ),
                   child: Text(
                     'Post',
                     style: TextStyle(
@@ -116,6 +156,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .45,
                       child: TextField(
+                        controller: _descriptionController,
                         decoration: InputDecoration(
                           hintText: 'Write a caption...',
                           border: InputBorder.none,
