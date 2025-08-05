@@ -23,22 +23,11 @@ class _AddPostScreenState extends State<AddPostScreen>
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
   double _uploadProgress = 0.0;
-  late AnimationController _progressAnimationController;
-  late Animation<double> _progressAnimation;
+  double _currentDisplayProgress = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _progressAnimationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-    _progressAnimation = Tween<double>(begin: 0, end: 0).animate(
-      CurvedAnimation(
-        parent: _progressAnimationController,
-        curve: Curves.easeInOut,
-      ),
-    );
   }
 
   _selectImage(BuildContext context) async {
@@ -89,7 +78,7 @@ class _AddPostScreenState extends State<AddPostScreen>
     setState(() {
       _isLoading = true;
       _uploadProgress = 0.0;
-      _progressAnimationController.value = 0.0;
+      _currentDisplayProgress = 0.0;
     });
 
     String res = await FirestoreMethods().uploadPost(
@@ -99,22 +88,12 @@ class _AddPostScreenState extends State<AddPostScreen>
       username: username,
       profImage: profImage,
       progressCallback: (progress) {
-        // Animate to new progress value
-        _progressAnimation = Tween<double>(
-          begin: _progressAnimationController.value,
-          end: progress,
-        ).animate(
-          CurvedAnimation(
-            parent: _progressAnimationController,
-            curve: Curves.easeInOut,
-          ),
-        );
-
-        _progressAnimationController.forward(from: 0);
-
         setState(() {
           _uploadProgress = progress;
         });
+
+        // Smoothly animate to the new progress value
+        _animateToProgress(progress);
       },
     );
 
@@ -135,9 +114,40 @@ class _AddPostScreenState extends State<AddPostScreen>
     }
   }
 
+  void _animateToProgress(double targetProgress) {
+    // Gradually update the displayed progress in small increments
+    const updateInterval = Duration(milliseconds: 16); // ~60fps
+    const animationDuration = Duration(milliseconds: 500);
+    final startTime = DateTime.now();
+    final startProgress = _currentDisplayProgress;
+
+    void updateProgress() {
+      final elapsedTime = DateTime.now().difference(startTime);
+
+      if (elapsedTime < animationDuration) {
+        final t = elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
+
+        // Use a linear interpolation for smooth progression
+        setState(() {
+          _currentDisplayProgress = startProgress + (targetProgress - startProgress) * t;
+        });
+
+        // Schedule next update
+        Future.delayed(updateInterval, updateProgress);
+      } else {
+        // Ensure we exactly reach the target
+        setState(() {
+          _currentDisplayProgress = targetProgress;
+        });
+      }
+    }
+
+    // Start the animation
+    updateProgress();
+  }
+
   @override
   void dispose() {
-    _progressAnimationController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
@@ -192,17 +202,11 @@ class _AddPostScreenState extends State<AddPostScreen>
             body: Column(
               children: [
                 if (_isLoading)
-                  AnimatedBuilder(
-                    animation: _progressAnimationController,
-                    builder: (context, child) {
-                      return LinearProgressIndicator(
-                        value: _progressAnimation.value,
-                        backgroundColor: Colors.grey[200],
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.link),
-                        minHeight: 4.0,
-                      );
-                    },
+                  LinearProgressIndicator(
+                    value: _currentDisplayProgress,
+                    backgroundColor: Colors.grey[200],
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.link),
+                    minHeight: 4.0,
                   ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
