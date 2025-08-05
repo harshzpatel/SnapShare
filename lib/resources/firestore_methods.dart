@@ -16,6 +16,7 @@ class FirestoreMethods {
     required String uid,
     required String? profImage,
     required String username,
+    Function(double)? progressCallback,
   }) async {
     String res = "Some error occurred";
 
@@ -24,6 +25,7 @@ class FirestoreMethods {
         'posts',
         file,
         true,
+        progressCallback: progressCallback,
       );
 
       String postId = const Uuid().v1();
