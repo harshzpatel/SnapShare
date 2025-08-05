@@ -86,10 +86,6 @@ class _AddPostScreenState extends State<AddPostScreen>
       username: username,
       profImage: profImage,
       progressCallback: (progress) {
-        setState(() {
-        });
-
-        // Smoothly animate to the new progress value
         _animateToProgress(progress);
       },
     );
@@ -126,7 +122,8 @@ class _AddPostScreenState extends State<AddPostScreen>
 
         // Use a linear interpolation for smooth progression
         setState(() {
-          _currentDisplayProgress = startProgress + (targetProgress - startProgress) * t;
+          _currentDisplayProgress =
+              startProgress + (targetProgress - startProgress) * t;
         });
 
         // Schedule next update
@@ -192,19 +189,27 @@ class _AddPostScreenState extends State<AddPostScreen>
                 ),
               ],
               leading: IconButton(
-                onPressed: null,
+                onPressed: () {
+                  setState(() {
+                    _file = null;
+                  });
+                },
                 icon: Icon(Icons.arrow_back),
               ),
             ),
             body: Column(
               children: [
-                if (_isLoading)
-                  LinearProgressIndicator(
-                    value: _currentDisplayProgress,
-                    backgroundColor: Colors.grey[200],
-                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.link),
-                    minHeight: 4.0,
-                  ),
+                _isLoading
+                    ? LinearProgressIndicator(
+                        value: _currentDisplayProgress,
+                        backgroundColor: Colors.grey[200],
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.link,
+                        ),
+                        minHeight: 4.0,
+                      )
+                    : SizedBox(height: 4),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
