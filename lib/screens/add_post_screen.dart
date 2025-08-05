@@ -20,6 +20,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   bool _didCache = false;
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
+  bool _isLoading = false;
 
   _selectImage(BuildContext context) async {
     return showDialog(
@@ -66,7 +67,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
     required String username,
     required String? profImage,
   }) async {
-    // try {
+    setState(() {
+      _isLoading = true;
+    });
+
     String res = await FirestoreMethods().uploadPost(
       description: _descriptionController.text,
       file: _file!,
@@ -74,7 +78,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
       username: username,
       profImage: profImage,
     );
-    // }
+
+
+    setState(() {
+      _isLoading = false;
+    });
 
     if (!mounted) return;
 
@@ -144,6 +152,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
+                if (_isLoading) LinearProgressIndicator(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
