@@ -18,10 +18,13 @@ class AppTheme {
   static final ThemeData dark = ThemeData.dark().copyWith(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.background,
     ),
-
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: AppColors.search,
+      contentTextStyle: TextStyle(color: AppColors.primary),
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.grey[900],
       selectedItemColor: Colors.red,
