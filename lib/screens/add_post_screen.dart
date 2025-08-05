@@ -22,7 +22,6 @@ class _AddPostScreenState extends State<AddPostScreen>
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
-  double _uploadProgress = 0.0;
   double _currentDisplayProgress = 0.0;
 
   @override
@@ -77,7 +76,6 @@ class _AddPostScreenState extends State<AddPostScreen>
   }) async {
     setState(() {
       _isLoading = true;
-      _uploadProgress = 0.0;
       _currentDisplayProgress = 0.0;
     });
 
@@ -89,7 +87,6 @@ class _AddPostScreenState extends State<AddPostScreen>
       profImage: profImage,
       progressCallback: (progress) {
         setState(() {
-          _uploadProgress = progress;
         });
 
         // Smoothly animate to the new progress value
