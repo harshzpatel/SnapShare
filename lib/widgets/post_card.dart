@@ -78,6 +78,31 @@ class PostCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.favorite, color: Colors.red),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.comment_outlined, color: AppColors.primary),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.send, color: AppColors.primary),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.bookmark_border, color: AppColors.primary),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
