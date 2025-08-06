@@ -4,7 +4,7 @@ import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/global_variables.dart';
 import 'package:provider/provider.dart';
-import 'package:instagram/models/user.dart' as model;
+// import 'package:instagram/models/user.dart' as model;
 
 import 'login_screen.dart';
 
