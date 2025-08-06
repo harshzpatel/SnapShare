@@ -24,6 +24,25 @@ class PostCard extends StatelessWidget {
                     'https://yt3.ggpht.com/yti/ANjgQV8sJ3Ji-ggJxkWTzwW6qwsSQQiARYU9gobaM2O6HUflT6hB=s88-c-k-c0x00ffffff-no-rj',
                   ),
                 ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'username',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Icons.more_vert, color: AppColors.primary),
+                ),
               ],
             ),
           ),
