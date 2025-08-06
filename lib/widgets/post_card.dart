@@ -40,7 +40,31 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: null,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shrinkWrap: true,
+                          children: ['Delete']
+                              .map(
+                                (e) => InkWell(
+                                  onTap: null,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 12,
+                                      horizontal: 16,
+                                    ),
+                                    child: Text(e),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    );
+                  },
                   icon: Icon(Icons.more_vert, color: AppColors.primary),
                 ),
               ],
