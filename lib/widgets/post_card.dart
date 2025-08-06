@@ -13,34 +13,38 @@ class PostCard extends StatelessWidget {
         children: [
           _header(context),
           _image(context),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.favorite, color: Colors.red),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.comment_outlined, color: AppColors.primary),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.send, color: AppColors.primary),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.bookmark_border, color: AppColors.primary),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          _buttons(),
         ],
       ),
     );
+  }
+
+  Row _buttons() {
+    return Row(
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.favorite, color: Colors.red),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.comment_outlined, color: AppColors.primary),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.send, color: AppColors.primary),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.bookmark_border, color: AppColors.primary),
+                ),
+              ),
+            ),
+          ],
+        );
   }
 
   SizedBox _image(BuildContext context) {
