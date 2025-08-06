@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: pageController,
         onPageChanged: onPageChanged,
-        // physics: ,
+        physics: NeverScrollableScrollPhysics(),
         children: homeScreenItems,
       ),
       // body: Center(
