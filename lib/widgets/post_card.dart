@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 import '../providers/user_provider.dart';
+import '../resources/firestore_methods.dart';
 
 class PostCard extends StatefulWidget {
   final Map<String, dynamic> snap;
@@ -29,7 +30,7 @@ class _PostCardState extends State<PostCard> {
       child: Column(
         children: [
           _header(context),
-          _image(context),
+          _image(context, user),
           _buttons(user),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -138,9 +139,16 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  GestureDetector _image(BuildContext context) {
+  GestureDetector _image(BuildContext context, User? user) {
     return GestureDetector(
-      onDoubleTap: () {
+      onDoubleTap: () async {
+        if (user == null) return;
+
+        await FirestoreMethods().likePost(
+          postId: widget.snap['postId'],
+          uid: user.uid,
+          likes: widget.snap['likes'],
+        );
         setState(() {
           isLikeAnimating = true;
         });
