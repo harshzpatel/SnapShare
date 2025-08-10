@@ -182,7 +182,22 @@ class _PostCardState extends State<PostCard> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
+            child: Image.network(
+              widget.snap['postUrl'],
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: AppColors.secondary.withValues(alpha: .1),
+                  child: Center(
+                    child: Icon(
+                      Icons.error_outline,
+                      color: AppColors.secondary,
+                      size: 50,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
           AnimatedOpacity(
             opacity: isLikeAnimating ? 1 : 0,
