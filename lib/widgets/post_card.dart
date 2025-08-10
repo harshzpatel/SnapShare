@@ -32,71 +32,73 @@ class _PostCardState extends State<PostCard> {
           _header(context),
           _image(context, user),
           _buttons(user),
+          _postDetails(context),
+        ],
+      ),
+    );
+  }
+
+  Container _postDetails(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          DefaultTextStyle(
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w800),
+            child: Text(
+              '${widget.snap['likes'].length} likes',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                DefaultTextStyle(
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w800),
-                  child: Text(
-                    '${widget.snap['likes'].length} likes',
-                    style: Theme.of(context).textTheme.bodyMedium,
+            width: double.infinity,
+            padding: const EdgeInsets.only(top: 8),
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(color: AppColors.primary),
+                children: [
+                  TextSpan(
+                    text: widget.snap['username'],
+                    // text: widget.snap['username'].toString(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 8),
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: AppColors.primary),
-                      children: [
-                        TextSpan(
-                          text: widget.snap['username'],
-                          // text: widget.snap['username'].toString(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(
-                          text: ' ${widget.snap['description']}',
-                          // text: ' ${widget.snap['description']}',
-                        ),
-                      ],
-                    ),
+                  TextSpan(
+                    text: ' ${widget.snap['description']}',
+                    // text: ' ${widget.snap['description']}',
                   ),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                // 'View all ${snap['comments'].length} comments',
+                'View all 69 comments',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: AppColors.secondary,
                 ),
-                InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Text(
-                      // 'View all ${snap['comments'].length} comments',
-                      'View all 69 comments',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.secondary,
-                      ),
-                    ),
-                  ),
-                  // onTap: () => Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CommentsScreen(
-                  //       postId: widget.snap['postId'].toString(),
-                  //     ),
-                  //   ),
-                  // ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Text(
-                    DateFormat.yMMMd().format(
-                      widget.snap['datePublished'].toDate(),
-                    ),
-                    style: const TextStyle(color: AppColors.secondary),
-                  ),
-                ),
-              ],
+              ),
+            ),
+            // onTap: () => Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => CommentsScreen(
+            //       postId: widget.snap['postId'].toString(),
+            //     ),
+            //   ),
+            // ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              DateFormat.yMMMd().format(widget.snap['datePublished'].toDate()),
+              style: const TextStyle(color: AppColors.secondary),
             ),
           ),
         ],
