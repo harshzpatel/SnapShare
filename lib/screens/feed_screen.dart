@@ -34,11 +34,7 @@ class FeedScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              if (snapshot.hasData) {
-                // showSnackBar('yeah', context);
-                print('yeah');
-                print(snapshot.data!.docs.length);
-              }
+
               return ListView.builder(
                 itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
                 itemBuilder: (context, index) => PostCard(
