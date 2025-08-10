@@ -3,6 +3,7 @@ import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../models/user.dart';
 import '../providers/user_provider.dart';
@@ -182,10 +183,13 @@ class _PostCardState extends State<PostCard> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network(
-              widget.snap['postUrl'],
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: widget.snap['postUrl'],
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
+              fadeInDuration: Duration(milliseconds: 300),
+              fadeOutDuration: Duration(milliseconds: 100),
+              imageErrorBuilder: (context, error, stackTrace) {
                 return Container(
                   color: AppColors.secondary.withValues(alpha: .1),
                   child: Center(
