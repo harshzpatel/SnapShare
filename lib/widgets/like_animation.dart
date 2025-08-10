@@ -45,7 +45,7 @@ class _LikeAnimationState extends State<LikeAnimation>
   }
 
   void startAnimation() async {
-    if (widget.isAnimating || widget.smallLike) {
+    if (widget.isAnimating) {
       await _controller.forward();
       await _controller.reverse();
       await Future.delayed(Duration(milliseconds: 200));

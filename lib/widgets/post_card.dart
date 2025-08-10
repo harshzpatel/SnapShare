@@ -19,6 +19,7 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  bool isSmallLikeAnimating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -110,25 +111,35 @@ class _PostCardState extends State<PostCard> {
     return Row(
       children: [
         LikeAnimation(
-          isAnimating: user != null
-              ? widget.snap['likes'].contains(user.uid)
-              : false,
+          isAnimating: isSmallLikeAnimating,
           smallLike: true,
-          onEnd: () {},
+          onEnd: () {
+            setState(() {
+              isSmallLikeAnimating = false;
+            });
+          },
           child: IconButton(
             onPressed: () async {
               if (user == null) return;
+
+              setState(() {
+                isSmallLikeAnimating = true;
+              });
 
               await FirestoreMethods().likePost(
                 postId: widget.snap['postId'],
                 uid: user.uid,
                 likes: widget.snap['likes'],
               );
-              // setState(() {
-              //   isLikeAnimating = true;
-              // });
             },
-            icon: Icon(Icons.favorite, color: Colors.red),
+            icon: Icon(
+              user != null && widget.snap['likes'].contains(user.uid)
+                  ? Icons.favorite
+                  : Icons.favorite_border,
+              color: user != null && widget.snap['likes'].contains(user.uid)
+                  ? Colors.red
+                  : AppColors.primary,
+            ),
           ),
         ),
         IconButton(
