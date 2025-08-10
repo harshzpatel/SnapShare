@@ -5,7 +5,6 @@ class LikeAnimation extends StatefulWidget {
   final bool isAnimating;
   final Duration duration;
   final VoidCallback onEnd;
-  final bool smallLike;
 
   const LikeAnimation({
     super.key,
@@ -13,7 +12,6 @@ class LikeAnimation extends StatefulWidget {
     required this.isAnimating,
     this.duration = const Duration(milliseconds: 150),
     required this.onEnd,
-    this.smallLike = false,
   });
 
   @override

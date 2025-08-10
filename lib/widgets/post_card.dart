@@ -112,7 +112,6 @@ class _PostCardState extends State<PostCard> {
       children: [
         LikeAnimation(
           isAnimating: isSmallLikeAnimating,
-          smallLike: true,
           onEnd: () {
             setState(() {
               isSmallLikeAnimating = false;
