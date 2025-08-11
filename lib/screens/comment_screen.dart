@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/comment_card.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../providers/user_provider.dart';
 
 class CommentScreen extends StatefulWidget {
   const CommentScreen({super.key});
@@ -12,12 +16,14 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
+
     return Scaffold(
       appBar: AppBar(title: Text('Comments')),
       body: CommentCard(),
       bottomNavigationBar: SafeArea(
         child: Container(
-          height: kToolbarHeight,
+          height: kBottomNavigationBarHeight,
           margin: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
@@ -25,9 +31,9 @@ class _CommentScreenState extends State<CommentScreen> {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://yt3.ggpht.com/yti/ANjgQV8sJ3Ji-ggJxkWTzwW6qwsSQQiARYU9gobaM2O6HUflT6hB=s88-c-k-c0x00ffffff-no-rj',
-                ),
+                backgroundImage: user.photoUrl != null
+                    ? NetworkImage(user.photoUrl!)
+                    : AssetImage('assets/profile_icon.jpg'),
                 radius: 18,
               ),
               Expanded(
@@ -35,8 +41,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Comment as Harsh',
-                      // hintText: 'Comment as ${user.username}',
+                      hintText: 'Comment as ${user.username}',
                       border: InputBorder.none,
                     ),
                   ),
