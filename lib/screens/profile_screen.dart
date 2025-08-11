@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(user != null ? user.username : 'Loading...'),
+            Text(user.username),
             GestureDetector(
               onTap: logOut,
               child: Container(

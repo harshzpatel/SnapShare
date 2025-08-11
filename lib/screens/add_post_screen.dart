@@ -149,9 +149,9 @@ class _AddPostScreenState extends State<AddPostScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final User? user = context.read<UserProvider>().getUser;
+    final User user = context.read<UserProvider>().getUser;
 
-    if (!_didCache && user != null && user.photoUrl != null) {
+    if (!_didCache && user.photoUrl != null) {
       precacheImage(NetworkImage(user.photoUrl!), context);
       _didCache = true;
     }
@@ -159,7 +159,7 @@ class _AddPostScreenState extends State<AddPostScreen>
 
   @override
   Widget build(BuildContext context) {
-    final User? user = Provider.of<UserProvider>(context).getUser;
+    final User user = Provider.of<UserProvider>(context).getUser;
 
     return _file == null
         ? Center(
@@ -174,7 +174,7 @@ class _AddPostScreenState extends State<AddPostScreen>
               actions: [
                 TextButton(
                   onPressed: () => _postImage(
-                    uid: user!.uid,
+                    uid: user.uid,
                     username: user.username,
                     profImage: user.photoUrl,
                   ),
@@ -215,7 +215,7 @@ class _AddPostScreenState extends State<AddPostScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage: user != null && user.photoUrl != null
+                      backgroundImage: user.photoUrl != null
                           ? NetworkImage(user.photoUrl!)
                           : AssetImage('assets/profile_icon.jpg'),
                     ),
