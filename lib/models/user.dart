@@ -9,6 +9,16 @@ class User {
   final List followers;
   final List following;
 
+  static final User temp = User(
+    email: 'loading...',
+    uid: 'loading...',
+    photoUrl: null,
+    username: 'loading...',
+    bio: 'loading...',
+    followers: [],
+    following: [],
+  );
+
   User({
     required this.email,
     required this.uid,
