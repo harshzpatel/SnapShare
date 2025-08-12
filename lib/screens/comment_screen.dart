@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/theme/theme.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/comment_card.dart';
 import 'package:provider/provider.dart';
 
@@ -61,12 +62,16 @@ class _CommentScreenState extends State<CommentScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  FirestoreMethods().postComment(
+                  String res = await FirestoreMethods().postComment(
                     postId: widget.snap['postId'],
                     text: _commentController.text,
                     uid: user.uid,
                     profImage: user.photoUrl,
                   );
+
+                  if (!mounted) return;
+
+                  showSnackBar(res, context);
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
