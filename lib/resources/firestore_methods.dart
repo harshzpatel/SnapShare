@@ -72,4 +72,48 @@ class FirestoreMethods {
       }
     }
   }
+
+  Future<String> postComment({
+    required String postId,
+    required String text,
+    required String uid,
+    required String? profImage,
+  }) async {
+    if (text.isEmpty) {
+      if (kDebugMode) {
+        print("Please enter text");
+      }
+
+      return "Please enter text";
+    }
+
+    String res = "Some error occurred";
+
+    try {
+        String commentId = const Uuid().v1();
+
+        await _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+              'profImage': profImage,
+              'username': uid,
+              'text': text,
+              'commentId': commentId,
+              'datePublished': DateTime.now(),
+            });
+
+        res = "success";
+    } catch (e) {
+      res = e.toString();
+
+      if (kDebugMode) {
+        print(res);
+      }
+    }
+
+    return res;
+  }
 }

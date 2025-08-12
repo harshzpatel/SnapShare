@@ -5,15 +5,26 @@ import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 import '../providers/user_provider.dart';
+import '../resources/firestore_methods.dart';
 
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({super.key});
+  final Map<String, dynamic> snap;
+
+  const CommentScreen({super.key, required this.snap});
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  final TextEditingController _commentController = TextEditingController();
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
@@ -40,6 +51,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
+                    controller: _commentController,
                     decoration: InputDecoration(
                       hintText: 'Comment as ${user.username}',
                       border: InputBorder.none,
@@ -48,12 +60,17 @@ class _CommentScreenState extends State<CommentScreen> {
                 ),
               ),
               InkWell(
+                onTap: () async {
+                  FirestoreMethods().postComment(
+                    postId: widget.snap['postId'],
+                    text: _commentController.text,
+                    uid: user.uid,
+                    profImage: user.photoUrl,
+                  );
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Text(
-                    'Post',
-                    style: TextStyle(color: AppColors.link),
-                  ),
+                  child: Text('Post', style: TextStyle(color: AppColors.link)),
                 ),
               ),
             ],
