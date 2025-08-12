@@ -76,7 +76,7 @@ class FirestoreMethods {
   Future<String> postComment({
     required String postId,
     required String text,
-    required String uid,
+    required String username,
     required String? profImage,
   }) async {
     if (text.isEmpty) {
@@ -99,7 +99,7 @@ class FirestoreMethods {
             .doc(commentId)
             .set({
               'profImage': profImage,
-              'username': uid,
+              'username': username,
               'text': text,
               'commentId': commentId,
               'datePublished': DateTime.now(),

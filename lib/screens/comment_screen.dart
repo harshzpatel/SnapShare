@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
@@ -32,7 +33,24 @@ class _CommentScreenState extends State<CommentScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Comments')),
-      body: CommentCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.snap['postId'])
+            .collection('comments')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
+            itemBuilder: (context, index) => CommentCard(snap: snapshot.data!.docs[index].data()),
+          );
+        },
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kBottomNavigationBarHeight,
@@ -65,11 +83,13 @@ class _CommentScreenState extends State<CommentScreen> {
                   String res = await FirestoreMethods().postComment(
                     postId: widget.snap['postId'],
                     text: _commentController.text,
-                    uid: user.uid,
+                    username: user.username,
                     profImage: user.photoUrl,
                   );
 
-                  if (!mounted) return;
+                  _commentController.clear();
+
+                  if (!context.mounted) return;
 
                   showSnackBar(res, context);
                 },
