@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/screens/comment_screen.dart';
 import 'package:instagram/theme/theme.dart';
@@ -22,6 +24,34 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   bool isSmallLikeAnimating = false;
+  int _comments = 0;
+
+  void _getCommentsCount() async {
+    try {
+      var snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .count()
+          .get();
+
+      if (!mounted) return;
+
+      setState(() {
+        _comments = snap.count ?? 0;
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCommentsCount();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +96,9 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   TextSpan(
                     text: widget.snap['username'],
-                    // text: widget.snap['username'].toString(),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(
-                    text: ' ${widget.snap['description']}',
-                    // text: ' ${widget.snap['description']}',
-                  ),
+                  TextSpan(text: ' ${widget.snap['description']}'),
                 ],
               ),
             ),
@@ -81,21 +107,18 @@ class _PostCardState extends State<PostCard> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(
-                // 'View all ${snap['comments'].length} comments',
-                'View all 69 comments',
+                'View all $_comments comments',
                 style: const TextStyle(
                   fontSize: 16,
                   color: AppColors.secondary,
                 ),
               ),
             ),
-            // onTap: () => Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) => CommentsScreen(
-            //       postId: widget.snap['postId'].toString(),
-            //     ),
-            //   ),
-            // ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CommentScreen(snap: widget.snap),
+              ),
+            ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
