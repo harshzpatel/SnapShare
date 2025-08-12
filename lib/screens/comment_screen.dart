@@ -47,7 +47,8 @@ class _CommentScreenState extends State<CommentScreen> {
 
           return ListView.builder(
             itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
-            itemBuilder: (context, index) => CommentCard(snap: snapshot.data!.docs[index].data()),
+            itemBuilder: (context, index) =>
+                CommentCard(snap: snapshot.data!.docs[index].data()),
           );
         },
       ),
@@ -87,11 +88,13 @@ class _CommentScreenState extends State<CommentScreen> {
                     profImage: user.photoUrl,
                   );
 
-                  _commentController.clear();
+                  if (res == 'success') {
+                    _commentController.clear();
+                  } else {
+                    if (!context.mounted) return;
 
-                  if (!context.mounted) return;
-
-                  showSnackBar(res, context);
+                    showSnackBar(res, context);
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
