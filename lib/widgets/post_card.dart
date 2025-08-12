@@ -6,7 +6,6 @@ import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/user.dart';
@@ -235,24 +234,94 @@ class _PostCardState extends State<PostCard> {
               height: MediaQuery.of(context).size.height * 0.35,
               width: double.infinity,
               child: _shouldLoadImage
-                  ? FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: widget.snap['postUrl'],
-                      fit: BoxFit.cover,
-                      fadeInDuration: Duration(milliseconds: 100),
-                      fadeOutDuration: Duration(milliseconds: 100),
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: AppColors.secondary.withValues(alpha: .1),
-                          child: Center(
-                            child: Icon(
-                              Icons.error_outline,
-                              color: AppColors.secondary,
-                              size: 50,
-                            ),
-                          ),
-                        );
-                      },
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(
+                          widget.snap['postUrl'],
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              // Image has loaded
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (mounted) {
+                                  setState(() {
+                                  });
+                                }
+                              });
+                              return child;
+                            }
+
+                            // Update progress
+                            final progress = loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                                : 0.0;
+
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (mounted) {
+                                setState(() {
+                                });
+                              }
+                            });
+
+                            return Container(
+                              color: AppColors.secondary.withValues(alpha: .05),
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: 60,
+                                      height: 60,
+                                      child: CircularProgressIndicator(
+                                        value: progress,
+                                        color: AppColors.primary,
+                                        backgroundColor: AppColors.secondary.withValues(alpha: .2),
+                                        strokeWidth: 3,
+                                      ),
+                                    ),
+                                    SizedBox(height: 12),
+                                    Text(
+                                      '${(progress * 100).toInt()}%',
+                                      style: TextStyle(
+                                        color: AppColors.secondary,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: AppColors.secondary.withValues(alpha: .1),
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: AppColors.secondary,
+                                      size: 50,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      'Failed to load image',
+                                      style: TextStyle(
+                                        color: AppColors.secondary,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     )
                   : Container(
                       color: AppColors.secondary.withValues(alpha: .05),
