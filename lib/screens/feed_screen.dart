@@ -129,6 +129,7 @@ class _FeedScreenState extends State<FeedScreen> {
         child: _posts.isEmpty && _isLoading
             ? Center(child: CircularProgressIndicator())
             : ListView.builder(
+                cacheExtent: 10000,
                 controller: _scrollController,
                 itemCount: _posts.length + (_hasMore ? 1 : 0),
                 itemBuilder: (context, index) {
