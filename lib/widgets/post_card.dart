@@ -54,6 +54,17 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     _getCommentsCount();
+
+    // Load images immediately for the first few posts that are likely visible
+    if (widget.postIndex < 3) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _shouldLoadImage = true;
+          });
+        }
+      });
+    }
   }
 
   @override
