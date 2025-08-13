@@ -215,7 +215,7 @@ class _PostCardState extends State<PostCard> {
               placeholder: kTransparentImage,
               image: widget.snap['postUrl'],
               fit: BoxFit.cover,
-              fadeInDuration: Duration(milliseconds: 300),
+              fadeInDuration: Duration(milliseconds: 200),
               fadeOutDuration: Duration(milliseconds: 100),
               imageErrorBuilder: (context, error, stackTrace) {
                 return Container(
