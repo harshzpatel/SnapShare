@@ -6,7 +6,7 @@ import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../models/user.dart';
 import '../providers/user_provider.dart';
@@ -14,9 +14,8 @@ import '../resources/firestore_methods.dart';
 
 class PostCard extends StatefulWidget {
   final Map<String, dynamic> snap;
-  final int postIndex;
 
-  const PostCard({super.key, required this.snap, required this.postIndex});
+  const PostCard({super.key, required this.snap});
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -26,7 +25,6 @@ class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
   bool isSmallLikeAnimating = false;
   int _comments = 0;
-  bool _shouldLoadImage = false;
 
   void _getCommentsCount() async {
     try {
@@ -53,17 +51,6 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     _getCommentsCount();
-
-    // Load images immediately for the first few posts that are likely visible
-    if (widget.postIndex < 3) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            _shouldLoadImage = true;
-          });
-        }
-      });
-    }
   }
 
   @override
@@ -218,136 +205,46 @@ class _PostCardState extends State<PostCard> {
           isLikeAnimating = true;
         });
       },
-      child: VisibilityDetector(
-        key: Key('post-image-${widget.postIndex}'),
-        onVisibilityChanged: (VisibilityInfo info) {
-          if (info.visibleFraction > 0.1 && !_shouldLoadImage) {
-            setState(() {
-              _shouldLoadImage = true;
-            });
-          }
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: double.infinity,
-              child: _shouldLoadImage
-                  ? Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          widget.snap['postUrl'],
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              // Image has loaded
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (mounted) {
-                                  setState(() {
-                                  });
-                                }
-                              });
-                              return child;
-                            }
-
-                            // Update progress
-                            final progress = loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                                : 0.0;
-
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (mounted) {
-                                setState(() {
-                                });
-                              }
-                            });
-
-                            return Container(
-                              color: AppColors.secondary.withValues(alpha: .05),
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      width: 60,
-                                      height: 60,
-                                      child: CircularProgressIndicator(
-                                        value: progress,
-                                        color: AppColors.primary,
-                                        backgroundColor: AppColors.secondary.withValues(alpha: .2),
-                                        strokeWidth: 3,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Text(
-                                      '${(progress * 100).toInt()}%',
-                                      style: TextStyle(
-                                        color: AppColors.secondary,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: AppColors.secondary.withValues(alpha: .1),
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.error_outline,
-                                      color: AppColors.secondary,
-                                      size: 50,
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Failed to load image',
-                                      style: TextStyle(
-                                        color: AppColors.secondary,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    )
-                  : Container(
-                      color: AppColors.secondary.withValues(alpha: .05),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.secondary.withValues(alpha: .3),
-                          strokeWidth: 2,
-                        ),
-                      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.35,
+            width: double.infinity,
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: widget.snap['postUrl'],
+              fit: BoxFit.cover,
+              fadeInDuration: Duration(milliseconds: 300),
+              fadeOutDuration: Duration(milliseconds: 100),
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: AppColors.secondary.withValues(alpha: .1),
+                  child: Center(
+                    child: Icon(
+                      Icons.error_outline,
+                      color: AppColors.secondary,
+                      size: 50,
                     ),
+                  ),
+                );
+              },
             ),
-            AnimatedOpacity(
-              opacity: isLikeAnimating ? 1 : 0,
-              duration: Duration(milliseconds: 200),
-              child: LikeAnimation(
-                isAnimating: isLikeAnimating,
-                onEnd: () {
-                  setState(() {
-                    isLikeAnimating = false;
-                  });
-                },
-                child: Icon(Icons.favorite, color: Colors.white, size: 120),
-              ),
+          ),
+          AnimatedOpacity(
+            opacity: isLikeAnimating ? 1 : 0,
+            duration: Duration(milliseconds: 200),
+            child: LikeAnimation(
+              isAnimating: isLikeAnimating,
+              onEnd: () {
+                setState(() {
+                  isLikeAnimating = false;
+                });
+              },
+              child: Icon(Icons.favorite, color: Colors.white, size: 120),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
