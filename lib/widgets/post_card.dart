@@ -132,7 +132,7 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  Row _buttons(User? user) {
+  Row _buttons(User user) {
     return Row(
       children: [
         LikeAnimation(
@@ -144,7 +144,7 @@ class _PostCardState extends State<PostCard> {
           },
           child: IconButton(
             onPressed: () async {
-              if (user == null) return;
+              if (user.uid == 'loading...') return;
 
               setState(() {
                 isSmallLikeAnimating = true;
@@ -157,10 +157,10 @@ class _PostCardState extends State<PostCard> {
               );
             },
             icon: Icon(
-              user != null && widget.snap['likes'].contains(user.uid)
+              widget.snap['likes'].contains(user.uid)
                   ? Icons.favorite
                   : Icons.favorite_border,
-              color: user != null && widget.snap['likes'].contains(user.uid)
+              color: widget.snap['likes'].contains(user.uid)
                   ? Colors.red
                   : AppColors.primary,
             ),
@@ -191,10 +191,10 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  GestureDetector _image(BuildContext context, User? user) {
+  GestureDetector _image(BuildContext context, User user) {
     return GestureDetector(
       onDoubleTap: () async {
-        if (user == null) return;
+        if (user.uid == 'loading...') return;
 
         await FirestoreMethods().likePost(
           postId: widget.snap['postId'],
