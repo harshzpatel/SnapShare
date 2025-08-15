@@ -90,22 +90,22 @@ class FirestoreMethods {
     String res = "Some error occurred";
 
     try {
-        String commentId = const Uuid().v1();
+      String commentId = const Uuid().v1();
 
-        await _firestore
-            .collection('posts')
-            .doc(postId)
-            .collection('comments')
-            .doc(commentId)
-            .set({
-              'profImage': profImage,
-              'username': username,
-              'text': text,
-              'commentId': commentId,
-              'datePublished': DateTime.now(),
-            });
+      await _firestore
+          .collection('posts')
+          .doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .set({
+            'profImage': profImage,
+            'username': username,
+            'text': text,
+            'commentId': commentId,
+            'datePublished': DateTime.now(),
+          });
 
-        res = "success";
+      res = "success";
     } catch (e) {
       res = e.toString();
 
@@ -118,8 +118,12 @@ class FirestoreMethods {
   }
 
   Future<void> deletePost(String postId) async {
+    final postRef = _firestore.collection('posts').doc(postId);
+    final commentsRef = postRef.collection('comments');
+
     try {
-      await _firestore.collection('posts').doc(postId).delete();
+      await deleteCollection(commentsRef);
+      await postRef.delete();
       await _storageMethods.deletePost(postId);
 
       if (kDebugMode) {
@@ -128,6 +132,36 @@ class FirestoreMethods {
     } catch (err) {
       if (kDebugMode) {
         print(err.toString());
+      }
+    }
+  }
+
+  Future<void> deleteCollection(CollectionReference collectionRef) async {
+    try {
+      QuerySnapshot snapshot = await collectionRef.limit(500).get();
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      if (snapshot.docs.isEmpty) {
+        return;
+      }
+
+      for (DocumentSnapshot doc in snapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
+      if (kDebugMode) {
+        print(
+          'Successfully deleted ${snapshot.docs.length} documents from ${collectionRef.id}.',
+        );
+      }
+
+      if (snapshot.docs.length == 500) {
+        await deleteCollection(collectionRef);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error deleting collection ${collectionRef.id}: $e');
       }
     }
   }
