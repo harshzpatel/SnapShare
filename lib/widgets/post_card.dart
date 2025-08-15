@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/screens/comment_screen.dart';
@@ -8,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../models/user.dart';
+import '../models/user.dart' as model;
 import '../providers/user_provider.dart';
 import '../resources/firestore_methods.dart';
 
@@ -55,7 +56,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final model.User user = Provider.of<UserProvider>(context).getUser;
 
     return Container(
       color: AppColors.background,
@@ -132,7 +133,7 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  Row _buttons(User user) {
+  Row _buttons(model.User user) {
     return Row(
       children: [
         LikeAnimation(
@@ -191,7 +192,7 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  GestureDetector _image(BuildContext context, User user) {
+  GestureDetector _image(BuildContext context, model.User user) {
     return GestureDetector(
       onDoubleTap: () async {
         if (user.uid == 'loading...') return;
@@ -278,39 +279,40 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
           ),
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => Dialog(
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shrinkWrap: true,
-                    children: ['Delete']
-                        .map(
-                          (e) => InkWell(
-                            onTap: () async {
-                              Navigator.of(context).pop();
-                              FirestoreMethods().deletePost(
-                                widget.snap['postId'],
-                              );
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 16,
+          if (FirebaseAuth.instance.currentUser!.uid == widget.snap['uid'])
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shrinkWrap: true,
+                      children: ['Delete']
+                          .map(
+                            (e) => InkWell(
+                              onTap: () async {
+                                Navigator.of(context).pop();
+                                FirestoreMethods().deletePost(
+                                  widget.snap['postId'],
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 16,
+                                ),
+                                child: Text(e),
                               ),
-                              child: Text(e),
                             ),
-                          ),
-                        )
-                        .toList(),
+                          )
+                          .toList(),
+                    ),
                   ),
-                ),
-              );
-            },
-            icon: Icon(Icons.more_vert, color: AppColors.primary),
-          ),
+                );
+              },
+              icon: Icon(Icons.more_vert, color: AppColors.primary),
+            ),
         ],
       ),
     );
