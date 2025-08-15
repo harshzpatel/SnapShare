@@ -12,7 +12,9 @@ class AuthMethods {
     User currentUser = _auth.currentUser!;
 
     DocumentSnapshot snapshot = await _firestore
-      .collection('users').doc(currentUser.uid).get();
+        .collection('users')
+        .doc(currentUser.uid)
+        .get();
 
     return model.User.fromSnap(snapshot);
   }
@@ -43,7 +45,6 @@ class AuthMethods {
           photoUrl = await StorageMethods().uploadImageToStorage(
             'profilePics',
             file,
-            false,
           );
         }
 
