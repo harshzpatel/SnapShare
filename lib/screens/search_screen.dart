@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -25,7 +26,27 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: TextFormField(
           controller: _searchController,
-          decoration: InputDecoration(labelText: 'Search for a user'),
+          decoration: InputDecoration(
+            // label: Text(hintText),
+            labelStyle: TextStyle(color: Color(0xff8f8f8f)),
+            hintText: 'Search',
+            // hintStyle: TextStyle(color: Color(0xff8f8f8f)),
+            fillColor: Color(0xff121212),
+            border: OutlineInputBorder(
+              borderSide: Divider.createBorderSide(context),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: .6),
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff3b3b3b), width: 1),
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(8),
+          ),
           onFieldSubmitted: (String _) {
             // setState(() {
             //   isShowUsers = true;
@@ -79,16 +100,33 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
                   },
                 )
-              : Text('posts');
-              // : FutureBuilder(
-              //     future: FirebaseFirestore.instance.collection('posts').get(),
-              //     builder: (context, snapshot) {
-              //       if (snapshot.connectionState == ConnectionState.waiting) {
-              //         return Center(child: CircularProgressIndicator());
-              //       }
-              //       return Text('data');
-              //     },
-              //   );
+              : FutureBuilder(
+                  future: FirebaseFirestore.instance.collection('posts').get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    return MasonryGridView.builder(
+                      mainAxisSpacing: 3,
+                      crossAxisSpacing: 3,
+                      gridDelegate:
+                          SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        return Image.network(
+                          '${snapshot.data!.docs[index]['postUrl']}',
+                        );
+                      },
+                    );
+                  },
+                );
         },
       ),
     );
