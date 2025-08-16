@@ -112,16 +112,19 @@ class _SearchScreenState extends State<SearchScreen> {
                     }
 
                     return MasonryGridView.builder(
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2,
                       gridDelegate:
                           SliverSimpleGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                           ),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
-                        return Image.network(
-                          '${snapshot.data!.docs[index]['postUrl']}',
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            '${snapshot.data!.docs[index]['postUrl']}',
+                          ),
                         );
                       },
                     );
