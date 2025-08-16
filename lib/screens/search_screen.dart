@@ -11,7 +11,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isShowUsers = false;
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> list = [];
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> _searchList = [];
 
   @override
   void dispose() {
@@ -50,43 +50,45 @@ class _SearchScreenState extends State<SearchScreen> {
                       )
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        snapshot.hasData) {
-
-                      if (snapshot.hasData) {
-                        list = snapshot.data!.docs;
-                      }
-
-                      return ListView.builder(
-                        itemCount: list.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: list[index]['photoUrl'] != null
-                                  ? NetworkImage(list[index]['photoUrl'])
-                                  : AssetImage('assets/profile_icon.jpg'),
-                            ),
-                            title: Text(list[index]['username']),
-                            onTap: () {
-                              // Navigator.of(context).push(
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ProfileScreen(
-                              //       uid: snapshot.data!.docs[index]['uid'],
-                              //     ),
-                              //   ),
-                              // );
-                            },
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return Text('No data.');
+                    if (snapshot.hasData) {
+                      _searchList = snapshot.data!.docs;
                     }
+
+                    return ListView.builder(
+                      itemCount: _searchList.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage:
+                                _searchList[index]['photoUrl'] != null
+                                ? NetworkImage(_searchList[index]['photoUrl'])
+                                : AssetImage('assets/profile_icon.jpg'),
+                          ),
+                          title: Text(_searchList[index]['username']),
+                          onTap: () {
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ProfileScreen(
+                            //       uid: snapshot.data!.docs[index]['uid'],
+                            //     ),
+                            //   ),
+                            // );
+                          },
+                        );
+                      },
+                    );
                   },
                 )
-              : const Center(child: Text('Search for a user'));
+              : Text('posts');
+              // : FutureBuilder(
+              //     future: FirebaseFirestore.instance.collection('posts').get(),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return Center(child: CircularProgressIndicator());
+              //       }
+              //       return Text('data');
+              //     },
+              //   );
         },
       ),
     );
