@@ -112,8 +112,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     }
 
                     return MasonryGridView.builder(
-                      mainAxisSpacing: 3,
-                      crossAxisSpacing: 3,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
                       gridDelegate:
                           SliverSimpleGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
