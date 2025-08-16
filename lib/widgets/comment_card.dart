@@ -19,7 +19,8 @@ class _CommentCardState extends State<CommentCard> {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: widget.snap['profImage'] != null
+            backgroundImage: AssetImage('assets/profile_icon.jpg'),
+            foregroundImage: widget.snap['profImage'] != null
                 ? NetworkImage(widget.snap['profImage'])
                 : AssetImage('assets/profile_icon.jpg'),
             radius: 18,

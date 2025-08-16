@@ -80,7 +80,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: CircleAvatar(
-                            backgroundImage:
+                            backgroundImage: AssetImage('assets/profile_icon.jpg'),
+                            foregroundImage:
                                 _searchList[index]['photoUrl'] != null
                                 ? NetworkImage(_searchList[index]['photoUrl'])
                                 : AssetImage('assets/profile_icon.jpg'),

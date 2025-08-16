@@ -215,7 +215,8 @@ class _AddPostScreenState extends State<AddPostScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage: user.photoUrl != null
+                      backgroundImage: AssetImage('assets/profile_icon.jpg'),
+                      foregroundImage: user.photoUrl != null
                           ? NetworkImage(user.photoUrl!)
                           : AssetImage('assets/profile_icon.jpg'),
                     ),
