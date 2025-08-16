@@ -24,22 +24,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+    model.User user = Provider.of<UserProvider>(context).getUser;
 
-    return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(user.username),
-            GestureDetector(
-              onTap: logOut,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text('Log out'),
-              ),
+    return Scaffold(
+      appBar: AppBar(title: Text(user.username)),
+      body: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsetsGeometry.all(16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage('assets/profile_icon.jpg'),
+                      foregroundImage: user.photoUrl != null
+                          ? NetworkImage(user.photoUrl!)
+                          : AssetImage('assets/profile_icon.jpg'),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+
+    // return Center(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         Text(user.username),
+    //         GestureDetector(
+    //           onTap: logOut,
+    //           child: Container(
+    //             padding: EdgeInsets.symmetric(vertical: 8),
+    //             child: Text('Log out'),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   );
   }
 }
