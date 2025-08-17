@@ -20,22 +20,33 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   model.User user = model.User.blank;
+  bool isFollowing = false;
+  late bool isOwnProfile;
 
   @override
   void initState() {
     super.initState();
+    isOwnProfile = widget.uid == FirebaseAuth.instance.currentUser!.uid;
     getUserData();
   }
 
   void getUserData() async {
     try {
-      DocumentSnapshot snap = await FirebaseFirestore.instance
+      var userSnap = await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.uid)
           .get();
 
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
       setState(() {
-        user = model.User.fromSnap(snap);
+        user = model.User.fromSnap(userSnap);
+        isFollowing = user.followers.contains(
+          FirebaseAuth.instance.currentUser!.uid,
+        );
       });
     } catch (e) {
       if (kDebugMode) {
@@ -85,20 +96,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             // mainAxisSize: MainAxisSize.max,
                             children: [
                               buildStatColumn(num: 10, label: 'posts'),
-                              buildStatColumn(num: 20, label: 'followers'),
-                              buildStatColumn(num: 30, label: 'following'),
+                              buildStatColumn(
+                                num: user.followers.length,
+                                label: 'followers',
+                              ),
+                              buildStatColumn(
+                                num: user.following.length,
+                                label: 'following',
+                              ),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              FollowButton(
-                                backgroundColor: AppColors.background,
-                                borderColor: Colors.grey,
-                                text: 'Edit profile',
-                                textColor: AppColors.primary,
-                                onPressed: null,
-                              ),
+                              isOwnProfile
+                                  ? FollowButton(
+                                      backgroundColor: AppColors.background,
+                                      borderColor: Colors.grey,
+                                      text: 'Edit profile',
+                                      textColor: AppColors.primary,
+                                      onPressed: null,
+                                    )
+                                  : isFollowing
+                                  ? FollowButton(
+                                      backgroundColor: AppColors.primary,
+                                      borderColor: Colors.grey,
+                                      text: 'Unfollow',
+                                      textColor: AppColors.primary,
+                                      onPressed: null,
+                                    )
+                                  : FollowButton(
+                                      backgroundColor: AppColors.blue,
+                                      borderColor: Colors.blue,
+                                      text: 'Follow',
+                                      textColor: AppColors.primary,
+                                      onPressed: null,
+                                    ),
                             ],
                           ),
                         ],
