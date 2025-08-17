@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart' as model;
 import '../providers/user_provider.dart';
+import '../widgets/follow_button.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -43,6 +45,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? NetworkImage(user.photoUrl!)
                           : AssetImage('assets/profile_icon.jpg'),
                     ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // mainAxisSize: MainAxisSize.max,
+                            children: [
+                              buildStatColumn(num: 10, label: 'posts'),
+                              buildStatColumn(num: 20, label: 'followers'),
+                              buildStatColumn(num: 30, label: 'following'),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              FollowButton(
+                                backgroundColor: AppColors.background,
+                                borderColor: Colors.grey,
+                                text: 'Edit profile',
+                                textColor: AppColors.primary,
+                                onPressed: null,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -67,5 +96,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //       ],
     //     ),
     //   );
+  }
+
+  Column buildStatColumn({required int num, required String label}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          num.toString(),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
   }
 }
