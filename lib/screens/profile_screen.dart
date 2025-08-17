@@ -1,21 +1,53 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/theme/theme.dart';
-import 'package:provider/provider.dart';
+import 'package:instagram/utils/utils.dart';
 
 import '../models/user.dart' as model;
-import '../providers/user_provider.dart';
 import '../widgets/follow_button.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String uid;
+
+  const ProfileScreen({super.key, required this.uid});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  model.User user = model.User.blank;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  void getUserData() async {
+    try {
+      DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
+
+      setState(() {
+        user = model.User.fromSnap(snap);
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+
+      if (!mounted) return;
+
+      showSnackBar(e.toString(), context);
+    }
+  }
+
   void logOut() {
     FirebaseAuth.instance.signOut();
 
@@ -26,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
       appBar: AppBar(title: Text(user.username)),
@@ -73,6 +105,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ],
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(top: 15),
+                  child: Text(
+                    user.username,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(top: 1),
+                  child: Text(user.bio),
                 ),
               ],
             ),
