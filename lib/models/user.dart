@@ -19,6 +19,16 @@ class User {
     following: [],
   );
 
+  static final User blank = User(
+    email: '',
+    uid: '',
+    photoUrl: null,
+    username: '',
+    bio: '',
+    followers: [],
+    following: [],
+  );
+
   User({
     required this.email,
     required this.uid,
