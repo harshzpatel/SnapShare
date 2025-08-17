@@ -22,6 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   model.User user = model.User.blank;
   bool isFollowing = false;
   late bool isOwnProfile;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -31,16 +32,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void getUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
       var userSnap = await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.uid)
           .get();
 
-      var postSnap = await FirebaseFirestore.instance
-          .collection('posts')
-          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .get();
+      // var postSnap = await FirebaseFirestore.instance
+      //     .collection('posts')
+      //     .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      //     .get();
 
       setState(() {
         user = model.User.fromSnap(userSnap);
@@ -57,6 +62,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       showSnackBar(e.toString(), context);
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void logOut() {
@@ -71,93 +80,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     // model.User user = Provider.of<UserProvider>(context).getUser;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(user.username)),
-      body: ListView(
-        children: [
-          Padding(
-            padding: EdgeInsetsGeometry.all(16),
-            child: Column(
+    return isLoading
+        ? Center(child: CircularProgressIndicator())
+        : Scaffold(
+            appBar: AppBar(title: Text(user.username)),
+            body: ListView(
               children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: AssetImage('assets/profile_icon.jpg'),
-                      foregroundImage: user.photoUrl != null
-                          ? NetworkImage(user.photoUrl!)
-                          : AssetImage('assets/profile_icon.jpg'),
-                    ),
-                    Expanded(
-                      child: Column(
+                Padding(
+                  padding: EdgeInsetsGeometry.all(16),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            // mainAxisSize: MainAxisSize.max,
-                            children: [
-                              buildStatColumn(num: 10, label: 'posts'),
-                              buildStatColumn(
-                                num: user.followers.length,
-                                label: 'followers',
-                              ),
-                              buildStatColumn(
-                                num: user.following.length,
-                                label: 'following',
-                              ),
-                            ],
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage(
+                              'assets/profile_icon.jpg',
+                            ),
+                            foregroundImage: user.photoUrl != null
+                                ? NetworkImage(user.photoUrl!)
+                                : AssetImage('assets/profile_icon.jpg'),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              isOwnProfile
-                                  ? FollowButton(
-                                      backgroundColor: AppColors.background,
-                                      borderColor: Colors.grey,
-                                      text: 'Edit profile',
-                                      textColor: AppColors.primary,
-                                      onPressed: null,
-                                    )
-                                  : isFollowing
-                                  ? FollowButton(
-                                      backgroundColor: AppColors.primary,
-                                      borderColor: Colors.grey,
-                                      text: 'Unfollow',
-                                      textColor: AppColors.primary,
-                                      onPressed: null,
-                                    )
-                                  : FollowButton(
-                                      backgroundColor: AppColors.blue,
-                                      borderColor: Colors.blue,
-                                      text: 'Follow',
-                                      textColor: AppColors.primary,
-                                      onPressed: null,
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  // mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    buildStatColumn(num: 10, label: 'posts'),
+                                    buildStatColumn(
+                                      num: user.followers.length,
+                                      label: 'followers',
                                     ),
-                            ],
+                                    buildStatColumn(
+                                      num: user.following.length,
+                                      label: 'following',
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    isOwnProfile
+                                        ? FollowButton(
+                                            backgroundColor:
+                                                AppColors.background,
+                                            borderColor: Colors.grey,
+                                            text: 'Edit profile',
+                                            textColor: AppColors.primary,
+                                            onPressed: null,
+                                          )
+                                        : isFollowing
+                                        ? FollowButton(
+                                            backgroundColor: AppColors.primary,
+                                            borderColor: Colors.grey,
+                                            text: 'Unfollow',
+                                            textColor: AppColors.primary,
+                                            onPressed: null,
+                                          )
+                                        : FollowButton(
+                                            backgroundColor: AppColors.blue,
+                                            borderColor: Colors.blue,
+                                            text: 'Follow',
+                                            textColor: AppColors.primary,
+                                            onPressed: null,
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    user.username,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(top: 15),
+                        child: Text(
+                          user.username,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(top: 1),
+                        child: Text(user.bio),
+                      ),
+                    ],
                   ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(top: 1),
-                  child: Text(user.bio),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
 
     // return Center(
     //     child: Column(
