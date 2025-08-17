@@ -59,8 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // model.User? user = Provider.of<UserProvider>(context).getUser;
-
     return Scaffold(
       body: PageView(
         controller: pageController,
@@ -68,21 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: NeverScrollableScrollPhysics(),
         children: homeScreenItems,
       ),
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       Text(user != null ? user.username : 'Loading...'),
-      //       GestureDetector(
-      //         onTap: logOut,
-      //         child: Container(
-      //           padding: EdgeInsets.symmetric(vertical: 8),
-      //           child: Text('Log out'),
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _page,
