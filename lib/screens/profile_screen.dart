@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/resources/firestore_methods.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
 
@@ -138,15 +139,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             backgroundColor: AppColors.primary,
                                             borderColor: Colors.grey,
                                             text: 'Unfollow',
-                                            textColor: AppColors.primary,
-                                            onPressed: null,
+                                            textColor: Colors.black,
+                                            onPressed: () async {
+                                              String res = await FirestoreMethods()
+                                                  .followUser(
+                                                    uid: FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid,
+                                                    followId: widget.uid,
+                                                  );
+
+                                              if (res == 'success') {
+                                                setState(() {
+                                                  isFollowing = false;
+                                                });
+                                              } else {
+                                                if (!context.mounted) return;
+                                                showSnackBar(res, context);
+                                              }
+                                            },
                                           )
                                         : FollowButton(
                                             backgroundColor: AppColors.blue,
                                             borderColor: Colors.blue,
                                             text: 'Follow',
                                             textColor: AppColors.primary,
-                                            onPressed: null,
+                                            onPressed: () async {
+                                              String res = await FirestoreMethods()
+                                                  .followUser(
+                                                uid: FirebaseAuth
+                                                    .instance
+                                                    .currentUser!
+                                                    .uid,
+                                                followId: widget.uid,
+                                              );
+
+                                              if (res == 'success') {
+                                                setState(() {
+                                                  isFollowing = true;
+                                                });
+                                              } else {
+                                                if (!context.mounted) return;
+                                                showSnackBar(res, context);
+                                              }
+                                            },
                                           ),
                                   ],
                                 ),
