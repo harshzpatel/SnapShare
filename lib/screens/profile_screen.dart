@@ -130,9 +130,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             backgroundColor:
                                                 AppColors.background,
                                             borderColor: Colors.grey,
-                                            text: 'Edit profile',
+                                            text: 'Sign out',
                                             textColor: AppColors.primary,
-                                            onPressed: null,
+                                            onPressed: () async {
+                                              await FirebaseAuth.instance.signOut();
+
+                                              if (!context.mounted) return;
+
+                                              Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginScreen(),
+                                                ),
+                                              );
+                                            },
                                           )
                                         : isFollowing
                                         ? FollowButton(
