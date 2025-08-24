@@ -68,50 +68,92 @@ class _AddPostScreenState extends State<AddPostScreen> {
     updateProgress();
   }
 
-  _selectImage(BuildContext context) async {
-    return showDialog(
+  _selectImage(BuildContext context) {
+    // Check if the theme is dark to apply appropriate colors
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return showModalBottomSheet(
       context: context,
-      builder: (context) => SimpleDialog(
-        title: const Text('Create a post'),
-        children: [
-          SimpleDialogOption(
-            padding: const EdgeInsets.all(20),
-            onPressed: () async {
-              Navigator.of(context).pop();
-              Uint8List? file = await pickImage(ImageSource.camera);
-              if (file != null) {
-                setState(() {
-                  _file = file;
-                });
-              }
-            },
-            child: const Text('Take a photo'),
-          ),
-          SimpleDialogOption(
-            padding: const EdgeInsets.all(20),
-            onPressed: () async {
-              Navigator.of(context).pop();
-              Uint8List? file = await pickImage(ImageSource.gallery);
-              if (file != null) {
-                setState(() {
-                  _file = file;
-                });
-              }
-            },
-            child: const Text('Choose from gallery'),
-          ),
-          SimpleDialogOption(
-            padding: const EdgeInsets.all(20),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Cancel'),
-          ),
-        ],
+      // Dim the background to focus on the sheet
+      barrierColor: Colors.black.withOpacity(0.4),
+      // Use a distinct color that stands out from the background
+      backgroundColor: isDarkMode ? Color(0xFF1E1E1E) : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (BuildContext context) {
+        return SafeArea(
+          // Wrap with a column to add the drag handle
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Use minimum space
+            children: [
+              // Drag Handle
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0, bottom: 8.0),
+                child: Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[600],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              // The rest of the content
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text(
+                      'Create a post',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                    ListTile(
+                      leading: const Icon(Icons.camera_alt_outlined),
+                      title: const Text('Take a photo'),
+                      onTap: () async {
+                        Navigator.of(context).pop();
+                        Uint8List? file = await pickImage(ImageSource.camera);
+                        if (file != null) {
+                          setState(() {
+                            _file = file;
+                          });
+                        }
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.photo_library_outlined),
+                      title: const Text('Choose from gallery'),
+                      onTap: () async {
+                        Navigator.of(context).pop();
+                        Uint8List? file = await pickImage(ImageSource.gallery);
+                        if (file != null) {
+                          setState(() {
+                            _file = file;
+                          });
+                        }
+                      },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.close),
+                      title: const Text('Cancel'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
-
   void _postImage({
     required String uid,
     required String username,
