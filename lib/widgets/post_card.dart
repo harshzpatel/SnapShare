@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:instagram/screens/comment_screen.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/like_animation.dart';
@@ -84,7 +85,9 @@ class _PostCardState extends State<PostCard> {
             width: double.infinity,
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(color: AppColors.primary),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
                 children: [
                   TextSpan(
                     text: widget.snap['username'],
@@ -99,7 +102,11 @@ class _PostCardState extends State<PostCard> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(
               ta.format(widget.snap['datePublished'].toDate()),
-              style: const TextStyle(color: AppColors.secondary, fontSize: 11),
+              style: GoogleFonts.signikaNegative(
+                textStyle: Theme.of(context).textTheme.bodyMedium,
+                color: AppColors.secondary,
+                fontSize: 11,
+              ),
             ),
           ),
         ],
@@ -154,7 +161,9 @@ class _PostCardState extends State<PostCard> {
         SizedBox(width: 4),
         Text(
           '${widget.snap['likes'].length} Likes',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: GoogleFonts.signikaNegative(
+            textStyle: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
         SizedBox(width: 4),
         Material(
@@ -185,7 +194,9 @@ class _PostCardState extends State<PostCard> {
                   const SizedBox(width: 4),
                   Text(
                     '$_comments Comments',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: GoogleFonts.signikaNegative(
+                      textStyle: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ),
                 ],
               ),

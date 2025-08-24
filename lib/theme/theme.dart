@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   AppColors._();
@@ -16,6 +17,7 @@ class AppTheme {
   AppTheme._();
 
   static final ThemeData dark = ThemeData.dark().copyWith(
+    textTheme: GoogleFonts.lexendTextTheme(ThemeData.dark().textTheme),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
     appBarTheme: const AppBarTheme(
