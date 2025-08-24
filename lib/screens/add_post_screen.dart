@@ -32,15 +32,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final User? user = context.read<UserProvider>().getUser;
+    final User user = context.read<UserProvider>().getUser;
 
-    if (user != null && !_didCache && user.photoUrl != null) {
+    if (!_didCache && user.photoUrl != null) {
       precacheImage(NetworkImage(user.photoUrl!), context);
       _didCache = true;
     }
   }
 
-  // Smooth animation for the progress bar
+
   void _animateToProgress(double targetProgress) {
     const updateInterval = Duration(milliseconds: 16); // ~60fps
     const animationDuration = Duration(milliseconds: 500);
@@ -48,7 +48,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final startProgress = _currentDisplayProgress;
 
     void updateProgress() {
-      if (!_isLoading) return; // Stop animation if loading is cancelled
+      if (!_isLoading) return;
       final elapsedTime = DateTime.now().difference(startTime);
 
       if (elapsedTime < animationDuration) {
@@ -69,37 +69,29 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   _selectImage(BuildContext context) {
-    // Check if the theme is dark to apply appropriate colors
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return showModalBottomSheet(
       context: context,
-      // Dim the background to focus on the sheet
-      barrierColor: Colors.black.withOpacity(0.4),
-      // Use a distinct color that stands out from the background
-      backgroundColor: isDarkMode ? Color(0xFF1E1E1E) : Colors.white,
+      barrierColor: AppColors.background.withValues(alpha: 0.4),
+      backgroundColor: AppColors.darkGrey,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext context) {
         return SafeArea(
-          // Wrap with a column to add the drag handle
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Use minimum space
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Drag Handle
               Padding(
                 padding: const EdgeInsets.only(top: 12.0, bottom: 8.0),
                 child: Container(
                   width: 40,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: Colors.grey[600],
+                    color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              // The rest of the content
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
                 child: Column(
@@ -154,6 +146,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       },
     );
   }
+
   void _postImage({
     required String uid,
     required String username,
@@ -171,7 +164,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
       username: username,
       profImage: profImage,
       progressCallback: (progress) {
-        // Calling the smooth animation method
         _animateToProgress(progress);
       },
     );
@@ -194,15 +186,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = Provider.of<UserProvider>(context).getUser;
-
-    if (user == null) {
-      // Handles case where user data is still loading
-      return const Center(child: CircularProgressIndicator());
-    }
+    final User user = Provider.of<UserProvider>(context).getUser;
 
     return _file == null
-    // UPLOAD SCREEN VIEW
         ? Scaffold(
       appBar: AppBar(
         title: const Text('Create Post'),
@@ -211,17 +197,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
       body: Center(
         child: InkWell(
           onTap: () => _selectImage(context),
-          borderRadius: BorderRadius.circular(24), // Rounded ripple effect
+          borderRadius: BorderRadius.circular(24),
           child: Padding(
             padding: const EdgeInsets.all(50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min, // Keep the column compact
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.upload_file_outlined,
                   size: 50,
-                  color: Colors.grey[600],
+                  color: AppColors.primary,
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -234,7 +220,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
         ),
       ),
     )
-    // POSTING SCREEN VIEW
         : Scaffold(
       appBar: AppBar(
         title: const Text('New Post'),
@@ -290,8 +275,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         radius: 24,
                         backgroundImage: user.photoUrl != null
                             ? NetworkImage(user.photoUrl!)
-                            : const AssetImage(
-                            'assets/profile_icon.jpg')
+                            : const AssetImage('assets/profile_icon.jpg')
                         as ImageProvider,
                       ),
                       const SizedBox(width: 16),
@@ -319,7 +303,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           spreadRadius: 1,
                           blurRadius: 10,
                           offset: const Offset(0, 5),
