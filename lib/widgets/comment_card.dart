@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as ta;
 
 class CommentCard extends StatefulWidget {
   final Map<String, dynamic> snap;
@@ -13,56 +13,49 @@ class CommentCard extends StatefulWidget {
 class _CommentCardState extends State<CommentCard> {
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage('assets/profile_icon.jpg'),
+            backgroundImage: const AssetImage('assets/profile_icon.jpg'),
             foregroundImage: widget.snap['profImage'] != null
                 ? NetworkImage(widget.snap['profImage'])
-                : AssetImage('assets/profile_icon.jpg'),
+                : const AssetImage('assets/profile_icon.jpg'),
             radius: 18,
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: widget.snap['username'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Text(
+                        widget.snap['username'],
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Spacer(),
+                      Text(
+                        ta.format(widget.snap['datePublished'].toDate()),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
                         ),
-                        TextSpan(text: ' ${widget.snap['text']}'),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: Text(
-                      DateFormat.yMMMd().format(
-                        widget.snap['datePublished'].toDate(),
-                      ),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(widget.snap['text']),
                   ),
                 ],
               ),
             ),
           ),
-          // Container(
-          //   padding: EdgeInsets.all(8),
-          //   child: Icon(Icons.favorite, size: 16),
-          // ),
         ],
       ),
     );
