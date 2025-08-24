@@ -40,7 +40,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     }
   }
 
-  // User's preferred smooth animation for the progress bar
+  // Smooth animation for the progress bar
   void _animateToProgress(double targetProgress) {
     const updateInterval = Duration(milliseconds: 16); // ~60fps
     const animationDuration = Duration(milliseconds: 500);
@@ -129,7 +129,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       username: username,
       profImage: profImage,
       progressCallback: (progress) {
-        // Calling the smooth animation method as requested
+        // Calling the smooth animation method
         _animateToProgress(progress);
       },
     );
@@ -155,6 +155,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final User? user = Provider.of<UserProvider>(context).getUser;
 
     if (user == null) {
+      // Handles case where user data is still loading
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -166,17 +167,28 @@ class _AddPostScreenState extends State<AddPostScreen> {
         centerTitle: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () => _selectImage(context),
-              icon: const Icon(Icons.upload_file_outlined),
-              iconSize: 50,
+        child: InkWell(
+          onTap: () => _selectImage(context),
+          borderRadius: BorderRadius.circular(24), // Rounded ripple effect
+          child: Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min, // Keep the column compact
+              children: [
+                Icon(
+                  Icons.upload_file_outlined,
+                  size: 50,
+                  color: Colors.grey[600],
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Select a Photo to Post',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            const Text('Select a Photo to Post'),
-          ],
+          ),
         ),
       ),
     )
