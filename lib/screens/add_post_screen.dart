@@ -40,9 +40,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
     }
   }
 
-
   void _animateToProgress(double targetProgress) {
-    const updateInterval = Duration(milliseconds: 16); // ~60fps
+    const updateInterval = Duration(milliseconds: 16);
     const animationDuration = Duration(milliseconds: 500);
     final startTime = DateTime.now();
     final startProgress = _currentDisplayProgress;
@@ -52,8 +51,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       final elapsedTime = DateTime.now().difference(startTime);
 
       if (elapsedTime < animationDuration) {
-        final t =
-            elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
+        final t = elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
         setState(() {
           _currentDisplayProgress =
               startProgress + (targetProgress - startProgress) * t;
@@ -65,6 +63,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         });
       }
     }
+
     updateProgress();
   }
 
@@ -100,7 +99,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     Text(
                       'Create a post',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     ListTile(
@@ -188,12 +190,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
 
-    return _file == null
-        ? Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Post'),
-        centerTitle: false,
-      ),
+    return _file == null ? _selectPhoto(context) : _upLoadPost(user);
+  }
+
+  Scaffold _selectPhoto(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Create Post'), centerTitle: false),
       body: Center(
         child: InkWell(
           onTap: () => _selectImage(context),
@@ -219,8 +221,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
         ),
       ),
-    )
-        : Scaffold(
+    );
+  }
+
+  Scaffold _upLoadPost(User user) {
+    return Scaffold(
       appBar: AppBar(
         title: const Text('New Post'),
         centerTitle: false,
@@ -250,72 +255,74 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _isLoading
-                ? LinearProgressIndicator(
-              value: _currentDisplayProgress,
-              backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(
-                AppColors.link,
-              ),
-              minHeight: 4.0,
-            )
-                : const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: 24,
-                        backgroundImage: user.photoUrl != null
-                            ? NetworkImage(user.photoUrl!)
-                            : const AssetImage('assets/profile_icon.jpg')
-                        as ImageProvider,
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: TextField(
-                          controller: _descriptionController,
-                          decoration: const InputDecoration(
-                            hintText: 'Write a caption...',
-                            border: InputBorder.none,
-                          ),
-                          maxLines: 4,
+      body: _postPreview(user),
+    );
+  }
+
+  SingleChildScrollView _postPreview(User user) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _isLoading
+              ? LinearProgressIndicator(
+                  value: _currentDisplayProgress,
+                  backgroundColor: Colors.grey[200],
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.link),
+                  minHeight: 4.0,
+                )
+              : const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 24,
+                      backgroundImage: user.photoUrl != null
+                          ? NetworkImage(user.photoUrl!)
+                          : const AssetImage('assets/profile_icon.jpg')
+                                as ImageProvider,
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: TextField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                          hintText: 'Write a caption...',
+                          border: InputBorder.none,
                         ),
+                        maxLines: 4,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: MemoryImage(_file!),
+                      fit: BoxFit.cover,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 300,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: MemoryImage(_file!),
-                        fit: BoxFit.cover,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
