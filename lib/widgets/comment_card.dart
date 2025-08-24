@@ -59,10 +59,10 @@ class _CommentCardState extends State<CommentCard> {
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8),
-            child: Icon(Icons.favorite, size: 16),
-          ),
+          // Container(
+          //   padding: EdgeInsets.all(8),
+          //   child: Icon(Icons.favorite, size: 16),
+          // ),
         ],
       ),
     );
