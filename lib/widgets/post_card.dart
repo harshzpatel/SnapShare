@@ -307,33 +307,7 @@ class _PostCardState extends State<PostCard> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      title: Text('Delete Post'),
-                      content: Text(
-                        'Are you sure you want to delete this post?',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                            await FirestoreMethods().deletePost(
-                              widget.snap['postId'],
-                            );
-                          },
-                          child: Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    ),
+                    builder: (context) => _deleteDialogBox(context),
                   );
                 },
                 icon: Icon(Icons.more_vert, color: AppColors.primary),
@@ -341,6 +315,27 @@ class _PostCardState extends State<PostCard> {
             ),
         ],
       ),
+    );
+  }
+
+  AlertDialog _deleteDialogBox(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      title: Text('Delete Post'),
+      content: Text('Are you sure you want to delete this post?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+            await FirestoreMethods().deletePost(widget.snap['postId']);
+          },
+          child: Text('Delete', style: TextStyle(color: Colors.red)),
+        ),
+      ],
     );
   }
 }
