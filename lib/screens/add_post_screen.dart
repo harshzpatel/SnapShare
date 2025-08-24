@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/providers/user_provider.dart';
@@ -16,53 +16,96 @@ class AddPostScreen extends StatefulWidget {
   State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _AddPostScreenState extends State<AddPostScreen>
-    with SingleTickerProviderStateMixin {
-  bool _didCache = false;
+class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
   double _currentDisplayProgress = 0.0;
+  bool _didCache = false;
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final User? user = context.read<UserProvider>().getUser;
+
+    if (user != null && !_didCache && user.photoUrl != null) {
+      precacheImage(NetworkImage(user.photoUrl!), context);
+      _didCache = true;
+    }
+  }
+
+  // User's preferred smooth animation for the progress bar
+  void _animateToProgress(double targetProgress) {
+    const updateInterval = Duration(milliseconds: 16); // ~60fps
+    const animationDuration = Duration(milliseconds: 500);
+    final startTime = DateTime.now();
+    final startProgress = _currentDisplayProgress;
+
+    void updateProgress() {
+      if (!_isLoading) return; // Stop animation if loading is cancelled
+      final elapsedTime = DateTime.now().difference(startTime);
+
+      if (elapsedTime < animationDuration) {
+        final t =
+            elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
+        setState(() {
+          _currentDisplayProgress =
+              startProgress + (targetProgress - startProgress) * t;
+        });
+        Future.delayed(updateInterval, updateProgress);
+      } else {
+        setState(() {
+          _currentDisplayProgress = targetProgress;
+        });
+      }
+    }
+    updateProgress();
   }
 
   _selectImage(BuildContext context) async {
     return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: Text('Create a post'),
+        title: const Text('Create a post'),
         children: [
           SimpleDialogOption(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             onPressed: () async {
               Navigator.of(context).pop();
-              Uint8List file = await pickImage(ImageSource.camera);
-              setState(() {
-                _file = file;
-              });
+              Uint8List? file = await pickImage(ImageSource.camera);
+              if (file != null) {
+                setState(() {
+                  _file = file;
+                });
+              }
             },
-            child: Text('Take a photo'),
+            child: const Text('Take a photo'),
           ),
           SimpleDialogOption(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             onPressed: () async {
               Navigator.of(context).pop();
-              Uint8List file = await pickImage(ImageSource.gallery);
-              setState(() {
-                _file = file;
-              });
+              Uint8List? file = await pickImage(ImageSource.gallery);
+              if (file != null) {
+                setState(() {
+                  _file = file;
+                });
+              }
             },
-            child: Text('Choose from gallery'),
+            child: const Text('Choose from gallery'),
           ),
           SimpleDialogOption(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
         ],
       ),
@@ -86,6 +129,7 @@ class _AddPostScreenState extends State<AddPostScreen>
       username: username,
       profImage: profImage,
       progressCallback: (progress) {
+        // Calling the smooth animation method as requested
         _animateToProgress(progress);
       },
     );
@@ -98,7 +142,6 @@ class _AddPostScreenState extends State<AddPostScreen>
 
     if (res == 'success') {
       showSnackBar('Posted!', context);
-
       setState(() {
         _file = null;
       });
@@ -107,151 +150,135 @@ class _AddPostScreenState extends State<AddPostScreen>
     }
   }
 
-  void _animateToProgress(double targetProgress) {
-    // Gradually update the displayed progress in small increments
-    const updateInterval = Duration(milliseconds: 16); // ~60fps
-    const animationDuration = Duration(milliseconds: 500);
-    final startTime = DateTime.now();
-    final startProgress = _currentDisplayProgress;
-
-    void updateProgress() {
-      final elapsedTime = DateTime.now().difference(startTime);
-
-      if (elapsedTime < animationDuration) {
-        final t = elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
-
-        // Use a linear interpolation for smooth progression
-        setState(() {
-          _currentDisplayProgress =
-              startProgress + (targetProgress - startProgress) * t;
-        });
-
-        // Schedule next update
-        Future.delayed(updateInterval, updateProgress);
-      } else {
-        // Ensure we exactly reach the target
-        setState(() {
-          _currentDisplayProgress = targetProgress;
-        });
-      }
-    }
-
-    // Start the animation
-    updateProgress();
-  }
-
-  @override
-  void dispose() {
-    _descriptionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final User user = context.read<UserProvider>().getUser;
-
-    if (!_didCache && user.photoUrl != null) {
-      precacheImage(NetworkImage(user.photoUrl!), context);
-      _didCache = true;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
+
+    if (user == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return _file == null
-        ? Center(
-            child: IconButton(
+    // UPLOAD SCREEN VIEW
+        ? Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Post'),
+        centerTitle: false,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
               onPressed: () => _selectImage(context),
-              icon: Icon(Icons.upload),
+              icon: const Icon(Icons.upload_file_outlined),
+              iconSize: 50,
             ),
-          )
+            const SizedBox(height: 10),
+            const Text('Select a Photo to Post'),
+          ],
+        ),
+      ),
+    )
+    // POSTING SCREEN VIEW
         : Scaffold(
-            appBar: AppBar(
-              title: Text('Post to'),
-              actions: [
-                TextButton(
-                  onPressed: () => _postImage(
-                    uid: user.uid,
-                    username: user.username,
-                    profImage: user.photoUrl,
-                  ),
-                  child: Text(
-                    'Post',
-                    style: TextStyle(
-                      color: AppColors.link,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ],
-              leading: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _file = null;
-                  });
-                },
-                icon: Icon(Icons.arrow_back),
+      appBar: AppBar(
+        title: const Text('New Post'),
+        centerTitle: false,
+        leading: IconButton(
+          onPressed: () {
+            setState(() {
+              _file = null;
+            });
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => _postImage(
+              uid: user.uid,
+              username: user.username,
+              profImage: user.photoUrl,
+            ),
+            child: Text(
+              'Post',
+              style: TextStyle(
+                color: AppColors.link,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
             ),
-            body: Column(
-              children: [
-                _isLoading
-                    ? LinearProgressIndicator(
-                        value: _currentDisplayProgress,
-                        backgroundColor: Colors.grey[200],
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.link,
-                        ),
-                        minHeight: 4.0,
-                      )
-                    : SizedBox(height: 4),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage('assets/profile_icon.jpg'),
-                      foregroundImage: user.photoUrl != null
-                          ? NetworkImage(user.photoUrl!)
-                          : AssetImage('assets/profile_icon.jpg'),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .45,
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: InputDecoration(
-                          hintText: 'Write a caption...',
-                          border: InputBorder.none,
-                        ),
-                        maxLines: 8,
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _isLoading
+                ? LinearProgressIndicator(
+              value: _currentDisplayProgress,
+              backgroundColor: Colors.grey[200],
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppColors.link,
+              ),
+              minHeight: 4.0,
+            )
+                : const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        radius: 24,
+                        backgroundImage: user.photoUrl != null
+                            ? NetworkImage(user.photoUrl!)
+                            : const AssetImage(
+                            'assets/profile_icon.jpg')
+                        as ImageProvider,
                       ),
-                    ),
-                    SizedBox(
-                      height: 45,
-                      width: 45,
-                      child: AspectRatio(
-                        aspectRatio: 487 / 451,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: MemoryImage(_file!),
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.topCenter,
-                            ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: TextField(
+                          controller: _descriptionController,
+                          decoration: const InputDecoration(
+                            hintText: 'Write a caption...',
+                            border: InputBorder.none,
                           ),
+                          maxLines: 4,
                         ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 300,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      image: DecorationImage(
+                        image: MemoryImage(_file!),
+                        fit: BoxFit.cover,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
                     ),
-                    Divider(),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }
