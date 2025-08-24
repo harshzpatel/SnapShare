@@ -67,68 +67,78 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: NeverScrollableScrollPhysics(),
         children: homeScreenItems,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _page,
-        onTap: navigationTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/home.svg',
-              colorFilter: ColorFilter.mode(
-                _page == 0 ? AppColors.primary : AppColors.secondary,
-                BlendMode.srcIn,
+      bottomNavigationBar: _navBar(),
+    );
+  }
+
+  Column _navBar() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Divider(height: 1, thickness: 1, color: Colors.grey[900]),
+        BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _page,
+          onTap: navigationTapped,
+          items: [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/home.svg',
+                colorFilter: ColorFilter.mode(
+                  _page == 0 ? AppColors.primary : AppColors.secondary,
+                  BlendMode.srcIn,
+                ),
               ),
+              label: 'Home',
+              // backgroundColor: primaryColor,
             ),
-            label: 'Home',
-            // backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/search.svg',
-              colorFilter: ColorFilter.mode(
-                _page == 1 ? AppColors.primary : AppColors.secondary,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/search.svg',
+                colorFilter: ColorFilter.mode(
+                  _page == 1 ? AppColors.primary : AppColors.secondary,
+                  BlendMode.srcIn,
+                ),
               ),
+              label: 'Search',
+              // backgroundColor: primaryColor,
             ),
-            label: 'Search',
-            // backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/add_box.svg',
-              colorFilter: ColorFilter.mode(
-                _page == 2 ? AppColors.primary : AppColors.secondary,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/add_box.svg',
+                colorFilter: ColorFilter.mode(
+                  _page == 2 ? AppColors.primary : AppColors.secondary,
+                  BlendMode.srcIn,
+                ),
               ),
+              label: 'Add',
+              // backgroundColor: primaryColor,
             ),
-            label: 'Add',
-            // backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/heart.svg',
-              colorFilter: ColorFilter.mode(
-                _page == 3 ? AppColors.primary : AppColors.secondary,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/heart.svg',
+                colorFilter: ColorFilter.mode(
+                  _page == 3 ? AppColors.primary : AppColors.secondary,
+                  BlendMode.srcIn,
+                ),
               ),
+              label: 'Fav',
+              // backgroundColor: primaryColor,
             ),
-            label: 'Fav',
-            // backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/profile.svg',
-              colorFilter: ColorFilter.mode(
-                _page == 4 ? AppColors.primary : AppColors.secondary,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/profile.svg',
+                colorFilter: ColorFilter.mode(
+                  _page == 4 ? AppColors.primary : AppColors.secondary,
+                  BlendMode.srcIn,
+                ),
               ),
+              label: 'Pro',
+              // backgroundColor: primaryColor,
             ),
-            label: 'Pro',
-            // backgroundColor: primaryColor,
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 }

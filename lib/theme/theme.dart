@@ -26,9 +26,9 @@ class AppTheme {
       contentTextStyle: TextStyle(color: AppColors.primary),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.grey[900],
-      selectedItemColor: Colors.red,
-      unselectedItemColor: Colors.white,
+      backgroundColor: AppColors.background,
+      // selectedItemColor: Colors.red,
+      // unselectedItemColor: Colors.white,
       showSelectedLabels: false,
       showUnselectedLabels: false,
     ),
