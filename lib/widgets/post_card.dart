@@ -6,8 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:instagram/screens/comment_screen.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/like_animation.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as ta;
 import 'package:transparent_image/transparent_image.dart';
 
 import '../models/user.dart' as model;
@@ -80,9 +80,8 @@ class _PostCardState extends State<PostCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
+          SizedBox(
             width: double.infinity,
-            padding: const EdgeInsets.only(top: 8),
             child: RichText(
               text: TextSpan(
                 style: const TextStyle(color: AppColors.primary),
@@ -99,8 +98,8 @@ class _PostCardState extends State<PostCard> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(
-              DateFormat.yMMMd().format(widget.snap['datePublished'].toDate()),
-              style: const TextStyle(color: AppColors.secondary),
+              ta.format(widget.snap['datePublished'].toDate()),
+              style: const TextStyle(color: AppColors.secondary, fontSize: 11),
             ),
           ),
         ],
@@ -120,33 +119,44 @@ class _PostCardState extends State<PostCard> {
               isSmallLikeAnimating = false;
             });
           },
-          child: IconButton(
-            onPressed: () async {
-              if (user.uid == 'loading...') return;
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: SizedBox(
+              width: 24,
+              // height: 24,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                onPressed: () async {
+                  if (user.uid == 'loading...') return;
 
-              setState(() {
-                isSmallLikeAnimating = true;
-              });
+                  setState(() {
+                    isSmallLikeAnimating = true;
+                  });
 
-              await FirestoreMethods().likePost(
-                postId: widget.snap['postId'],
-                uid: user.uid,
-                likes: widget.snap['likes'],
-              );
-            },
-            icon: SvgPicture.asset(
-              isLiked ? 'assets/heart_fill.svg' : 'assets/heart.svg',
-              colorFilter: ColorFilter.mode(
-                isLiked ? Colors.red : AppColors.primary,
-                BlendMode.srcIn,
+                  await FirestoreMethods().likePost(
+                    postId: widget.snap['postId'],
+                    uid: user.uid,
+                    likes: widget.snap['likes'],
+                  );
+                },
+                icon: SvgPicture.asset(
+                  isLiked ? 'assets/heart_fill.svg' : 'assets/heart.svg',
+                  colorFilter: ColorFilter.mode(
+                    isLiked ? Colors.red : AppColors.primary,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
             ),
           ),
         ),
+        SizedBox(width: 4),
         Text(
           '${widget.snap['likes'].length} Likes',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
+        SizedBox(width: 4),
         Material(
           color: Colors.transparent,
           child: InkWell(
@@ -172,7 +182,7 @@ class _PostCardState extends State<PostCard> {
                       BlendMode.srcIn,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 4),
                   Text(
                     '$_comments Comments',
                     style: Theme.of(context).textTheme.bodyMedium,
