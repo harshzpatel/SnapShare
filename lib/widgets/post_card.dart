@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:instagram/screens/comment_screen.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/widgets/like_animation.dart';
@@ -79,15 +80,6 @@ class _PostCardState extends State<PostCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          DefaultTextStyle(
-            style: Theme.of(
-              context,
-            ).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w800),
-            child: Text(
-              '${widget.snap['likes'].length} likes',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.only(top: 8),
@@ -104,23 +96,6 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
           ),
-          InkWell(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                'View all $_comments comments',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: AppColors.secondary,
-                ),
-              ),
-            ),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => CommentScreen(snap: widget.snap),
-              ),
-            ),
-          ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(
@@ -134,6 +109,8 @@ class _PostCardState extends State<PostCard> {
   }
 
   Row _buttons(model.User user) {
+    final bool isLiked = widget.snap['likes'].contains(user.uid);
+
     return Row(
       children: [
         LikeAnimation(
@@ -157,34 +134,51 @@ class _PostCardState extends State<PostCard> {
                 likes: widget.snap['likes'],
               );
             },
-            icon: Icon(
-              widget.snap['likes'].contains(user.uid)
-                  ? Icons.favorite
-                  : Icons.favorite_border,
-              color: widget.snap['likes'].contains(user.uid)
-                  ? Colors.red
-                  : AppColors.primary,
+            icon: SvgPicture.asset(
+              isLiked ? 'assets/heart_fill.svg' : 'assets/heart.svg',
+              colorFilter: ColorFilter.mode(
+                isLiked ? Colors.red : AppColors.primary,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),
-        IconButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => CommentScreen(snap: widget.snap),
+        Text(
+          '${widget.snap['likes'].length} Likes',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CommentScreen(snap: widget.snap),
+              ),
             ),
-          ),
-          icon: Icon(Icons.comment_outlined, color: AppColors.primary),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.send, color: AppColors.primary),
-        ),
-        Expanded(
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.bookmark_border, color: AppColors.primary),
+            borderRadius: BorderRadius.circular(16.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4.0,
+                horizontal: 8.0,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Icon(Icons.comment_outlined, color: AppColors.primary),
+                  SvgPicture.asset(
+                    'assets/comment_icon.svg',
+                    colorFilter: ColorFilter.mode(
+                      AppColors.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '$_comments Comments',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -242,7 +236,15 @@ class _PostCardState extends State<PostCard> {
                   isLikeAnimating = false;
                 });
               },
-              child: Icon(Icons.favorite, color: Colors.white, size: 120),
+              child: SvgPicture.asset(
+                'assets/heart_fill.svg',
+                colorFilter: const ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
+                width: 120,
+                height: 120,
+              ),
             ),
           ),
         ],
@@ -252,10 +254,7 @@ class _PostCardState extends State<PostCard> {
 
   Container _header(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 16,
-      ).copyWith(right: 0),
+      padding: EdgeInsets.only(top: 4, bottom: 12, left: 16, right: 0),
       child: Row(
         children: [
           CircleAvatar(
@@ -281,38 +280,41 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           if (FirebaseAuth.instance.currentUser!.uid == widget.snap['uid'])
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shrinkWrap: true,
-                      children: ['Delete']
-                          .map(
-                            (e) => InkWell(
-                              onTap: () async {
-                                Navigator.of(context).pop();
-                                FirestoreMethods().deletePost(
-                                  widget.snap['postId'],
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 12,
-                                  horizontal: 16,
+            SizedBox(
+              height: 32,
+              child: IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        shrinkWrap: true,
+                        children: ['Delete']
+                            .map(
+                              (e) => InkWell(
+                                onTap: () async {
+                                  Navigator.of(context).pop();
+                                  FirestoreMethods().deletePost(
+                                    widget.snap['postId'],
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 16,
+                                  ),
+                                  child: Text(e),
                                 ),
-                                child: Text(e),
                               ),
-                            ),
-                          )
-                          .toList(),
+                            )
+                            .toList(),
+                      ),
                     ),
-                  ),
-                );
-              },
-              icon: Icon(Icons.more_vert, color: AppColors.primary),
+                  );
+                },
+                icon: Icon(Icons.more_vert, color: AppColors.primary),
+              ),
             ),
         ],
       ),

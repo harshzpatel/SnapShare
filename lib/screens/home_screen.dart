@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/global_variables.dart';
@@ -72,41 +73,56 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: navigationTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _page == 0 ? AppColors.primary : AppColors.secondary,
+            icon: SvgPicture.asset(
+              'assets/home.svg',
+              colorFilter: ColorFilter.mode(
+                _page == 0 ? AppColors.primary : AppColors.secondary,
+                BlendMode.srcIn,
+              ),
             ),
             label: 'Home',
             // backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-              color: _page == 1 ? AppColors.primary : AppColors.secondary,
+            icon: SvgPicture.asset(
+              'assets/search.svg',
+              colorFilter: ColorFilter.mode(
+                _page == 1 ? AppColors.primary : AppColors.secondary,
+                BlendMode.srcIn,
+              ),
             ),
             label: 'Search',
             // backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_circle_rounded,
-              color: _page == 2 ? AppColors.primary : AppColors.secondary,
+            icon: SvgPicture.asset(
+              'assets/add_box.svg',
+              colorFilter: ColorFilter.mode(
+                _page == 2 ? AppColors.primary : AppColors.secondary,
+                BlendMode.srcIn,
+              ),
             ),
             label: 'Add',
             // backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite_outlined,
-              color: _page == 3 ? AppColors.primary : AppColors.secondary,
+            icon: SvgPicture.asset(
+              'assets/heart.svg',
+              colorFilter: ColorFilter.mode(
+                _page == 3 ? AppColors.primary : AppColors.secondary,
+                BlendMode.srcIn,
+              ),
             ),
             label: 'Fav',
             // backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: _page == 4 ? AppColors.primary : AppColors.secondary,
+            icon: SvgPicture.asset(
+              'assets/profile.svg',
+              colorFilter: ColorFilter.mode(
+                _page == 4 ? AppColors.primary : AppColors.secondary,
+                BlendMode.srcIn,
+              ),
             ),
             label: 'Pro',
             // backgroundColor: primaryColor,
