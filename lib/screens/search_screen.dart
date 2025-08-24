@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:instagram/screens/profile_screen.dart';
+import 'package:instagram/theme/theme.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -24,43 +25,49 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TextFormField(
-          controller: _searchController,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: Color(0xff8f8f8f)),
-            hintText: 'Search',
-            fillColor: Color(0xff121212),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.0),
-              borderSide: Divider.createBorderSide(context),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.0),
-              borderSide: BorderSide(
-                color: Colors.white.withAlpha(153),
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.0),
-              borderSide: BorderSide(color: Color(0xff3b3b3b), width: 1),
-            ),
-            filled: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          ),
-          onFieldSubmitted: (String _) {
-            // setState(() {
-            //   isShowUsers = true;
-            // });
-          },
-        ),
-      ),
+      appBar: _searchBar(context),
       body: ValueListenableBuilder(
         valueListenable: _searchController,
         builder: (context, value, child) {
           return _searchController.text.isNotEmpty ? _usersList() : _posts();
+        },
+      ),
+    );
+  }
+
+  AppBar _searchBar(BuildContext context) {
+    return AppBar(
+      title: TextFormField(
+        controller: _searchController,
+        style: TextStyle(color: AppColors.primary),
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Color(0xff8f8f8f)),
+          hintText: 'Search',
+          hintStyle: TextStyle(color: AppColors.secondary),
+          fillColor: Color(0xff121212),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: Divider.createBorderSide(context),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: BorderSide(
+              color: Colors.white.withAlpha(153),
+              width: 1,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: BorderSide(color: Color(0xff3b3b3b), width: 1),
+          ),
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+        ),
+        onFieldSubmitted: (String _) {
+          // setState(() {
+          //   isShowUsers = true;
+          // });
         },
       ),
     );
@@ -126,9 +133,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              return Image.network(
-                '${snapshot.data!.docs[index]['postUrl']}',
-              );
+              return Image.network('${snapshot.data!.docs[index]['postUrl']}');
             },
           );
         },
