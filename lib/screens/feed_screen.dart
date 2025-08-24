@@ -20,7 +20,14 @@ class FeedScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.message_outlined, color: AppColors.primary),
+            icon: SvgPicture.asset(
+              'assets/message.svg',
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
+              height: 28,
+            ),
           ),
         ],
       ),
