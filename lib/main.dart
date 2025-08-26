@@ -48,7 +48,7 @@ class _MainAppState extends State<MainApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Instagram',
+        title: 'SnapShare',
         theme: AppTheme.dark,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
