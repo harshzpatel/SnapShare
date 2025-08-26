@@ -237,11 +237,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           itemBuilder: (BuildContext context, int index) {
             DocumentSnapshot snap = snapshot.data!.docs[index];
 
-            return Container(
-              child: Image(
-                image: NetworkImage(snap['postUrl']),
-                fit: BoxFit.cover,
-              ),
+            return Image(
+              image: NetworkImage(snap['postUrl']),
+              fit: BoxFit.cover,
             );
           },
         );
