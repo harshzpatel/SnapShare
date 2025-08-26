@@ -5,10 +5,20 @@ import 'package:image_picker/image_picker.dart';
 pickImage(ImageSource src) async {
   final ImagePicker imagePicker = ImagePicker();
 
-  XFile? file = await imagePicker.pickImage(source: src);
+  XFile? file = await imagePicker.pickImage(
+    source: src,
+    maxWidth: 1080,
+    imageQuality: 85,
+  );
 
   if (file != null) {
-    return await file.readAsBytes();
+    final Uint8List imageBytes = await file.readAsBytes();
+
+    if (kDebugMode) {
+      print('In-memory image size: ${imageBytes.lengthInBytes} bytes');
+    }
+
+    return imageBytes;
   }
 
   if (kDebugMode) {
