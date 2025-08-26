@@ -131,7 +131,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
-            appBar: AppBar(title: Text(user.username)),
+            appBar: AppBar(
+              title: Text(
+                user.username,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
             body: ListView(
               children: [
                 _userDetails(context),
