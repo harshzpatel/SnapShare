@@ -215,6 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         return GridView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.docs.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
