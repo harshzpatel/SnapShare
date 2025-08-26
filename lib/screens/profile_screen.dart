@@ -133,7 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      // mainAxisSize: MainAxisSize.max,
                       children: [
                         buildStatColumn(num: 10, label: 'posts'),
                         buildStatColumn(
@@ -146,34 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        isOwnProfile
-                            ? FollowButton(
-                                backgroundColor: AppColors.background,
-                                borderColor: Colors.grey,
-                                text: 'Sign out',
-                                textColor: AppColors.primary,
-                                onPressed: signOut,
-                              )
-                            : isFollowing
-                            ? FollowButton(
-                                backgroundColor: AppColors.primary,
-                                borderColor: Colors.grey,
-                                text: 'Unfollow',
-                                textColor: Colors.black,
-                                onPressed: followUser,
-                              )
-                            : FollowButton(
-                                backgroundColor: AppColors.blue,
-                                borderColor: Colors.blue,
-                                text: 'Follow',
-                                textColor: AppColors.primary,
-                                onPressed: followUser,
-                              ),
-                      ],
-                    ),
+                    _button(),
                   ],
                 ),
               ),
@@ -187,6 +159,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  Widget _button() {
+    return isOwnProfile
+        ? FollowButton(
+            backgroundColor: AppColors.background,
+            borderColor: Colors.grey,
+            text: 'Sign out',
+            textColor: AppColors.primary,
+            onPressed: signOut,
+          )
+        : isFollowing
+        ? FollowButton(
+            backgroundColor: AppColors.primary,
+            borderColor: Colors.grey,
+            text: 'Unfollow',
+            textColor: Colors.black,
+            onPressed: followUser,
+          )
+        : FollowButton(
+            backgroundColor: AppColors.blue,
+            borderColor: Colors.blue,
+            text: 'Follow',
+            textColor: AppColors.primary,
+            onPressed: followUser,
+          );
   }
 
   Widget _posts() {
