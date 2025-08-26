@@ -25,6 +25,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isFollowing = false;
   late bool isOwnProfile;
   bool isLoading = false;
+  int _numPosts = 0;
+  int _numFollowers = 0;
+  int _numFollowing = 0;
 
   @override
   void initState() {
@@ -44,13 +47,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .doc(widget.uid)
           .get();
 
-      // var postSnap = await FirebaseFirestore.instance
-      //     .collection('posts')
-      //     .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-      //     .get();
+      var postAgg = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: widget.uid)
+          .count()
+          .get();
 
       setState(() {
         user = model.User.fromSnap(userSnap);
+
+        _numPosts = postAgg.count ?? 0;
+        _numFollowers = user.followers.length;
+        _numFollowing = user.following.length;
+
         isFollowing = user.followers.contains(
           FirebaseAuth.instance.currentUser!.uid,
         );
@@ -81,17 +90,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void followUser() async {
+    setState(() {
+      isFollowing = !isFollowing;
+
+      if (isFollowing) {
+        _numFollowers++;
+      } else {
+        _numFollowers--;
+      }
+
+    });
+
     String res = await FirestoreMethods().followUser(
       uid: FirebaseAuth.instance.currentUser!.uid,
       followId: widget.uid,
     );
 
+    if (!mounted) return;
+
     if (res == 'success') {
-      setState(() {
-        isFollowing = false;
-      });
+      if (isFollowing) {
+        showSnackBar('You are now following ${user.username}', context);
+      } else {
+        showSnackBar('You have unfollowed ${user.username}', context);
+      }
     } else {
-      if (!mounted) return;
       showSnackBar(res, context);
     }
   }
@@ -134,13 +157,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildStatColumn(num: 10, label: 'posts'),
+                        buildStatColumn(num: _numPosts, label: 'posts'),
                         buildStatColumn(
-                          num: user.followers.length,
+                          num: _numFollowers,
                           label: 'followers',
                         ),
                         buildStatColumn(
-                          num: user.following.length,
+                          num: _numFollowing,
                           label: 'following',
                         ),
                       ],
