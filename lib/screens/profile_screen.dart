@@ -22,9 +22,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   model.User user = model.User.blank;
+  late Future<QuerySnapshot> _postsFuture;
+
   bool isFollowing = false;
   late bool isOwnProfile;
   bool isLoading = false;
+
   int _numPosts = 0;
   int _numFollowers = 0;
   int _numFollowing = 0;
@@ -33,6 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     isOwnProfile = widget.uid == FirebaseAuth.instance.currentUser!.uid;
+
+    _postsFuture = FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid', isEqualTo: widget.uid)
+        .get();
+
     getUserData();
   }
 
@@ -121,8 +130,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // model.User user = Provider.of<UserProvider>(context).getUser;
-
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -212,10 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _posts() {
     return FutureBuilder(
-      future: FirebaseFirestore.instance
-          .collection('posts')
-          .where('uid', isEqualTo: widget.uid)
-          .get(),
+      future: _postsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
