@@ -1,4 +1,4 @@
-package com.harsh.instagram
+package com.harsh.snapshare
 
 import io.flutter.embedding.android.FlutterActivity
 
