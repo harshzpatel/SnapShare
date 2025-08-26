@@ -239,30 +239,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => _postImage(
-              uid: user.uid,
-              username: user.username,
-              profImage: user.photoUrl,
-            ),
-            child: Text(
-              'Post',
-              style: TextStyle(
-                color: AppColors.link,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
       ),
       body: _postPreview(user),
     );
   }
 
-  SingleChildScrollView _postPreview(User user) {
-    return SingleChildScrollView(
+  Widget _postPreview(User user) {
+    final mq = MediaQuery.of(context);
+
+    return SafeArea(
       child: Column(
         children: [
           _isLoading
@@ -273,13 +258,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   minHeight: 4.0,
                 )
               : const SizedBox(height: 4),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 300,
+          Expanded(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: mq.size.height * 0.35,
+                  maxWidth: mq.size.width * 0.95,
+                ),
+                child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -289,7 +275,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
+                        color: AppColors.background.withValues(alpha: .1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 5),
@@ -297,29 +283,49 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ],
                   ),
                 ),
-                // const SizedBox(height: 50),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundImage: user.photoUrl != null
-                          ? NetworkImage(user.photoUrl!)
-                          : const AssetImage('assets/profile_icon.jpg')
-                                as ImageProvider,
+              ),
+            ),
+          ),
+          AnimatedPadding(
+            duration: const Duration(milliseconds: 150),
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: mq.viewInsets.bottom + 16,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundImage: user.photoUrl != null
+                      ? NetworkImage(user.photoUrl!)
+                      : const AssetImage('assets/profile_icon.jpg')
+                            as ImageProvider,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      hintText: 'Write a caption...',
+                      border: InputBorder.none,
+                      isCollapsed: true,
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          hintText: 'Write a caption...',
-                          border: InputBorder.none,
-                        ),
-                        maxLines: 4,
-                      ),
-                    ),
-                  ],
+                    maxLines: null,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send, color: AppColors.link),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    _postImage(
+                      uid: user.uid,
+                      username: user.username,
+                      profImage: user.photoUrl,
+                    );
+                  },
                 ),
               ],
             ),
