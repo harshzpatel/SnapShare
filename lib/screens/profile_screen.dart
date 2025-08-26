@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:instagram/resources/firestore_methods.dart';
-import 'package:instagram/theme/theme.dart';
 import 'package:instagram/utils/utils.dart';
 
 import '../models/user.dart' as model;
@@ -107,7 +106,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } else {
         _numFollowers--;
       }
-
     });
 
     String res = await FirestoreMethods().followUser(
@@ -165,16 +163,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         buildStatColumn(num: _numPosts, label: 'posts'),
-                        buildStatColumn(
-                          num: _numFollowers,
-                          label: 'followers',
-                        ),
-                        buildStatColumn(
-                          num: _numFollowing,
-                          label: 'following',
-                        ),
+                        buildStatColumn(num: _numFollowers, label: 'followers'),
+                        buildStatColumn(num: _numFollowing, label: 'following'),
                       ],
                     ),
+                    SizedBox(height: 15),
                     _button(),
                   ],
                 ),
@@ -193,28 +186,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _button() {
     return isOwnProfile
-        ? FollowButton(
-            backgroundColor: AppColors.background,
-            borderColor: Colors.grey,
-            text: 'Sign out',
-            textColor: AppColors.primary,
-            onPressed: signOut,
-          )
+        ? FollowButton(onPressed: signOut, text: 'Sign out', isOutlined: true)
         : isFollowing
         ? FollowButton(
-            backgroundColor: AppColors.primary,
-            borderColor: Colors.grey,
+            onPressed: followUser,
             text: 'Unfollow',
-            textColor: Colors.black,
-            onPressed: followUser,
+            isOutlined: true,
           )
-        : FollowButton(
-            backgroundColor: AppColors.blue,
-            borderColor: Colors.blue,
-            text: 'Follow',
-            textColor: AppColors.primary,
-            onPressed: followUser,
-          );
+        : FollowButton(onPressed: followUser, text: 'Follow');
   }
 
   Widget _posts() {

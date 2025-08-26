@@ -1,42 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/theme/theme.dart';
 
 class FollowButton extends StatelessWidget {
   final void Function()? onPressed;
-  final Color backgroundColor;
-  final Color borderColor;
   final String text;
-  final Color textColor;
+  final bool isOutlined;
 
   const FollowButton({
     super.key,
-    this.onPressed,
-    required this.backgroundColor,
-    required this.borderColor,
+    required this.onPressed,
     required this.text,
-    required this.textColor,
+    this.isOutlined = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 2),
-      child: TextButton(
-        onPressed: onPressed,
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            border: Border.all(color: borderColor),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          alignment: Alignment.center,
-          width: 215,
-          height: 27,
-          child: Text(
-            text,
-            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
+    return isOutlined
+        ? SizedBox(
+            height: 30,
+            width: 215,
+            child: OutlinedButton(
+              onPressed: onPressed,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.primary,
+                side: const BorderSide(color: AppColors.secondary),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Text(
+                text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
+        : SizedBox(
+            height: 30,
+            width: 215,
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.blue,
+                foregroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Text(
+                text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
   }
 }
