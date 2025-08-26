@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:instagram/providers/user_provider.dart';
-import 'package:instagram/theme/theme.dart';
-import 'package:instagram/utils/global_variables.dart';
+import 'package:snapshare/providers/user_provider.dart';
+import 'package:snapshare/theme/theme.dart';
+import 'package:snapshare/utils/global_variables.dart';
 import 'package:provider/provider.dart';
-// import 'package:instagram/models/user.dart' as model;
 
 import 'login_screen.dart';
 

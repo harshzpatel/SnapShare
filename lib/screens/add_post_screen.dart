@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram/providers/user_provider.dart';
-import 'package:instagram/resources/firestore_methods.dart';
-import 'package:instagram/theme/theme.dart';
-import 'package:instagram/utils/utils.dart';
+import 'package:snapshare/providers/user_provider.dart';
+import 'package:snapshare/resources/firestore_methods.dart';
+import 'package:snapshare/theme/theme.dart';
+import 'package:snapshare/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart';

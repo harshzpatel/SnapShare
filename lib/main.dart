@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:instagram/firebase_options.dart';
-import 'package:instagram/providers/user_provider.dart';
-import 'package:instagram/screens/home_screen.dart';
-import 'package:instagram/screens/login_screen.dart';
-import 'package:instagram/theme/theme.dart';
+import 'package:snapshare/firebase_options.dart';
+import 'package:snapshare/providers/user_provider.dart';
+import 'package:snapshare/screens/home_screen.dart';
+import 'package:snapshare/screens/login_screen.dart';
+import 'package:snapshare/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

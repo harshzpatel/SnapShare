@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram/resources/auth_methods.dart';
-import 'package:instagram/screens/home_screen.dart';
-import 'package:instagram/screens/signup_screen.dart';
-import 'package:instagram/theme/theme.dart';
-import 'package:instagram/utils/utils.dart';
-import 'package:instagram/widgets/footer.dart';
-import 'package:instagram/widgets/form_button.dart';
-import 'package:instagram/widgets/text_field_input.dart';
+import 'package:snapshare/resources/auth_methods.dart';
+import 'package:snapshare/screens/home_screen.dart';
+import 'package:snapshare/screens/signup_screen.dart';
+import 'package:snapshare/theme/theme.dart';
+import 'package:snapshare/utils/utils.dart';
+import 'package:snapshare/widgets/footer.dart';
+import 'package:snapshare/widgets/form_button.dart';
+import 'package:snapshare/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

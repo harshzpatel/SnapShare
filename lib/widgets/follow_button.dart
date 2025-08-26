@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/theme/theme.dart';
+import 'package:snapshare/theme/theme.dart';
 
 class FollowButton extends StatelessWidget {
   final void Function()? onPressed;

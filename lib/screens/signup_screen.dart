@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram/resources/auth_methods.dart';
-import 'package:instagram/screens/login_screen.dart';
-import 'package:instagram/theme/theme.dart';
-import 'package:instagram/utils/utils.dart';
-import 'package:instagram/widgets/text_field_input.dart';
+import 'package:snapshare/resources/auth_methods.dart';
+import 'package:snapshare/screens/login_screen.dart';
+import 'package:snapshare/theme/theme.dart';
+import 'package:snapshare/utils/utils.dart';
+import 'package:snapshare/widgets/text_field_input.dart';
 
 import '../widgets/footer.dart';
 import '../widgets/form_button.dart';
