@@ -10,6 +10,6 @@ final homeScreenItems = [
   const FeedScreen(),
   const SearchScreen(),
   const AddPostScreen(),
-  const Text('notif'),
+  Center(child: const Text('No Notifications')),
   ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
 ];
