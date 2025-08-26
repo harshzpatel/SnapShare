@@ -170,6 +170,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
       },
     );
 
+    _descriptionController.clear();
+
     setState(() {
       _isLoading = false;
     });
@@ -276,6 +278,26 @@ class _AddPostScreenState extends State<AddPostScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: MemoryImage(_file!),
+                      fit: BoxFit.cover,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                ),
+                // const SizedBox(height: 50),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -298,26 +320,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  height: 300,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      image: MemoryImage(_file!),
-                      fit: BoxFit.cover,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
