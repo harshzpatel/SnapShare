@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:snapshare/widgets/post_card.dart';
 
-import '../theme/theme.dart';
+import '../core/theme.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:snapshare/resources/storage_methods.dart';
+import 'package:snapshare/services/storage_methods.dart';
 import 'package:snapshare/models/user.dart' as model;
 
 class AuthMethods {

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:snapshare/resources/auth_methods.dart';
+import 'package:snapshare/services/auth_methods.dart';
 import 'package:snapshare/screens/home_screen.dart';
 import 'package:snapshare/screens/signup_screen.dart';
-import 'package:snapshare/theme/theme.dart';
-import 'package:snapshare/utils/utils.dart';
+import 'package:snapshare/core/theme.dart';
+import 'package:snapshare/core/utils.dart';
 import 'package:snapshare/widgets/footer.dart';
 import 'package:snapshare/widgets/form_button.dart';
 import 'package:snapshare/widgets/text_field_input.dart';

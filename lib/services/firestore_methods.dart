@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:snapshare/resources/storage_methods.dart';
+import 'package:snapshare/services/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/post.dart';

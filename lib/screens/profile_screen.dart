@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snapshare/resources/firestore_methods.dart';
-import 'package:snapshare/utils/utils.dart';
+import 'package:snapshare/services/firestore_methods.dart';
+import 'package:snapshare/core/utils.dart';
 
 import '../models/user.dart' as model;
 import '../widgets/follow_button.dart';

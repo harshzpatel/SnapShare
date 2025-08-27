@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:snapshare/providers/user_provider.dart';
-import 'package:snapshare/theme/theme.dart';
-import 'package:snapshare/utils/global_variables.dart';
+import 'package:snapshare/core/theme.dart';
+import 'package:snapshare/core/global_variables.dart';
 import 'package:provider/provider.dart';
 
 import 'login_screen.dart';

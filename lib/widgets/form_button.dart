@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/theme.dart';
+import '../core/theme.dart';
 
 class FormButton extends StatelessWidget {
   final String text;

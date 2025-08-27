@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:snapshare/theme/theme.dart';
-import 'package:snapshare/utils/utils.dart';
+import 'package:snapshare/core/theme.dart';
+import 'package:snapshare/core/utils.dart';
 import 'package:snapshare/widgets/comment_card.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../resources/firestore_methods.dart';
+import '../services/firestore_methods.dart';
 
 class CommentScreen extends StatefulWidget {
   final Map<String, dynamic> snap;

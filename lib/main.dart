@@ -6,7 +6,7 @@ import 'package:snapshare/firebase_options.dart';
 import 'package:snapshare/providers/user_provider.dart';
 import 'package:snapshare/screens/home_screen.dart';
 import 'package:snapshare/screens/login_screen.dart';
-import 'package:snapshare/theme/theme.dart';
+import 'package:snapshare/core/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

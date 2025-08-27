@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snapshare/screens/comment_screen.dart';
-import 'package:snapshare/theme/theme.dart';
+import 'package:snapshare/core/theme.dart';
 import 'package:snapshare/widgets/like_animation.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as ta;
@@ -13,7 +13,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../models/user.dart' as model;
 import '../providers/user_provider.dart';
-import '../resources/firestore_methods.dart';
+import '../services/firestore_methods.dart';
 
 class PostCard extends StatefulWidget {
   final Map<String, dynamic> snap;
