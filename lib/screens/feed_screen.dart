@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:snapshare/screens/chat_users_screen.dart';
 import 'package:snapshare/widgets/post_card.dart';
 
 import '../core/theme.dart';
@@ -19,7 +20,12 @@ class FeedScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChatUsersScreen()),
+              );
+            },
             icon: SvgPicture.asset(
               'assets/message.svg',
               colorFilter: const ColorFilter.mode(
