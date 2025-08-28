@@ -49,11 +49,13 @@ class ChatUsersScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatScreen(receiverEmail: userData['email']),
+            builder: (context) => ChatScreen(
+              receiverUsername: userData['username'],
+              receiverId: userData['uid'],
+            ),
           ),
         );
       },
     );
   }
 }
-
