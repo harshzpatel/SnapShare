@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 
 import '../services/chat_service.dart';
 import '../widgets/user_tile.dart';
