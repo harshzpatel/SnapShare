@@ -33,7 +33,8 @@ class _ChatScreenState extends State<ChatScreen> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         // Scroll to the bottom when the input field gains focus
-        Future.delayed(Duration(milliseconds: 300), () => scrollDown());
+        Future.delayed(Duration(milliseconds: 50), () => scrollDown());
+        // scrollDown();
       }
     });
     
@@ -50,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void scrollDown() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
     );
   }
