@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       }
     });
 
-    Future.delayed(Duration(milliseconds: 300), () => scrollDown());
+    Future.delayed(Duration(milliseconds: 1000), () => scrollDown());
   }
 
   @override
