@@ -51,6 +51,7 @@ class ChatUsersScreen extends StatelessWidget {
             builder: (context) => ChatScreen(
               receiverUsername: userData['username'],
               receiverId: userData['uid'],
+              receiverProfileImage: userData['photoUrl'],
             ),
           ),
         );
