@@ -115,13 +115,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           ],
         ),
         centerTitle: false,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: Colors.grey[800],
-          ),
-        ),
       ),
       body: Column(
         children: [
