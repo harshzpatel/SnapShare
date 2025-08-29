@@ -34,7 +34,10 @@ class UserTile extends StatelessWidget {
               radius: 18,
             ),
             const SizedBox(width: 20),
-            Text(username, style: TextStyle(color: AppColors.primary)),
+            Text(
+              username,
+              style: TextStyle(color: AppColors.primary, fontSize: 15),
+            ),
           ],
         ),
       ),
