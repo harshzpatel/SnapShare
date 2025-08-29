@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:snapshare/services/chat_service.dart';
@@ -5,36 +6,34 @@ import 'package:snapshare/services/chat_service.dart';
 class ChatScreen extends StatefulWidget {
   final String receiverId;
   final String receiverUsername;
+  final String? receiverProfileImage;
 
   const ChatScreen({
     super.key,
     required this.receiverId,
     required this.receiverUsername,
+    this.receiverProfileImage,
   });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final TextEditingController _messageController = TextEditingController();
-
   final ChatService _chatService = ChatService();
-
   final _auth = FirebaseAuth.instance;
-
   final _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        // Scroll to the bottom when the input field gains focus
-        Future.delayed(Duration(milliseconds: 50), () => scrollDown());
-        // scrollDown();
+        Future.delayed(Duration(milliseconds: 300), () => scrollDown());
       }
     });
     
@@ -43,20 +42,30 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _focusNode.dispose();
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
-  void scrollDown() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    // Scroll when keyboard opens/closes
+    Future.delayed(Duration(milliseconds: 100), () => scrollDown());
   }
 
-  // Function to send a message
+  void scrollDown() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
   void _sendMessage() async {
     final String message = _messageController.text.trim();
 
@@ -65,14 +74,55 @@ class _ChatScreenState extends State<ChatScreen> {
       _messageController.clear();
       scrollDown();
     }
-
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.receiverUsername)),
+      backgroundColor: Color(0xFF121212),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xFF1E1E1E),
+        foregroundColor: Colors.white,
+        title: Row(
+          children: [
+            CircleAvatar(
+              radius: 16,
+              backgroundColor: Colors.grey[600],
+              backgroundImage: widget.receiverProfileImage != null
+                ? NetworkImage(widget.receiverProfileImage!)
+                : null,
+              child: widget.receiverProfileImage == null
+                ? Text(
+                    widget.receiverUsername[0].toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                : null,
+            ),
+            SizedBox(width: 12),
+            Text(
+              widget.receiverUsername,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: false,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Container(
+            height: 1,
+            color: Colors.grey[800],
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Expanded(child: _buildMessageList()),
@@ -87,35 +137,119 @@ class _ChatScreenState extends State<ChatScreen> {
       stream: _chatService.getMessagesStream(widget.receiverId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.blue[400],
+              strokeWidth: 2,
+            ),
+          );
         }
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.red[400],
+                  size: 48,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Something went wrong',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '${snapshot.error}',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
         }
 
         final messages = snapshot.data!.docs;
 
+        if (messages.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.chat_bubble_outline,
+                  color: Colors.grey[600],
+                  size: 64,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'No messages yet',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Start a conversation with ${widget.receiverUsername}',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        }
+
         return ListView.builder(
           controller: _scrollController,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           itemCount: messages.length,
           itemBuilder: (context, index) {
             final messageData = messages[index].data() as Map<String, dynamic>;
             final isMe = messageData['senderId'] == _auth.currentUser!.uid;
+            final message = messageData['message'] ?? '';
 
-            return ListTile(
-              title: Align(
-                alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isMe ? Colors.blue : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10),
+            return Padding(
+              padding: EdgeInsets.only(bottom: 8),
+              child: Row(
+                mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                children: [
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.75,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: isMe ? Colors.blue[600] : Color(0xFF2A2A2A),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                        bottomLeft: isMe ? Radius.circular(20) : Radius.circular(4),
+                        bottomRight: isMe ? Radius.circular(4) : Radius.circular(20),
+                      ),
+                    ),
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        height: 1.3,
+                      ),
+                    ),
                   ),
-                  child: Text(
-                    messageData['message'],
-                    style: TextStyle(color: isMe ? Colors.white : Colors.black),
-                  ),
-                ),
+                ],
               ),
             );
           },
@@ -124,26 +258,67 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // build func for Widget for the message input field and send button
   Widget _buildMessageInput() {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              focusNode: _focusNode,
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'Type a message',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+    return Container(
+      color: Color(0xFF121212),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                focusNode: _focusNode,
+                controller: _messageController,
+                maxLines: null,
+                minLines: 1,
+                textCapitalization: TextCapitalization.sentences,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Message...',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 16,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  filled: true,
+                  fillColor: Color(0xFF2A2A2A),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onSubmitted: (_) => _sendMessage(),
+              ),
+            ),
+            SizedBox(width: 8),
+            GestureDetector(
+              onTap: _sendMessage,
+              child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue[600],
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.send_rounded,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
             ),
-          ),
-          IconButton(icon: Icon(Icons.send), onPressed: _sendMessage),
-        ],
+          ],
+        ),
       ),
     );
   }
