@@ -83,6 +83,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         elevation: 0,
         backgroundColor: Color(0xFF1E1E1E),
         foregroundColor: Colors.white,
+        toolbarHeight: 56,
+        leadingWidth: 56,
+        titleSpacing: 0,
         title: Row(
           children: [
             CircleAvatar(
