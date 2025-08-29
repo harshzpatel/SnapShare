@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         Future.delayed(Duration(milliseconds: 300), () => scrollDown());
       }
     });
-    
+
     Future.delayed(Duration(milliseconds: 300), () => scrollDown());
   }
 
@@ -79,45 +79,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF121212),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color(0xFF1E1E1E),
-        foregroundColor: Colors.white,
-        toolbarHeight: 56,
-        leadingWidth: 56,
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: Colors.grey[600],
-              backgroundImage: widget.receiverProfileImage != null
-                ? NetworkImage(widget.receiverProfileImage!)
-                : null,
-              child: widget.receiverProfileImage == null
-                ? Text(
-                    widget.receiverUsername[0].toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
-                : null,
-            ),
-            SizedBox(width: 12),
-            Text(
-              widget.receiverUsername,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-        centerTitle: false,
-      ),
+      appBar: _buildAppBar(),
       body: Column(
         children: [
           Expanded(child: _buildMessageList()),
@@ -127,84 +89,71 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     );
   }
 
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Color(0xFF1E1E1E),
+      foregroundColor: Colors.white,
+      toolbarHeight: 56,
+      leadingWidth: 56,
+      titleSpacing: 0,
+      title: _buildAppBarTitle(),
+      centerTitle: false,
+    );
+  }
+
+  Widget _buildAppBarTitle() {
+    return Row(
+      children: [
+        _buildProfileAvatar(),
+        SizedBox(width: 12),
+        Text(
+          widget.receiverUsername,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileAvatar() {
+    return CircleAvatar(
+      radius: 16,
+      backgroundColor: Colors.grey[600],
+      backgroundImage: widget.receiverProfileImage != null
+          ? NetworkImage(widget.receiverProfileImage!)
+          : null,
+      child: widget.receiverProfileImage == null
+          ? Text(
+              widget.receiverUsername[0].toUpperCase(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          : null,
+    );
+  }
+
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: _chatService.getMessagesStream(widget.receiverId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.blue[400],
-              strokeWidth: 2,
-            ),
-          );
+          return _buildLoadingState();
         }
         if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error_outline,
-                  color: Colors.red[400],
-                  size: 48,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Something went wrong',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  '${snapshot.error}',
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
+          return _buildErrorState(snapshot.error.toString());
         }
 
         final messages = snapshot.data!.docs;
 
         if (messages.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.chat_bubble_outline,
-                  color: Colors.grey[600],
-                  size: 64,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'No messages yet',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Start a conversation with ${widget.receiverUsername}',
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
+          return _buildEmptyState();
         }
 
         return ListView.builder(
@@ -216,40 +165,100 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             final isMe = messageData['senderId'] == _auth.currentUser!.uid;
             final message = messageData['message'] ?? '';
 
-            return Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Row(
-                mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.75,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: isMe ? Colors.blue[600] : Color(0xFF2A2A2A),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomLeft: isMe ? Radius.circular(20) : Radius.circular(4),
-                        bottomRight: isMe ? Radius.circular(4) : Radius.circular(20),
-                      ),
-                    ),
-                    child: Text(
-                      message,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        height: 1.3,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return _buildMessageBubble(message, isMe);
           },
         );
       },
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return Center(
+      child: CircularProgressIndicator(color: Colors.blue[400], strokeWidth: 2),
+    );
+  }
+
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, color: Colors.red[400], size: 48),
+          SizedBox(height: 16),
+          Text(
+            'Something went wrong',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            error,
+            style: TextStyle(color: Colors.grey[500], fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.chat_bubble_outline, color: Colors.grey[600], size: 64),
+          SizedBox(height: 16),
+          Text(
+            'No messages yet',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Start a conversation with ${widget.receiverUsername}',
+            style: TextStyle(color: Colors.grey[500], fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(String message, bool isMe) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: isMe
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.75,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isMe ? Colors.blue[600] : Color(0xFF2A2A2A),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: isMe ? Radius.circular(20) : Radius.circular(4),
+                bottomRight: isMe ? Radius.circular(4) : Radius.circular(20),
+              ),
+            ),
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white, fontSize: 16, height: 1.3),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -260,60 +269,53 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       child: SafeArea(
         child: Row(
           children: [
-            Expanded(
-              child: TextField(
-                focusNode: _focusNode,
-                controller: _messageController,
-                maxLines: null,
-                minLines: 1,
-                textCapitalization: TextCapitalization.sentences,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Message...',
-                  hintStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 16,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFF2A2A2A),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                onSubmitted: (_) => _sendMessage(),
-              ),
-            ),
+            Expanded(child: _buildTextField()),
             SizedBox(width: 8),
-            GestureDetector(
-              onTap: _sendMessage,
-              child: Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue[600],
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.send_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-            ),
+            _buildSendButton(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField() {
+    return TextField(
+      focusNode: _focusNode,
+      controller: _messageController,
+      maxLines: null,
+      minLines: 1,
+      textCapitalization: TextCapitalization.sentences,
+      style: TextStyle(fontSize: 16, color: Colors.white),
+      decoration: InputDecoration(
+        hintText: 'Message...',
+        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16),
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        filled: true,
+        fillColor: Color(0xFF2A2A2A),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      onSubmitted: (_) => _sendMessage(),
+    );
+  }
+
+  Widget _buildSendButton() {
+    return GestureDetector(
+      onTap: _sendMessage,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.blue[600],
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.send_rounded, color: Colors.white, size: 20),
       ),
     );
   }
