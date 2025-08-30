@@ -8,6 +8,7 @@ import 'package:snapshare/screens/home_screen.dart';
 import 'package:snapshare/screens/login_screen.dart';
 import 'package:snapshare/core/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:snapshare/services/firebase_messaging_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessagingService().initialize();
 
   runApp(const MainApp());
 }
