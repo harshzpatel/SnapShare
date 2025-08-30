@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:snapshare/services/chat_service.dart';
@@ -24,10 +25,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final _auth = FirebaseAuth.instance;
   final _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
+  late Stream<QuerySnapshot> _messagesStream;
 
   @override
   void initState() {
     super.initState();
+    _messagesStream = _chatService.getMessagesStream(widget.receiverId);
     WidgetsBinding.instance.addObserver(this);
 
     _focusNode.addListener(() {
@@ -71,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     if (message.isNotEmpty) {
       await _chatService.sendMessage(widget.receiverId, message);
       _messageController.clear();
-      scrollDown();
+      // scrollDown();
     }
   }
 
@@ -141,7 +144,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Widget _buildMessageList() {
     return StreamBuilder(
-      stream: _chatService.getMessagesStream(widget.receiverId),
+      stream: _messagesStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildLoadingState();
@@ -155,6 +158,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         if (messages.isEmpty) {
           return _buildEmptyState();
         }
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          scrollDown();
+        });
 
         return ListView.builder(
           controller: _scrollController,
