@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snapshare/firebase_options.dart';
@@ -8,7 +10,16 @@ import 'package:snapshare/screens/home_screen.dart';
 import 'package:snapshare/screens/login_screen.dart';
 import 'package:snapshare/core/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:snapshare/services/firebase_messaging_service.dart';
+import 'package:snapshare/services/push_notification_service.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(); // Initialize if not already
+  if (kDebugMode) {
+    print("Handling a background message: ${message.messageId}");
+  }
+  // You can do more complex logic here if needed for background messages
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +28,8 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseMessagingService().initialize();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(const MainApp());
 }
@@ -31,6 +43,12 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   bool _didCache = false;
+
+  @override
+  void initState() {
+    super.initState();
+    PushNotificationService().initialize();
+  }
 
   @override
   void didChangeDependencies() {

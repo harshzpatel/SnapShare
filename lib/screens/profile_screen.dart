@@ -7,6 +7,7 @@ import 'package:snapshare/services/firestore_methods.dart';
 import 'package:snapshare/core/utils.dart';
 
 import '../models/user.dart' as model;
+import '../services/push_notification_service.dart';
 import '../widgets/follow_button.dart';
 import 'login_screen.dart';
 
@@ -88,6 +89,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void signOut() async {
+    await PushNotificationService().deleteToken();
+
     await FirebaseAuth.instance.signOut();
 
     if (!mounted) return;

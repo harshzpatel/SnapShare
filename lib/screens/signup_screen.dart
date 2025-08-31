@@ -8,6 +8,7 @@ import 'package:snapshare/core/theme.dart';
 import 'package:snapshare/core/utils.dart';
 import 'package:snapshare/widgets/text_field_input.dart';
 
+import '../services/push_notification_service.dart';
 import '../widgets/footer.dart';
 import '../widgets/form_button.dart';
 import 'home_screen.dart';
@@ -73,6 +74,8 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.of(
         context,
       ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+
+      await PushNotificationService().initialize();
     } else {
       showSnackBar(res, context);
     }

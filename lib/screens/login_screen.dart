@@ -10,6 +10,8 @@ import 'package:snapshare/widgets/footer.dart';
 import 'package:snapshare/widgets/form_button.dart';
 import 'package:snapshare/widgets/text_field_input.dart';
 
+import '../services/push_notification_service.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -55,6 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.of(
         context,
       ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+
+      await PushNotificationService().initialize();
     } else {
       showSnackBar(res, context);
     }
