@@ -49,7 +49,8 @@ def send_chat_notification(event: firestore_fn.Event[firestore_fn.DocumentSnapsh
         data_payload = {
             "username": sender_name,
             "message": message_text,
-            "profImage": sender_prof_image
+            "profImage": sender_prof_image,
+            "senderId": sender_id
         }
 
         message = messaging.MulticastMessage(
@@ -92,7 +93,8 @@ def send_fixed_alert(req: https_fn.Request) -> https_fn.Response:
         data_payload = {
             "username": "Cloud Function",
             "message": "This is a custom notification from the server!",
-            "profImage": "https://yt3.ggpht.com/yti/ANjgQV8sJ3Ji-ggJxkWTzwW6qwsSQQiARYU9gobaM2O6HUflT6hB=s108-c-k-c0x00ffffff-no-rj"  # A sample profile image URL
+            "profImage": "https://yt3.ggpht.com/yti/ANjgQV8sJ3Ji-ggJxkWTzwW6qwsSQQiARYU9gobaM2O6HUflT6hB=s108-c-k-c0x00ffffff-no-rj",
+            "senderId": "P4JsTW7Xw0TToApjj9syfOK4TwH2"
         }
 
         # --- Construct the message with the DATA payload ---
