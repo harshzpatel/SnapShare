@@ -15,7 +15,7 @@ class NotificationScreen extends StatelessWidget {
               username: 'Harsh',
               message: 'hello bro',
               profImage:
-                  'https://yt3.ggpht.com/yti/ANjgQV8sJ3Ji-ggJxkWTzwW6qwsSQQiARYU9gobaM2O6HUflT6hB=s108-c-k-c0x00ffffff-no-rj',
+                  'https://cdn-icons-png.flaticon.com/512/7915/7915522.png',
             );
           },
           child: Text('noti'),

@@ -40,22 +40,19 @@ def send_chat_notification(event: firestore_fn.Event[firestore_fn.DocumentSnapsh
 
         sender_doc = db.collection('users').document(sender_id).get()
         sender_name = "New Message"
+        sender_prof_image = "https://cdn-icons-png.flaticon.com/512/7915/7915522.png"
 
         if sender_doc.exists:
             sender_name = sender_doc.to_dict().get("username", "New Message")
-
-        notification = messaging.Notification(
-            title=sender_name,
-            body=message_text,
-        )
+            sender_prof_image = sender_doc.to_dict().get("photoUrl") or "https://cdn-icons-png.flaticon.com/512/7915/7915522.png"
 
         data_payload = {
-            "type": "chat_message",
-            "senderId": sender_id
+            "username": sender_name,
+            "message": message_text,
+            "profImage": sender_prof_image
         }
 
         message = messaging.MulticastMessage(
-            notification=notification,
             data=data_payload,
             tokens=fcm_tokens,
         )
@@ -76,11 +73,6 @@ def send_chat_notification(event: firestore_fn.Event[firestore_fn.DocumentSnapsh
         raise
 
 
-# @https_fn.on_request()
-# def on_request_example(req: https_fn.Request) -> https_fn.Response:
-#     return https_fn.Response("Hello world!")
-#
-#
 @https_fn.on_request()
 def send_fixed_alert(req: https_fn.Request) -> https_fn.Response:
     if req.method != "GET":
@@ -97,11 +89,15 @@ def send_fixed_alert(req: https_fn.Request) -> https_fn.Response:
                 "FCM token is not set. Please edit the function code to provide a valid token.")
 
 
+        data_payload = {
+            "username": "Cloud Function",
+            "message": "This is a custom notification from the server!",
+            "profImage": "https://yt3.ggpht.com/yti/ANjgQV8sJ3Ji-ggJxkWTzwW6qwsSQQiARYU9gobaM2O6HUflT6hB=s108-c-k-c0x00ffffff-no-rj"  # A sample profile image URL
+        }
+
+        # --- Construct the message with the DATA payload ---
         message = messaging.Message(
-            notification=messaging.Notification(
-                title=NOTIFICATION_TITLE,
-                body=NOTIFICATION_BODY,
-            ),
+            data=data_payload,
             token=TARGET_FCM_TOKEN,
         )
 
