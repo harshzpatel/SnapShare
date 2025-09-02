@@ -10,15 +10,28 @@ import 'package:snapshare/screens/home_screen.dart';
 import 'package:snapshare/screens/login_screen.dart';
 import 'package:snapshare/core/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:snapshare/services/push_notification_service.dart';
+import 'package:snapshare/services/notification_service.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(); // Initialize if not already
+  await Firebase.initializeApp();
+
   if (kDebugMode) {
     print("Handling a background message: ${message.messageId}");
   }
-  // You can do more complex logic here if needed for background messages
+
+  final data = message.data;
+
+  if (data['username'] != null &&
+      data['message'] != null &&
+      data['profImage'] != null) {
+    await NotificationService().showChatNotification(
+      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      username: data['username'],
+      message: data['message'],
+      profImage: data['profImage'],
+    );
+  }
 }
 
 void main() async {
@@ -47,7 +60,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    PushNotificationService().initialize();
+    NotificationService().initialize();
   }
 
   @override
@@ -63,9 +76,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider())
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SnapShare',
