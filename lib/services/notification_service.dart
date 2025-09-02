@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +8,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+
+import '../main.dart';
+import '../screens/chat_screen.dart';
 
 class NotificationService {
   final _fcm = FirebaseMessaging.instance;
@@ -17,12 +20,16 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  static final NotificationService _instance =
-      NotificationService._internal();
+  static final NotificationService _instance = NotificationService._internal();
 
   factory NotificationService() => _instance;
 
   NotificationService._internal();
+
+  Future<NotificationAppLaunchDetails?>
+  getNotificationAppLaunchDetails() async {
+    return await _localNotifications.getNotificationAppLaunchDetails();
+  }
 
   Future<void> initialize() async {
     await _initializeLocalNotifications();
@@ -67,6 +74,7 @@ class NotificationService {
           username: data['username'],
           message: data['message'],
           profImage: data['profImage'],
+          senderId: data['senderId'],
         );
       }
     });
@@ -100,6 +108,25 @@ class NotificationService {
         // Handle notification tap when the app is in the foreground/background
         if (kDebugMode) {
           print('Notification tapped with payload: ${response.payload}');
+        }
+
+        String senderId = response.payload!;
+
+        final userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(senderId)
+            .get();
+
+        if (navigatorKey.currentState != null) {
+          navigatorKey.currentState!.push(
+            MaterialPageRoute(
+              builder: (context) => ChatScreen(
+                receiverId: senderId,
+                receiverUsername: userSnap['username'],
+                receiverProfileImage: userSnap['photoUrl'],
+              ),
+            ),
+          );
         }
       },
     );
@@ -161,20 +188,13 @@ class NotificationService {
     return filePath;
   }
 
-  // Future<String> _downloadAndSaveFile(String url, String fileName) async {
-  //   final Directory directory = await getTemporaryDirectory();
-  //   final String filePath = '${directory.path}/$fileName';
-  //   final http.Response response = await http.get(Uri.parse(url));
-  //   final File file = File(filePath);
-  //   await file.writeAsBytes(response.bodyBytes);
-  //   return filePath;
-  // }
 
   Future<void> showChatNotification({
     required int id,
     required String username,
     required String message,
     required String profImage,
+    required String senderId,
   }) async {
     final String roundedPath = await _downloadAndSaveCircularFile(
       profImage,
@@ -212,7 +232,7 @@ class NotificationService {
       username, // Title
       message, // Body
       notificationDetails,
-      // payload: 'Optional payload data'
+      payload: senderId,
     );
   }
 

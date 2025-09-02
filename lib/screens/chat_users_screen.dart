@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../services/chat_service.dart';
@@ -12,7 +13,7 @@ class ChatUsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Users')),
+      appBar: AppBar(title: Text('Users'), titleSpacing: 0),
       body: _buildUsersList(),
     );
   }
@@ -30,6 +31,10 @@ class ChatUsersScreen extends StatelessWidget {
 
         return ListView(
           children: snapshot.data!
+              .where(
+                (userData) =>
+                    userData['uid'] != FirebaseAuth.instance.currentUser?.uid,
+              )
               .map<Widget>((userData) => _buildUsersListItem(userData, context))
               .toList(),
         );

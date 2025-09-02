@@ -93,13 +93,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   PreferredSizeWidget _buildAppBar() {
+    final bool hasBackButton = Navigator.of(context).canPop();
+
     return AppBar(
       elevation: 0,
       backgroundColor: Color(0xFF1E1E1E),
       foregroundColor: Colors.white,
       toolbarHeight: 56,
       leadingWidth: 56,
-      titleSpacing: 0,
+      titleSpacing: hasBackButton ? 0 : NavigationToolbar.kMiddleSpacing,
       title: _buildAppBarTitle(),
       centerTitle: false,
     );
