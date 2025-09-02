@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:snapshare/providers/user_provider.dart';
 import 'package:snapshare/core/theme.dart';
-import 'package:snapshare/core/global_variables.dart';
 import 'package:provider/provider.dart';
+import 'package:snapshare/screens/profile_screen.dart';
+import 'package:snapshare/screens/search_screen.dart';
 
+import 'add_post_screen.dart';
+import 'feed_screen.dart';
 import 'login_screen.dart';
+import 'notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   String username = "";
   int _page = 0;
   late PageController pageController;
+
+  final homeScreenItems = [
+    const FeedScreen(),
+    const SearchScreen(),
+    const AddPostScreen(),
+    NotificationScreen(),
+    ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
+  ];
 
   @override
   void initState() {
