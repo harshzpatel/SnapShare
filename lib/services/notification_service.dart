@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../main.dart';
 import '../screens/chat_screen.dart';
+import 'chat_state.dart';
 
 class NotificationService {
   final _fcm = FirebaseMessaging.instance;
@@ -66,6 +67,15 @@ class NotificationService {
 
       final data = message.data;
 
+      if (data['senderId'] == ChatState.currentChatUserId) {
+        if (kDebugMode) {
+          print(
+            "Chat screen is already open for ${data['username']}. Suppressing notification.",
+          );
+        }
+        return; // Suppress the notification
+      }
+
       if (data['username'] != null &&
           data['message'] != null &&
           data['profImage'] != null) {
@@ -118,15 +128,19 @@ class NotificationService {
             .get();
 
         if (navigatorKey.currentState != null) {
-          navigatorKey.currentState!.push(
-            MaterialPageRoute(
-              builder: (context) => ChatScreen(
-                receiverId: senderId,
-                receiverUsername: userSnap['username'],
-                receiverProfileImage: userSnap['photoUrl'],
-              ),
+          final chatScreenRoute = MaterialPageRoute(
+            builder: (context) => ChatScreen(
+              receiverId: senderId,
+              receiverUsername: userSnap['username'],
+              receiverProfileImage: userSnap['photoUrl'],
             ),
           );
+
+          if (ChatState.currentChatUserId != null) {
+            navigatorKey.currentState!.pushReplacement(chatScreenRoute);
+          } else {
+            navigatorKey.currentState!.push(chatScreenRoute);
+          }
         }
       },
     );
@@ -187,7 +201,6 @@ class NotificationService {
     await file.writeAsBytes(pngBytes.buffer.asUint8List());
     return filePath;
   }
-
 
   Future<void> showChatNotification({
     required int id,

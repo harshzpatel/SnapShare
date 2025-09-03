@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:snapshare/services/chat_service.dart';
 
+import '../services/chat_state.dart';
+
 class ChatScreen extends StatefulWidget {
   final String receiverId;
   final String receiverUsername;
@@ -33,6 +35,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     _messagesStream = _chatService.getMessagesStream(widget.receiverId);
     WidgetsBinding.instance.addObserver(this);
 
+    ChatState.currentChatUserId = widget.receiverId;
+
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         Future.delayed(Duration(milliseconds: 300), () => scrollDown());
@@ -45,6 +49,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+
+    ChatState.currentChatUserId = null;
+
     _focusNode.dispose();
     _messageController.dispose();
     _scrollController.dispose();
