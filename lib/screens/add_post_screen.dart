@@ -318,7 +318,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send, color: AppColors.link),
-                  onPressed: () {
+                  onPressed: _isLoading ? null : () {
                     FocusScope.of(context).unfocus();
                     _postImage(
                       uid: user.uid,
