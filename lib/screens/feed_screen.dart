@@ -13,7 +13,13 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 29)),
+        title: Row(
+          children: [
+            Image.asset('assets/app_icon.png', width: 30, height: 30),
+            SizedBox(width: 7),
+            Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 29)),
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () {
