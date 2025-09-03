@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:snapshare/screens/chat_users_screen.dart';
 import 'package:snapshare/widgets/post_card.dart';
 
-import '../core/theme.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
@@ -13,11 +13,7 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SvgPicture.asset(
-          'assets/ic_instagram.svg',
-          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-          height: 32,
-        ),
+        title: Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 29)),
         actions: [
           IconButton(
             onPressed: () {

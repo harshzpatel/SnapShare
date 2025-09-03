@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:snapshare/services/auth_methods.dart';
 import 'package:snapshare/screens/home_screen.dart';
 import 'package:snapshare/screens/signup_screen.dart';
-import 'package:snapshare/core/theme.dart';
 import 'package:snapshare/core/utils.dart';
 import 'package:snapshare/widgets/footer.dart';
 import 'package:snapshare/widgets/form_button.dart';
@@ -102,14 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-                height: 64,
-              ),
+              Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 60)),
               SizedBox(height: 150),
               TextFieldInput(
                 textEditingController: _emailController,

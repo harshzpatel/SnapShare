@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snapshare/services/auth_methods.dart';
 import 'package:snapshare/screens/login_screen.dart';
@@ -118,14 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           child: Column(
             children: [
-              SvgPicture.asset(
-                'assets/ic_instagram.svg',
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-                height: 64,
-              ),
+              Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 60)),
               SizedBox(height: 64),
               Stack(
                 children: [
