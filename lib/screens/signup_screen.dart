@@ -118,7 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           child: Column(
             children: [
-              Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 60)),
+              Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 50)),
               SizedBox(height: 64),
               Stack(
                 children: [

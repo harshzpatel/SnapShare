@@ -101,8 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 60)),
-              SizedBox(height: 150),
+              Image.asset('assets/app_icon.png', width: 120, height: 120),
+              Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 50)),
+              SizedBox(height: 120),
               TextFieldInput(
                 textEditingController: _emailController,
                 hintText: 'Email',
