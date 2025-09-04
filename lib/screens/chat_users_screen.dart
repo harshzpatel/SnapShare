@@ -14,7 +14,7 @@ class ChatUsersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Users', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Users', style: TextStyle(fontWeight: FontWeight.bold)),
         titleSpacing: 0,
       ),
       body: _buildUsersList(),
@@ -26,7 +26,7 @@ class ChatUsersScreen extends StatelessWidget {
       stream: _chatService.getUsersStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));

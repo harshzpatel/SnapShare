@@ -62,7 +62,7 @@ class _PostCardState extends State<PostCard> {
 
     return Container(
       color: AppColors.background,
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           _header(context),
@@ -136,7 +136,7 @@ class _PostCardState extends State<PostCard> {
               // height: 24,
               child: IconButton(
                 padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
+                constraints: const BoxConstraints(),
                 onPressed: () async {
                   if (user.uid == 'loading...') return;
 
@@ -161,14 +161,14 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Text(
           '${widget.snap['likes'].length} Likes',
           style: GoogleFonts.signikaNegative(
             textStyle: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Material(
           color: Colors.transparent,
           child: InkWell(
@@ -189,7 +189,7 @@ class _PostCardState extends State<PostCard> {
                   // Icon(Icons.comment_outlined, color: AppColors.primary),
                   SvgPicture.asset(
                     'assets/comment_icon.svg',
-                    colorFilter: ColorFilter.mode(
+                    colorFilter: const ColorFilter.mode(
                       AppColors.primary,
                       BlendMode.srcIn,
                     ),
@@ -234,12 +234,12 @@ class _PostCardState extends State<PostCard> {
               placeholder: kTransparentImage,
               image: widget.snap['postUrl'],
               fit: BoxFit.cover,
-              fadeInDuration: Duration(milliseconds: 200),
-              fadeOutDuration: Duration(milliseconds: 100),
+              fadeInDuration: const Duration(milliseconds: 200),
+              fadeOutDuration: const Duration(milliseconds: 100),
               imageErrorBuilder: (context, error, stackTrace) {
                 return Container(
                   color: AppColors.secondary.withValues(alpha: .1),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.error_outline,
                       color: AppColors.secondary,
@@ -252,7 +252,7 @@ class _PostCardState extends State<PostCard> {
           ),
           AnimatedOpacity(
             opacity: isLikeAnimating ? 1 : 0,
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             child: LikeAnimation(
               isAnimating: isLikeAnimating,
               onEnd: () {
@@ -278,19 +278,19 @@ class _PostCardState extends State<PostCard> {
 
   Container _header(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 4, bottom: 12, left: 16, right: 0),
+      padding: const EdgeInsets.only(top: 4, bottom: 12, left: 16, right: 0),
       child: Row(
         children: [
           CircleAvatar(
             radius: 16,
-            backgroundImage: AssetImage('assets/profile_icon.jpg'),
+            backgroundImage: const AssetImage('assets/profile_icon.jpg'),
             foregroundImage: widget.snap['profImage'] != null
                 ? NetworkImage(widget.snap['profImage'])
-                : AssetImage('assets/profile_icon.jpg'),
+                : const AssetImage('assets/profile_icon.jpg'),
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,7 +317,7 @@ class _PostCardState extends State<PostCard> {
                     builder: (context) => _deleteDialogBox(context),
                   );
                 },
-                icon: Icon(Icons.more_vert, color: AppColors.primary),
+                icon: const Icon(Icons.more_vert, color: AppColors.primary),
               ),
             ),
         ],
@@ -328,19 +328,19 @@ class _PostCardState extends State<PostCard> {
   AlertDialog _deleteDialogBox(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      title: Text('Delete Post'),
-      content: Text('Are you sure you want to delete this post?'),
+      title: const Text('Delete Post'),
+      content: const Text('Are you sure you want to delete this post?'),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () async {
             Navigator.of(context).pop();
             await FirestoreMethods().deletePost(widget.snap['postId']);
           },
-          child: Text('Delete', style: TextStyle(color: Colors.red)),
+          child: const Text('Delete', style: TextStyle(color: Colors.red)),
         ),
       ],
     );

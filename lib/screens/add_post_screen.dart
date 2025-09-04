@@ -96,7 +96,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Create a post',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -208,8 +208,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
         child: InkWell(
           onTap: () => _selectImage(context),
           borderRadius: BorderRadius.circular(24),
-          child: Padding(
-            padding: const EdgeInsets.all(50.0),
+          child: const Padding(
+            padding: EdgeInsets.all(50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -219,8 +219,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   size: 50,
                   color: AppColors.primary,
                 ),
-                const SizedBox(height: 16),
-                const Text(
+                SizedBox(height: 16),
+                Text(
                   'Select a Photo to Post',
                   style: TextStyle(fontSize: 16),
                 ),
@@ -264,7 +264,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ? LinearProgressIndicator(
                   value: _currentDisplayProgress,
                   backgroundColor: Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.link),
+                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.link),
                   minHeight: 4.0,
                 )
               : const SizedBox(height: 4),
@@ -327,7 +327,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send, color: AppColors.link),
+                  icon: const Icon(Icons.send, color: AppColors.link),
                   onPressed: _isLoading
                       ? null
                       : () {

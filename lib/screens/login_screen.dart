@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Navigator.of(
         context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+      ).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
 
       await NotificationService().initialize();
     } else {
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void navigateToSignup() {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (context) => SignupScreen()));
+    ).pushReplacement(MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
             children: [
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Expanded(
       child: Center(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(
+          physics: const BouncingScrollPhysics(
             decelerationRate: ScrollDecelerationRate.fast,
           ),
           child: Column(
@@ -103,26 +103,26 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Image.asset('assets/app_icon.png', width: 120, height: 120),
               Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 50)),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
               TextFieldInput(
                 textEditingController: _emailController,
                 hintText: 'Email',
                 textInputType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFieldInput(
                 textEditingController: _passwordController,
                 hintText: 'Password',
                 textInputType: TextInputType.text,
                 isPass: true,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               FormButton(
                 text: 'Log in',
                 onPressed: loginUser,
                 isLoading: _isLoading,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
             ],
           ),
         ),

@@ -118,7 +118,7 @@ class _MainAppState extends State<MainApp> {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               );
             }
@@ -126,7 +126,7 @@ class _MainAppState extends State<MainApp> {
             if (snapshot.hasData) {
               if (widget.initialSenderId != null) {
                 if (notiUserData == null) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(color: AppColors.primary),
                   );
                 }
@@ -138,10 +138,10 @@ class _MainAppState extends State<MainApp> {
                 );
               }
 
-              return HomeScreen();
+              return const HomeScreen();
             }
 
-            return LoginScreen();
+            return const LoginScreen();
           },
         ),
       ),

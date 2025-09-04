@@ -73,7 +73,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res == 'success') {
       Navigator.of(
         context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+      ).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
 
       await NotificationService().initialize();
     } else {
@@ -84,7 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void navigateToLogin() {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+    ).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -92,7 +92,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
             children: [
@@ -113,7 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Expanded(
       child: Center(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(
+          physics: const BouncingScrollPhysics(
             decelerationRate: ScrollDecelerationRate.fast,
           ),
           child: Column(
@@ -122,28 +122,28 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/app_icon.png', width: 50, height: 50),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text(
                     'SnapShare',
                     style: GoogleFonts.caveatBrush(fontSize: 50),
                   ),
                 ],
               ),
-              SizedBox(height: 64),
+              const SizedBox(height: 64),
               Stack(
                 children: [
                   CircleAvatar(
                     radius: 64,
                     backgroundImage: _image != null
                         ? MemoryImage(_image!)
-                        : AssetImage('assets/profile_icon.jpg'),
+                        : const AssetImage('assets/profile_icon.jpg'),
                   ),
                   Positioned(
                     bottom: -5,
                     right: -5,
                     child: IconButton(
                       onPressed: selectImage,
-                      icon: CircleAvatar(
+                      icon: const CircleAvatar(
                         radius: 18,
                         backgroundColor: AppColors.background,
                         child: Icon(
@@ -156,38 +156,38 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 54),
+              const SizedBox(height: 54),
               TextFieldInput(
                 textEditingController: _usernameController,
                 hintText: 'Username',
                 textInputType: TextInputType.text,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFieldInput(
                 textEditingController: _emailController,
                 hintText: 'Email',
                 textInputType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFieldInput(
                 textEditingController: _passwordController,
                 hintText: 'Password',
                 textInputType: TextInputType.text,
                 isPass: true,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFieldInput(
                 textEditingController: _bioController,
                 hintText: 'Bio',
                 textInputType: TextInputType.text,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               FormButton(
                 text: 'Sign up',
                 onPressed: signUpUser,
                 isLoading: _isLoading,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
             ],
           ),
         ),

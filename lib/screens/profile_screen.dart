@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+    ).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   void followUser() async {
@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final bool hasBackButton = Navigator.of(context).canPop();
 
     return isLoading
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: AppBar(
               title: Text(
@@ -155,17 +155,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Padding _userDetails(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.all(16),
+      padding: const EdgeInsetsGeometry.all(16),
       child: Column(
         children: [
           Row(
             children: [
               CircleAvatar(
                 radius: 40,
-                backgroundImage: AssetImage('assets/profile_icon.jpg'),
+                backgroundImage: const AssetImage('assets/profile_icon.jpg'),
                 foregroundImage: user.photoUrl != null
                     ? NetworkImage(user.photoUrl!)
-                    : AssetImage('assets/profile_icon.jpg'),
+                    : const AssetImage('assets/profile_icon.jpg'),
               ),
               Expanded(
                 child: Column(
@@ -178,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         buildStatColumn(num: _numFollowing, label: 'following'),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     _button(),
                   ],
                 ),
@@ -187,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             child: Text(user.bio),
           ),
         ],
@@ -212,18 +212,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       future: _postsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Something went wrong'));
+          return const Center(child: Text('Something went wrong'));
         }
 
         return GridView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: snapshot.data!.docs.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             childAspectRatio: 1,
             crossAxisSpacing: 2,
@@ -249,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           num.toString(),
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Text(
           label,

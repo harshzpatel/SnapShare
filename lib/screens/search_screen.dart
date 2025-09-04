@@ -39,13 +39,13 @@ class _SearchScreenState extends State<SearchScreen> {
     return AppBar(
       title: TextFormField(
         controller: _searchController,
-        style: TextStyle(color: AppColors.primary),
+        style: const TextStyle(color: AppColors.primary),
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-          labelStyle: TextStyle(color: Color(0xff8f8f8f)),
+          labelStyle: const TextStyle(color: Color(0xff8f8f8f)),
           hintText: 'Search',
-          hintStyle: TextStyle(color: AppColors.secondary),
-          fillColor: Color(0xff121212),
+          hintStyle: const TextStyle(color: AppColors.secondary),
+          fillColor: const Color(0xff121212),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
             borderSide: Divider.createBorderSide(context),
@@ -59,10 +59,10 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
-            borderSide: BorderSide(color: Color(0xff3b3b3b), width: 1),
+            borderSide: const BorderSide(color: Color(0xff3b3b3b), width: 1),
           ),
           filled: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         ),
         onFieldSubmitted: (String _) {
           // setState(() {
@@ -90,14 +90,14 @@ class _SearchScreenState extends State<SearchScreen> {
           itemBuilder: (context, index) {
             return ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage('assets/profile_icon.jpg'),
+                backgroundImage: const AssetImage('assets/profile_icon.jpg'),
                 foregroundImage: _searchList[index]['photoUrl'] != null
                     ? NetworkImage(_searchList[index]['photoUrl'])
-                    : AssetImage('assets/profile_icon.jpg'),
+                    : const AssetImage('assets/profile_icon.jpg'),
               ),
               title: Text(
                 _searchList[index]['username'],
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               onTap: () {
                 Navigator.of(context).push(
@@ -121,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
         future: FirebaseFirestore.instance.collection('posts').get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -131,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
           return MasonryGridView.builder(
             mainAxisSpacing: 2,
             crossAxisSpacing: 2,
-            gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
             ),
             itemCount: snapshot.data!.docs.length,

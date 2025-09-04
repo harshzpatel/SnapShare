@@ -16,7 +16,7 @@ class FeedScreen extends StatelessWidget {
         title: Row(
           children: [
             Image.asset('assets/app_icon.png', width: 30, height: 30),
-            SizedBox(width: 7),
+            const SizedBox(width: 7),
             Text('SnapShare', style: GoogleFonts.caveatBrush(fontSize: 29)),
           ],
         ),
@@ -46,7 +46,7 @@ class FeedScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return ListView.builder(

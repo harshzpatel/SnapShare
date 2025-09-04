@@ -21,10 +21,10 @@ class TextFieldInput extends StatelessWidget {
       controller: textEditingController,
       decoration: InputDecoration(
         label: Text(hintText),
-        labelStyle: TextStyle(color: Color(0xff8f8f8f)),
+        labelStyle: const TextStyle(color: Color(0xff8f8f8f)),
         // hintText: hintText,
         // hintStyle: TextStyle(color: Color(0xff8f8f8f)),
-        fillColor: Color(0xff121212),
+        fillColor: const Color(0xff121212),
         border: OutlineInputBorder(
           borderSide: Divider.createBorderSide(context),
         ),
@@ -34,11 +34,11 @@ class TextFieldInput extends StatelessWidget {
             width: 1,
           ),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xff3b3b3b), width: 1),
         ),
         filled: true,
-        contentPadding: EdgeInsets.all(8),
+        contentPadding: const EdgeInsets.all(8),
       ),
       keyboardType: textInputType,
       obscureText: isPass,

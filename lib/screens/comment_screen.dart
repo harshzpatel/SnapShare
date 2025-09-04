@@ -32,7 +32,7 @@ class _CommentScreenState extends State<CommentScreen> {
     final User user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Comments')),
+      appBar: AppBar(title: const Text('Comments')),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('posts')
@@ -42,7 +42,7 @@ class _CommentScreenState extends State<CommentScreen> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return ListView.builder(
@@ -58,14 +58,14 @@ class _CommentScreenState extends State<CommentScreen> {
           margin: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          padding: EdgeInsets.only(left: 16, right: 8),
+          padding: const EdgeInsets.only(left: 16, right: 8),
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage('assets/profile_icon.jpg'),
+                backgroundImage: const AssetImage('assets/profile_icon.jpg'),
                 foregroundImage: user.photoUrl != null
                     ? NetworkImage(user.photoUrl!)
-                    : AssetImage('assets/profile_icon.jpg'),
+                    : const AssetImage('assets/profile_icon.jpg'),
                 radius: 18,
               ),
               Expanded(
@@ -73,10 +73,10 @@ class _CommentScreenState extends State<CommentScreen> {
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
                     controller: _commentController,
-                    style: TextStyle(color: AppColors.primary),
+                    style: const TextStyle(color: AppColors.primary),
                     decoration: InputDecoration(
                       hintText: 'Comment as ${user.username}',
-                      hintStyle: TextStyle(color: AppColors.secondary),
+                      hintStyle: const TextStyle(color: AppColors.secondary),
                       border: InputBorder.none,
                     ),
                   ),
@@ -100,8 +100,8 @@ class _CommentScreenState extends State<CommentScreen> {
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Text('Post', style: TextStyle(color: AppColors.link)),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: const Text('Post', style: TextStyle(color: AppColors.link)),
                 ),
               ),
             ],

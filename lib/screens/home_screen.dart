@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const FeedScreen(),
     const SearchScreen(),
     const AddPostScreen(),
-    NotificationScreen(),
+    const NotificationScreen(),
     ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
 
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+    ).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: pageController,
         onPageChanged: onPageChanged,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: homeScreenItems,
       ),
       bottomNavigationBar: _navBar(),

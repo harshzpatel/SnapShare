@@ -39,11 +39,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        Future.delayed(Duration(milliseconds: 300), () => scrollDown());
+        Future.delayed(const Duration(milliseconds: 300), () => scrollDown());
       }
     });
 
-    Future.delayed(Duration(milliseconds: 1000), () => scrollDown());
+    Future.delayed(const Duration(milliseconds: 1000), () => scrollDown());
   }
 
   @override
@@ -62,14 +62,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void didChangeMetrics() {
     super.didChangeMetrics();
     // Scroll when keyboard opens/closes
-    Future.delayed(Duration(milliseconds: 100), () => scrollDown());
+    Future.delayed(const Duration(milliseconds: 100), () => scrollDown());
   }
 
   void scrollDown() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     }
@@ -88,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: const Color(0xFF121212),
       appBar: _buildAppBar(),
       body: Column(
         children: [
@@ -104,7 +104,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
     return AppBar(
       elevation: 0,
-      backgroundColor: Color(0xFF1E1E1E),
+      backgroundColor: const Color(0xFF1E1E1E),
       foregroundColor: Colors.white,
       toolbarHeight: 56,
       leadingWidth: 56,
@@ -118,10 +118,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     return Row(
       children: [
         _buildProfileAvatar(),
-        SizedBox(width: 12),
+        const SizedBox(width: 12),
         Text(
           widget.receiverUsername,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 18,
             color: Colors.white,
@@ -141,7 +141,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       child: widget.receiverProfileImage == null
           ? Text(
               widget.receiverUsername[0].toUpperCase(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -174,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
         return ListView.builder(
           controller: _scrollController,
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           itemCount: messages.length,
           itemBuilder: (context, index) {
             final messageData = messages[index].data() as Map<String, dynamic>;
@@ -200,7 +200,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.error_outline, color: Colors.red[400], size: 48),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'Something went wrong',
             style: TextStyle(
@@ -209,7 +209,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             error,
             style: TextStyle(color: Colors.grey[500], fontSize: 14),
@@ -226,7 +226,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.chat_bubble_outline, color: Colors.grey[600], size: 64),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'No messages yet',
             style: TextStyle(
@@ -235,7 +235,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Start a conversation with ${widget.receiverUsername}',
             style: TextStyle(color: Colors.grey[500], fontSize: 14),
@@ -248,7 +248,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Widget _buildMessageBubble(String message, bool isMe) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         mainAxisAlignment: isMe
             ? MainAxisAlignment.end
@@ -258,19 +258,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.75,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: isMe ? Colors.blue[600] : Color(0xFF2A2A2A),
+              color: isMe ? Colors.blue[600] : const Color(0xFF2A2A2A),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: isMe ? Radius.circular(20) : Radius.circular(4),
-                bottomRight: isMe ? Radius.circular(4) : Radius.circular(20),
+                topLeft: const Radius.circular(20),
+                topRight: const Radius.circular(20),
+                bottomLeft: isMe ? const Radius.circular(20) : const Radius.circular(4),
+                bottomRight: isMe ? const Radius.circular(4) : const Radius.circular(20),
               ),
             ),
             child: Text(
               message,
-              style: TextStyle(color: Colors.white, fontSize: 16, height: 1.3),
+              style: const TextStyle(color: Colors.white, fontSize: 16, height: 1.3),
             ),
           ),
         ],
@@ -280,13 +280,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Widget _buildMessageInput() {
     return Container(
-      color: Color(0xFF121212),
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: const Color(0xFF121212),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: SafeArea(
         child: Row(
           children: [
             Expanded(child: _buildTextField()),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             _buildSendButton(),
           ],
         ),
@@ -301,14 +301,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       maxLines: null,
       minLines: 1,
       textCapitalization: TextCapitalization.sentences,
-      style: TextStyle(fontSize: 16, color: Colors.white),
+      style: const TextStyle(fontSize: 16, color: Colors.white),
       decoration: InputDecoration(
         hintText: 'Message...',
         hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16),
         border: InputBorder.none,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         filled: true,
-        fillColor: Color(0xFF2A2A2A),
+        fillColor: const Color(0xFF2A2A2A),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25),
           borderSide: BorderSide.none,
@@ -326,12 +326,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     return GestureDetector(
       onTap: _sendMessage,
       child: Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.blue[600],
           shape: BoxShape.circle,
         ),
-        child: Icon(Icons.send_rounded, color: Colors.white, size: 20),
+        child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
       ),
     );
   }
