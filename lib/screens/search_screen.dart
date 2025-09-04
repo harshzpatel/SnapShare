@@ -95,7 +95,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     ? NetworkImage(_searchList[index]['photoUrl'])
                     : AssetImage('assets/profile_icon.jpg'),
               ),
-              title: Text(_searchList[index]['username']),
+              title: Text(
+                _searchList[index]['username'],
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
