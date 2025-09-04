@@ -1,100 +1,98 @@
 # SnapShare - Social Media Platform
 
-A modern, feature-rich social media application built with Flutter and Firebase. Share your moments, connect with friends, and discover amazing content in a beautifully designed platform that prioritizes user experience and real-time interactions.
+A modern, feature-rich social media app built with Flutter and Firebase. Share moments, chat in real time, and get instant notifications — all in a polished, fast experience.
 
 ## 🚀 Features
 
 ### Authentication
-- **User Registration** - Create new accounts with email and password
-- **User Login** - Secure authentication with Firebase Auth
-- **Profile Management** - Upload profile pictures and manage user bio
+- Email/password sign up and login (Firebase Auth)
+- Profile: avatar upload, username, bio
 
-### Social Features
-- **Photo Sharing** - Upload and share photos with captions
-- **Feed** - View posts from all users in a beautiful timeline
-- **Like System** - Like and unlike posts with smooth animations
-- **Comments** - Comment on posts and engage with other users
-- **User Profiles** - View user profiles with their posts and stats
-- **Follow System** - Follow/unfollow other users
-- **Search** - Discover and search for users
+### Social
+- Photo posts with captions (Firebase Storage + Firestore)
+- Feed and post details
+- Likes and comments
+- Profiles with stats
+- Follow/unfollow
+- User search
+
+### Messaging & Notifications
+- 1:1 real-time chat (Firestore)
+- Push notifications (Firebase Cloud Messaging)
+- Local notifications with round avatar and MessagingStyle
+- Deep-link to ChatScreen when tapping a notification
+- Suppress notifications when the active chat is open
+- Background/terminated handling implemented
 
 ### UI/UX
-- **Smooth Animations** - Beautiful like animations and transitions
-- **Material Design** - Clean, modern interface following Material Design principles
-- **Custom Fonts** - Google Fonts integration for better typography
-- **SVG Icons** - Crisp vector icons throughout the app
-
-[//]: # (## 📱 Screenshots)
-
-[//]: # ()
-[//]: # (*Add your app screenshots here*)
+- Smooth animations and transitions
+- Material 3-inspired dark theme
+- Google Fonts, SVG icons, responsive layouts
 
 ## 🛠 Tech Stack
+- Flutter (Dart)
+- Firebase: Auth, Firestore, Storage, Cloud Messaging, Cloud Functions (Python)
+- Local notifications: flutter_local_notifications
+- State management: Provider
 
-- **Frontend**: Flutter (Dart)
-- **Backend**: Firebase
-- **Database**: Cloud Firestore
-- **Authentication**: Firebase Auth
-- **Storage**: Firebase Storage
-- **State Management**: Provider
-- **UI Components**: Material Design
+## 📦 Key Dependencies
+- firebase_core, firebase_auth, cloud_firestore, firebase_storage
+- firebase_messaging, flutter_local_notifications
+- provider, image_picker, google_fonts, flutter_svg
+- transparent_image, flutter_staggered_grid_view, timeago, uuid
+- http, path_provider
 
-## 📦 Dependencies
-
-### Core Dependencies
-- `firebase_core` - Firebase SDK initialization
-- `cloud_firestore` - NoSQL database for storing posts, users, and comments
-- `firebase_auth` - User authentication and management
-- `firebase_storage` - Cloud storage for images
-- `provider` - State management solution
-- `image_picker` - Camera and gallery access for photo selection
-
-### UI/UX Dependencies
-- `flutter_svg` - SVG image support
-- `transparent_image` - Smooth image loading
-- `flutter_staggered_grid_view` - Responsive grid layouts
-- `timeago` - Human-readable time formatting
-- `google_fonts` - Custom typography
-- `uuid` - Unique identifier generation
+See pubspec.yaml for versions.
 
 ## 🏗 Project Structure
 
 ```
 lib/
-├── models/           # Data models (User, Post)
-├── screens/          # App screens and pages
-├── widgets/          # Reusable UI components
-├── providers/        # State management
-├── resources/        # Firebase services and API calls
-├── utils/           # Utility functions and constants
-└── theme/           # App theming and styling
+├── core/                 # Theme, utils
+│   ├── theme.dart
+│   └── utils.dart
+├── models/               # User, Post, Message models
+│   ├── user.dart
+│   ├── post.dart
+│   └── message.dart
+├── providers/            # State management
+│   └── user_provider.dart
+├── screens/              # UI screens
+│   ├── login_screen.dart
+│   ├── home_screen.dart
+│   ├── feed_screen.dart
+│   ├── add_post_screen.dart
+│   ├── comment_screen.dart
+│   ├── chat_users_screen.dart
+│   ├── chat_screen.dart
+│   └── notification_screen.dart
+├── services/             # App services / Firebase APIs
+│   ├── auth_methods.dart
+│   ├── firestore_methods.dart
+│   ├── storage_methods.dart
+│   ├── chat_service.dart
+│   ├── notification_service.dart
+│   └── chat_state.dart
+├── firebase_options.dart # Generated by FlutterFire
+└── widgets/              # Reusable UI components
+
+functions/                # Cloud Functions (Python)
+├── main.py
+└── requirements.txt
 ```
 
-### Key Files
-- `models/user.dart` - User data model
-- `models/post.dart` - Post data model
-- `providers/user_provider.dart` - User state management
-- `resources/auth_methods.dart` - Authentication services
-- `resources/firestore_methods.dart` - Database operations
-- `resources/storage_methods.dart` - File upload services
+### Notable Files
+- lib/services/chat_service.dart — Chat send/stream logic (chats/{chatId}/messages)
+- lib/services/notification_service.dart — FCM registration, token storage, local notifications, deep-links
+- lib/main.dart — App init, FCM background handler, navigation on notification
+- functions/main.py — Firestore trigger to fan-out FCM notifications for new messages
 
-## 🎯 What Makes SnapShare Special
+## 🔔 How notifications work
+- On app start, NotificationService requests permission, fetches FCM token, and stores it under users/{uid}/tokens/{token}
+- When a message is sent, the Cloud Function looks up receiver tokens and sends a data-only FCM
+- Foreground: app shows a styled local notification with the sender’s avatar
+- Background/terminated: tapping the notification deep-links to ChatScreen
+- If you’re already chatting with that user, notifications are suppressed
 
-### Seamless User Experience
-- Intuitive navigation and smooth interactions
-- Fast loading times with optimized image handling
-- Real-time updates and notifications
-
-### Performance
-- Optimized for mobile performance
-- Efficient state management
-- Smooth animations and transitions
-
-## 🚀 Getting Started
-
-1. **Create Account** - Sign up with your email and choose a unique username
-2. **Set Up Profile** - Add a profile picture and write a bio to introduce yourself
-3. **Start Sharing** - Upload your first photo and share your story
-4. **Connect** - Discover and follow interesting users
-5. **Engage** - Like, comment, and interact with the community
-
+## 📱 Screenshots
+Add your screenshots here.
