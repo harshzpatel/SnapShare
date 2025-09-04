@@ -197,7 +197,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   Scaffold _selectPhoto(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create Post'), centerTitle: false),
+      appBar: AppBar(
+        title: const Text(
+          'Create Post',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: false,
+      ),
       body: Center(
         child: InkWell(
           onTap: () => _selectImage(context),
@@ -229,7 +235,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Scaffold _upLoadPost(User user) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Post'),
+        title: const Text(
+          'New Post',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        titleSpacing: 0,
         centerTitle: false,
         leading: IconButton(
           onPressed: () {
@@ -318,14 +328,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send, color: AppColors.link),
-                  onPressed: _isLoading ? null : () {
-                    FocusScope.of(context).unfocus();
-                    _postImage(
-                      uid: user.uid,
-                      username: user.username,
-                      profImage: user.photoUrl,
-                    );
-                  },
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          FocusScope.of(context).unfocus();
+                          _postImage(
+                            uid: user.uid,
+                            username: user.username,
+                            profImage: user.photoUrl,
+                          );
+                        },
                 ),
               ],
             ),

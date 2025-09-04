@@ -13,7 +13,10 @@ class ChatUsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Users'), titleSpacing: 0),
+      appBar: AppBar(
+        title: Text('Users', style: TextStyle(fontWeight: FontWeight.bold)),
+        titleSpacing: 0,
+      ),
       body: _buildUsersList(),
     );
   }

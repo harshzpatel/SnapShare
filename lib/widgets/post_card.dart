@@ -85,13 +85,16 @@ class _PostCardState extends State<PostCard> {
             width: double.infinity,
             child: RichText(
               text: TextSpan(
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
+                // style: Theme.of(
+                //   context,
+                // ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
                 children: [
                   TextSpan(
                     text: widget.snap['username'],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
                   ),
                   TextSpan(text: ' ${widget.snap['description']}'),
                 ],
@@ -294,7 +297,11 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   Text(
                     widget.snap['username'],
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    // style: TextStyle(fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                    ),
                   ),
                 ],
               ),

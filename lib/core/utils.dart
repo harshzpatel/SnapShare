@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 pickImage(ImageSource src) async {
@@ -32,5 +33,7 @@ void showSnackBar(String content, BuildContext context) {
   messenger.clearSnackBars();
   // messenger.hideCurrentSnackBar();
 
-  messenger.showSnackBar(SnackBar(content: Text(content)));
+  messenger.showSnackBar(
+    SnackBar(content: Text(content, style: GoogleFonts.poppins())),
+  );
 }

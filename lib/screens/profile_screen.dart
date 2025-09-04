@@ -131,6 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasBackButton = Navigator.of(context).canPop();
+
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -139,6 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 user.username,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
+              titleSpacing: hasBackButton ? 0 : NavigationToolbar.kMiddleSpacing,
             ),
             body: ListView(
               children: [

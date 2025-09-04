@@ -17,7 +17,7 @@ class AppTheme {
   AppTheme._();
 
   static final ThemeData dark = ThemeData.dark().copyWith(
-    textTheme: GoogleFonts.lexendTextTheme(ThemeData.dark().textTheme),
+    textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
     appBarTheme: const AppBarTheme(

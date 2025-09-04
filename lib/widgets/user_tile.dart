@@ -33,10 +33,14 @@ class UserTile extends StatelessWidget {
                   : const AssetImage('assets/profile_icon.jpg'),
               radius: 18,
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 16),
             Text(
               username,
-              style: TextStyle(color: AppColors.primary, fontSize: 15),
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),
