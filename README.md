@@ -136,7 +136,7 @@ functions/                # Cloud Functions (Python)
 </td>
 <td align="center">
 <h4>Real-time Chat</h4>
-<img src="https://github.com/user-attachments/assets/c8325667-097c-42cc-aec8-652257cfd5e9" width="250" alt="Real-time Chat">
+<img src="https://github.com/user-attachments/assets/ba49ad68-38bb-4df9-af3f-90d4eeb45d09" width="250" alt="Real-time Chat">
 </td>
 </tr>
 <tr>
@@ -146,9 +146,11 @@ functions/                # Cloud Functions (Python)
 </td>
 <td align="center">
 <h4>Like Animation</h4>
-<img src="https://github.com/user-attachments/assets/ec8921f7-42df-406d-be0d-9a923a60755a" width="250" alt="Like Animation">
+<img src="https://github.com/user-attachments/assets/9633ec77-2fba-4dc9-b946-6ab51b433045" width="250" alt="Like Animation">
 </td>
 <td align="center">
+<h4>Notification</h4>
+<img src="https://github.com/user-attachments/assets/fbabffd5-0f91-47fd-a1ed-60284255c0c2" width="250" alt="Like Animation">
 </td>
 </tr>
 </table>
