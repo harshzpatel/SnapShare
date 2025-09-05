@@ -132,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
             mainAxisSpacing: 2,
             crossAxisSpacing: 2,
             gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+              crossAxisCount: 2,
             ),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
