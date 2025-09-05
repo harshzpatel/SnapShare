@@ -98,57 +98,57 @@ functions/                # Cloud Functions (Python)
 
 <table>
 <tr>
-<td style="text-align: center;">
+<td align="center">
 <h4>Login Screen</h4>
 <img src="https://github.com/user-attachments/assets/709789ca-0434-496e-abcc-51e52db02724" width="250" alt="Login Screen">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Sign Up Screen</h4>
 <img src="https://github.com/user-attachments/assets/9598786e-9cc6-46c1-9034-0532ffb79ec6" width="250" alt="Sign Up Screen">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Feed Screen</h4>
 <img src="https://github.com/user-attachments/assets/33bff8ac-c6ab-46d4-adcf-0a8b01bde3be" width="250" alt="Feed Screen">
 </td>
 </tr>
 <tr>
-<td style="text-align: center;">
+<td align="center">
 <h4>User Profile</h4>
 <img src="https://github.com/user-attachments/assets/d502dd41-230e-460d-b560-6deeeaf25d7a" width="250" alt="User Profile">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Create Post</h4>
 <img src="https://github.com/user-attachments/assets/56fe79c4-9cd8-49b7-8c7f-2fd8fc19cf1b" width="250" alt="Create Post">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Post Comments</h4>
 <img src="https://github.com/user-attachments/assets/42e11748-888c-4184-a309-e99f6a0ba71b" width="250" alt="Post Comments">
 </td>
 </tr>
 <tr>
-<td style="text-align: center;">
+<td align="center">
 <h4>User Search</h4>
 <img src="https://github.com/user-attachments/assets/f1b2497a-21de-4007-ab4b-54c729fb23b9" width="250" alt="User Search">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Browse Users</h4>
 <img src="https://github.com/user-attachments/assets/ca2b0a2f-8ec8-402e-ac55-3e155b09d3b8" width="250" alt="Browse Users">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Real-time Chat</h4>
 <img src="https://github.com/user-attachments/assets/c8325667-097c-42cc-aec8-652257cfd5e9" width="250" alt="Real-time Chat">
 </td>
 </tr>
 <tr>
-<td style="text-align: center;">
+<td align="center">
 <h4>New Post Creation</h4>
 <img src="https://github.com/user-attachments/assets/6729ef6b-a89c-4ec6-b0c7-185dd030d04f" width="250" alt="New Post Creation">
 </td>
-<td style="text-align: center;">
+<td align="center">
 <h4>Like Animation</h4>
 <img src="https://github.com/user-attachments/assets/ec8921f7-42df-406d-be0d-9a923a60755a" width="250" alt="Like Animation">
 </td>
-<td style="text-align: center;">
+<td align="center">
 </td>
 </tr>
 </table>
