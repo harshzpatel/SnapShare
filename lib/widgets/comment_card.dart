@@ -45,6 +45,7 @@ class _CommentCardState extends State<CommentCard> {
                         style: GoogleFonts.signikaNegative(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
+                          color: AppColors.secondary
                         ),
                       ),
                     ],
