@@ -95,4 +95,14 @@ functions/                # Cloud Functions (Python)
 - If you’re already chatting with that user, notifications are suppressed
 
 ## 📱 Screenshots
-Add your screenshots here.
+
+![photo_1_2025-09-05_21-41-21](https://github.com/user-attachments/assets/b292b862-2a35-4eca-aa15-32f9e720a96a)
+![photo_10_2025-09-05_21-41-21](https://github.com/user-attachments/assets/7de088d0-fc8c-4d62-90d7-3fb88c5bc409)
+![photo_9_2025-09-05_21-41-21](https://github.com/user-attachments/assets/e43e5dfa-8200-496a-a8dc-1a4c78ebc572)
+![photo_8_2025-09-05_21-41-21](https://github.com/user-attachments/assets/db6980cf-99f3-42cf-9da3-1fb6e0f25d01)
+![photo_7_2025-09-05_21-41-21](https://github.com/user-attachments/assets/313f5983-4fcf-478a-b644-ea4dec131af4)
+![photo_6_2025-09-05_21-41-21](https://github.com/user-attachments/assets/88300f5f-8d05-4dfb-a656-022c34aa0b0f)
+![photo_5_2025-09-05_21-41-21](https://github.com/user-attachments/assets/ed726b78-f5da-4a64-9471-faa6f1f936a3)
+![photo_4_2025-09-05_21-41-21](https://github.com/user-attachments/assets/72ed1939-b815-4bde-b2fc-d493ffb0952a)
+![photo_3_2025-09-05_21-41-21](https://github.com/user-attachments/assets/e36abfce-cabe-4fbe-96a2-a75c6ebed1b7)
+![photo_2_2025-09-05_21-41-21](https://github.com/user-attachments/assets/30a85eab-4fef-46e0-9412-1302568b457b)
