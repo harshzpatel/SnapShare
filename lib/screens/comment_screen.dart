@@ -32,7 +32,13 @@ class _CommentScreenState extends State<CommentScreen> {
     final User user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Comments')),
+      appBar: AppBar(
+        title: const Text(
+          'Comments',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        titleSpacing: 0,
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('posts')
@@ -74,16 +80,17 @@ class _CommentScreenState extends State<CommentScreen> {
                   child: TextField(
                     controller: _commentController,
                     style: const TextStyle(color: AppColors.primary),
-                    decoration: InputDecoration(
-                      hintText: 'Comment as ${user.username}',
-                      hintStyle: const TextStyle(color: AppColors.secondary),
+                    decoration: const InputDecoration(
+                      hintText: 'Write a comment...',
+                      hintStyle: TextStyle(color: AppColors.secondary),
                       border: InputBorder.none,
                     ),
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () async {
+              IconButton(
+                icon: const Icon(Icons.send, color: AppColors.link),
+                onPressed: () async {
                   String res = await FirestoreMethods().postComment(
                     postId: widget.snap['postId'],
                     text: _commentController.text,
@@ -99,10 +106,6 @@ class _CommentScreenState extends State<CommentScreen> {
                     showSnackBar(res, context);
                   }
                 },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: const Text('Post', style: TextStyle(color: AppColors.link)),
-                ),
               ),
             ],
           ),

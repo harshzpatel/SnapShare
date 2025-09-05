@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart' as ta;
 
 class CommentCard extends StatefulWidget {
@@ -41,7 +42,7 @@ class _CommentCardState extends State<CommentCard> {
                       const Spacer(),
                       Text(
                         ta.format(widget.snap['datePublished'].toDate()),
-                        style: const TextStyle(
+                        style: GoogleFonts.signikaNegative(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
