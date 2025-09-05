@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:snapshare/core/theme.dart';
 import 'package:timeago/timeago.dart' as ta;
 
 class CommentCard extends StatefulWidget {
