@@ -250,7 +250,9 @@ class NotificationService {
   }
 
   Future<void> saveTokenToFirestore(String token) async {
-    String userId = _auth.currentUser!.uid;
+    String? userId = _auth.currentUser?.uid;
+
+    if (userId == null) return;
 
     await _firestore
         .collection('users')
